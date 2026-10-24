@@ -1,0 +1,82 @@
+import type { PriceRule } from "./types";
+
+// 가격표. 원가는 docs/06_partner-call-2026-10-24.md 기준.
+// draft 값은 원가 + 약 25~35% 제안가로, 파트너 확인 전까지 화면에 "Draft rate"로 표시하고 구조화 데이터에는 넣지 않는다.
+
+export const priceRules: PriceRule[] = [
+  {
+    service: "private-driver",
+    region: "seoul",
+    vehicles: ["staria-9", "staria-11"],
+    unit: "day",
+    label: "Full day, Seoul",
+    priceKrw: null,
+    status: "on-request",
+  },
+  {
+    service: "private-driver",
+    region: "gyeonggi",
+    vehicles: ["staria-9", "staria-11"],
+    unit: "day",
+    label: "Full day, Gyeonggi day trip",
+    priceKrw: null,
+    status: "on-request",
+  },
+  {
+    service: "private-driver",
+    region: "any",
+    vehicles: ["solati"],
+    unit: "day",
+    label: "Full day, minibus",
+    priceKrw: null,
+    status: "on-request",
+  },
+  {
+    service: "driver-guide",
+    region: "seoul",
+    vehicles: ["staria-9", "staria-11"],
+    unit: "day",
+    label: "Full day, Seoul",
+    priceKrw: 480000,
+    status: "draft",
+    note: "Van, fuel and licensed driver-guide",
+  },
+  {
+    service: "driver-guide",
+    region: "gyeonggi",
+    vehicles: ["staria-9", "staria-11"],
+    unit: "day",
+    label: "Full day, Gyeonggi day trip",
+    priceKrw: 540000,
+    status: "draft",
+    note: "Van, fuel and licensed driver-guide",
+  },
+  {
+    service: "driver-guide",
+    region: "any",
+    vehicles: ["solati"],
+    unit: "day",
+    label: "Full day, driver + separate guide (about 9–12 people)",
+    priceKrw: null,
+    status: "on-request",
+  },
+  {
+    service: "guide-tour",
+    region: "any",
+    vehicles: [],
+    unit: "day",
+    label: "Full day, licensed guide",
+    priceKrw: 230000,
+    status: "draft",
+    note: "Guide fee only, per group",
+  },
+  {
+    service: "guide-tour",
+    region: "any",
+    vehicles: [],
+    unit: "half-day",
+    label: "Half day, licensed guide",
+    priceKrw: null,
+    status: "on-request",
+  },
+];

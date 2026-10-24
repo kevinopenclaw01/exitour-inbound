@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* 색: 한국 도로 안내표지 녹색(길 안내 = 우리 일) + 관광지 표지 갈색(강조). 회색은 녹색 쪽으로 살짝 기울였다. */
+@theme {
+  --color-paper: #f6f7f4;
+  --color-surface: #ffffff;
+  --color-ink: #15201b;
+  --color-muted: #56645c;
+  --color-line: #d8e0da;
+  --color-sign: #0d6a4b;
+  --color-sign-deep: #08442f;
+  --color-sign-soft: #e2efe7;
+  --color-brown: #8a5527;
+  --color-brown-soft: #f4e8db;
+
+  --font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-display: "Arial Black", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brown);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
