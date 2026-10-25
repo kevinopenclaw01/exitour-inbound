@@ -1,5 +1,9 @@
 # 변경 기록
 
+## 2026-10-25 — Claude (Claude Code) — Vercel 배포 준비: 사이트 주소 자동 설정
+
+- `NEXT_PUBLIC_SITE_URL`이 없으면 Vercel 운영 주소(`VERCEL_PROJECT_PRODUCTION_URL`)를 쓰도록 함. 도메인 연결 전에도 사이트맵·canonical·구조화 데이터가 localhost를 가리키지 않게
+
 ## 2026-10-25 — Claude (Claude Code) — GitHub 저장소 연결, 타입 검사 수정
 
 - 비공개 저장소 `kevinopenclaw01/exitour-inbound`에 첫 업로드

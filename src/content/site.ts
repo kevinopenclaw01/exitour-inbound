@@ -7,7 +7,11 @@ export const site = {
   tagline: "Private driver and licensed guide tours in Korea",
   description:
     "Entour Korea arranges private vans with drivers, licensed driver-guides and licensed guides in your language for travellers in Seoul and Gyeonggi. Operated by Exitour, a registered general travel agency in Korea.",
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, ""),
+  // 도메인을 정하면 NEXT_PUBLIC_SITE_URL로 지정한다. 없으면 Vercel 운영 주소, 그것도 없으면(내 PC) localhost.
+  url: (
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000")
+  ).replace(/\/$/, ""),
   operatorLicense: {
     type: "General travel agency (종합여행업), registered under the Tourism Promotion Act",
     number: null as string | null,
