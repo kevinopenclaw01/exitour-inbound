@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Hero } from "@/components/Hero";
 import { AnswerBox, BulletList, Container, CtaBand, FaqList, JsonLd } from "@/components/ui";
 import { generalFaqs } from "@/content/faqs";
 import { planIdeas } from "@/content/plans";
@@ -18,27 +19,7 @@ export default function Home() {
     <>
       <JsonLd data={faqLd(generalFaqs)} />
 
-      <section className="border-b border-line bg-surface">
-        <Container className="grid gap-6 py-10 sm:py-14">
-          <p className="inline-flex w-fit items-center gap-2 rounded border-2 border-sign px-2.5 py-1 text-xs font-bold tracking-[0.1em] text-sign uppercase">
-            Seoul · Gyeonggi · Incheon
-          </p>
-          <h1 className="max-w-3xl font-display text-4xl leading-[1.08] sm:text-5xl">
-            Korea in your own van, with a licensed guide who speaks your language.
-          </h1>
-          <p className="max-w-2xl text-lg text-muted">
-            Pick a driver, a driver-guide or a guide. We set it up legally, match the language, and plan the day with you.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/plan" className="rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep">
-              Plan my trip
-            </Link>
-            <Link href="/prices" className="rounded-md border border-sign px-5 py-3 font-semibold text-sign-deep hover:bg-sign-soft">
-              See prices
-            </Link>
-          </div>
-        </Container>
-      </section>
+      <Hero />
 
       <Container className="grid gap-14 py-10 sm:py-14">
         <AnswerBox>

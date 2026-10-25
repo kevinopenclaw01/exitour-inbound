@@ -26,6 +26,11 @@ export const site = {
   /** LINE은 같은 전화번호로 친구 추가. LINE ID나 QR 링크를 받으면 바꾼다. */
   line: "+82 10-9988-8846" as string | null,
   officeHours: "We reply 09:00–18:00 Korea time (KST), and often outside those hours.",
+  /**
+   * 홈 첫 화면 사진. 넣으면 도로 표지 그림 대신 배경 사진이 된다.
+   * 사진은 public/images/에 두고 src는 "/images/파일이름.jpg". 직접 찍은 사진이나 사용 조건을 확인한 사진만 쓴다(출처가 필요하면 credit).
+   */
+  heroImage: null as { src: string; alt: string; credit?: string } | null,
   /** 소셜·후기 채널 주소(같은 회사임을 AI에게 알리는 sameAs). 계정을 만들면 넣는다. */
   sameAs: [] as string[],
   areaServed: ["Seoul", "Gyeonggi-do", "Incheon"],
