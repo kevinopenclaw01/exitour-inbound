@@ -11,7 +11,9 @@ import {
   type InquiryErrors,
   type ServiceChoice,
 } from "@/lib/inquiry";
+import { todayKst } from "@/lib/dates";
 import { ContactList } from "./ContactList";
+import { DatePicker } from "./DatePicker";
 import { site } from "@/content/site";
 
 const empty: Inquiry = {
@@ -26,10 +28,6 @@ const empty: Inquiry = {
   contact: "",
   heardFrom: "",
 };
-
-function todayKst(): string {
-  return new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
-}
 
 type Result = { kind: "saved"; reference: string | null } | { kind: "not-saved"; reason: string };
 
@@ -116,13 +114,12 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
             <label htmlFor="startDate" className="font-semibold">
               First tour date
             </label>
-            <input
+            <DatePicker
               id="startDate"
-              type="date"
-              className={field}
               value={form.startDate}
-              onChange={(e) => set("startDate", e.target.value)}
-              aria-describedby={errors.startDate ? "startDate-error" : undefined}
+              min={todayKst()}
+              onChange={(v) => set("startDate", v)}
+              describedBy={errors.startDate ? "startDate-error" : undefined}
             />
             {err("startDate")}
           </div>

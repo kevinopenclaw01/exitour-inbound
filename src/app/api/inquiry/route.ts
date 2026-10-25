@@ -1,11 +1,8 @@
 import { insertRow, supabaseConfigured } from "@/lib/supabase";
+import { todayKst } from "@/lib/dates";
 import { inquiryRow, parseInquiry, referenceCode, validateInquiry } from "@/lib/inquiry";
 
 // 여행 요청 저장. 성공하면 요청 번호를 돌려준다. 저장이 안 되면 손님은 WhatsApp·복사로 보낼 수 있다(폼이 안내).
-
-function todayKst(): string {
-  return new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
-}
 
 export async function POST(request: Request) {
   let body: unknown;

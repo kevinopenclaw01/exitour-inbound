@@ -1,5 +1,11 @@
 # 변경 기록
 
+## 2026-10-25 — Claude (Claude Code) — 여행 요청 날짜 선택기를 영어로 고정 (사용자 "날짜 나오는 거 한글로 나와, 수정해줘")
+
+- 브라우저 기본 날짜 입력은 손님 컴퓨터 언어(한국어 등)로 보여서, 영어 달력(`src/components/DatePicker.tsx`)을 직접 만듦. 오늘(한국 시간) 이전 날짜는 고를 수 없고, 선택한 날짜는 "Saturday, 5 December 2026"처럼 표시
+- 날짜 계산을 `src/lib/dates.ts`로 모아 폼과 `/api/inquiry`가 같은 "오늘" 기준을 씀
+- 검사: lint·typecheck 통과, test 31개 통과(날짜 4개 추가), build 통과. 한국어 브라우저에서 데스크톱·휴대폰 폭으로 달력 표시·날짜 선택 확인
+
 ## 2026-10-25 — Claude (Claude Code) — Vercel 배포 준비: 사이트 주소 자동 설정
 
 - `NEXT_PUBLIC_SITE_URL`이 없으면 Vercel 운영 주소(`VERCEL_PROJECT_PRODUCTION_URL`)를 쓰도록 함. 도메인 연결 전에도 사이트맵·canonical·구조화 데이터가 localhost를 가리키지 않게
