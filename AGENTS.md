@@ -50,6 +50,14 @@ Claude(데스크톱 앱, Claude Code)와 넥서스 코딩 탭(Codex, Qwen, GLM, 
 
 Next.js 16은 예전 버전과 다르다. `params`는 Promise이고, Turbopack이 기본이며, `middleware`는 `proxy`로 바뀌었다. 코드를 쓰기 전에 `node_modules/next/dist/docs/`의 해당 문서를 읽는다.
 
-## 6. 공개 전에 채울 값
+## 6. Supabase (DB)
 
-`src/content/site.ts`의 null 칸: 관광사업자 등록번호, 주소, 이메일, WhatsApp, 카카오 채널, LINE, 소셜 주소(sameAs). 그리고 환경변수 `NEXT_PUBLIC_SITE_URL`(도메인). 비어 있는 값은 화면과 구조화 데이터에 나오지 않는다.
+- 프로젝트: `exitour-inbound` (ref `imzbtkzmbkblvtdmkxnk`, 서울 리전, 무료). 기존 `exitour-platform` 프로젝트와 섞지 않는다
+- 테이블 변경은 반드시 `supabase/migrations/`에 SQL 파일로 남기고 같은 내용을 적용한다. 대시보드에서 손으로만 바꾸지 않는다
+- 앱은 **publishable 키만** 서버에서 쓴다(`SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `.env.local`). service_role 키는 앱·저장소에 넣지 않는다
+- 손님 정보가 있는 테이블은 RLS로 "넣기만" 허용한다. 공개 조회 정책을 만들지 않는다
+- 여행 요청 확인: Supabase 대시보드 → Table Editor → `inquiries` (상태 칸 `status`: new → contacted → quoted → booked/closed)
+
+## 7. 공개 전에 채울 값
+
+`src/content/site.ts`의 null 칸: 관광사업자 등록번호, 주소, 이메일, 소셜 주소(sameAs). 그리고 환경변수 `NEXT_PUBLIC_SITE_URL`(도메인). 비어 있는 값은 화면과 구조화 데이터에 나오지 않는다. 연락처(WhatsApp, LINE, 카카오 ID)는 2026-10-25에 채웠다.

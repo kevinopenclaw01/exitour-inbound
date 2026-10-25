@@ -12,6 +12,10 @@ export const generalFaqs: Faq[] = [
     a: "Send a trip request with your dates, group size, language and what you want to do. We confirm a licensed guide and a registered van for your date, send a quote, and your booking is confirmed when the deposit is paid.",
   },
   {
+    q: "How fast do you reply?",
+    a: "We reply between 09:00 and 18:00 Korea time (KST), and often outside those hours. WhatsApp is the fastest way to reach us.",
+  },
+  {
     q: "Which van fits my group?",
     a: "With suitcases: Staria 9-seater for up to 6 people, Staria 11-seater for 7–8, Solati minibus for up to 11–12. Without luggage each van takes a few more people.",
   },

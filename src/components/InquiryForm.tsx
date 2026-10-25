@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { site } from "@/content/site";
 import {
+  heardFromOptions,
   inquiryMessage,
   serviceOptions,
   validateInquiry,
@@ -11,6 +11,8 @@ import {
   type InquiryErrors,
   type ServiceChoice,
 } from "@/lib/inquiry";
+import { ContactList } from "./ContactList";
+import { site } from "@/content/site";
 
 const empty: Inquiry = {
   service: "not-sure",
@@ -22,34 +24,61 @@ const empty: Inquiry = {
   interests: "",
   name: "",
   contact: "",
+  heardFrom: "",
 };
 
 function todayKst(): string {
   return new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
 }
 
+type Result = { kind: "saved"; reference: string | null } | { kind: "not-saved"; reason: string };
+
 const field = "w-full rounded-md border border-line bg-surface px-3 py-2 text-base";
 
 export function InquiryForm({ initialService }: { initialService?: ServiceChoice }) {
   const [form, setForm] = useState<Inquiry>({ ...empty, service: initialService ?? empty.service });
+  const [website, setWebsite] = useState("");
   const [errors, setErrors] = useState<InquiryErrors>({});
-  const [message, setMessage] = useState<string | null>(null);
-  const [copied, setCopied] = useState<string>("");
+  const [sending, setSending] = useState(false);
+  const [result, setResult] = useState<Result | null>(null);
+  const [copied, setCopied] = useState("");
 
   function set<K extends keyof Inquiry>(key: K, value: Inquiry[K]) {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const found = validateInquiry(form, todayKst());
     setErrors(found);
-    setMessage(Object.keys(found).length === 0 ? inquiryMessage(form) : null);
     setCopied("");
+    if (Object.keys(found).length > 0) {
+      setResult(null);
+      return;
+    }
+    setSending(true);
+    try {
+      const res = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, website }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; reference?: string | null; errors?: InquiryErrors };
+      if (res.ok && data.ok) setResult({ kind: "saved", reference: data.reference ?? null });
+      else if (data.errors) {
+        setErrors(data.errors);
+        setResult(null);
+      } else setResult({ kind: "not-saved", reason: "Our online form could not save your request right now." });
+    } catch {
+      setResult({ kind: "not-saved", reason: "Your connection dropped before the request was saved." });
+    } finally {
+      setSending(false);
+    }
   }
 
+  const message = result ? inquiryMessage(form, result.kind === "saved" ? result.reference ?? undefined : undefined) : "";
+
   async function copy() {
-    if (!message) return;
     try {
       await navigator.clipboard.writeText(message);
       setCopied("Copied.");
@@ -72,12 +101,7 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
           <label htmlFor="service" className="font-semibold">
             Service
           </label>
-          <select
-            id="service"
-            className={field}
-            value={form.service}
-            onChange={(e) => set("service", e.target.value as ServiceChoice)}
-          >
+          <select id="service" className={field} value={form.service} onChange={(e) => set("service", e.target.value as ServiceChoice)}>
             {serviceOptions.map((o) => (
               <option key={o.value} value={o.value}>
                 {o.label}
@@ -106,15 +130,7 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
             <label htmlFor="days" className="font-semibold">
               Number of days
             </label>
-            <input
-              id="days"
-              type="number"
-              min={1}
-              max={30}
-              className={field}
-              value={form.days}
-              onChange={(e) => set("days", Number(e.target.value))}
-            />
+            <input id="days" type="number" min={1} max={30} className={field} value={form.days} onChange={(e) => set("days", Number(e.target.value))} />
             {err("days")}
           </div>
           <div className="grid gap-1">
@@ -147,6 +163,7 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
               Hotel or pick-up area <span className="font-normal text-muted">(optional)</span>
             </label>
             <input id="pickup" className={field} value={form.pickup} onChange={(e) => set("pickup", e.target.value)} />
+            {err("pickup")}
           </div>
         </div>
 
@@ -162,6 +179,7 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
             value={form.interests}
             onChange={(e) => set("interests", e.target.value)}
           />
+          {err("interests")}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -181,14 +199,51 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
           </div>
         </div>
 
-        <button type="submit" className="justify-self-start rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep">
-          Prepare my request
+        <div className="grid gap-1">
+          <label htmlFor="heardFrom" className="font-semibold">
+            How did you find us? <span className="font-normal text-muted">(optional)</span>
+          </label>
+          <select id="heardFrom" className={field} value={form.heardFrom} onChange={(e) => set("heardFrom", e.target.value)}>
+            <option value="">Choose one</option>
+            {heardFromOptions.map((o) => (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ))}
+          </select>
+          {err("heardFrom")}
+        </div>
+
+        {/* 스팸 봇용 숨은 칸. 사람에게는 보이지 않는다. */}
+        <div aria-hidden="true" className="absolute -left-[9999px] h-0 overflow-hidden">
+          <label htmlFor="website">Website</label>
+          <input id="website" tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+        </div>
+
+        <button
+          type="submit"
+          disabled={sending}
+          className="justify-self-start rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep disabled:opacity-60"
+        >
+          {sending ? "Sending…" : "Send my request"}
         </button>
       </form>
 
-      {message ? (
+      {result ? (
         <section aria-live="polite" className="grid gap-3 rounded-md border border-sign/30 bg-sign-soft p-4 sm:p-6">
-          <h2 className="text-lg font-bold">Your request is ready to send</h2>
+          {result.kind === "saved" ? (
+            <>
+              <h2 className="text-lg font-bold">
+                We received your request{result.reference ? ` (${result.reference})` : ""}
+              </h2>
+              <p>We will reply on the contact you gave us. For a faster answer, send the same request on WhatsApp.</p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-lg font-bold">Your request was not sent yet</h2>
+              <p>{result.reason} Send it to us on WhatsApp, or copy it and use any channel below.</p>
+            </>
+          )}
           <pre className="overflow-x-auto rounded bg-surface p-3 text-sm whitespace-pre-wrap">{message}</pre>
           <div className="flex flex-wrap items-center gap-3">
             {site.whatsapp ? (
@@ -206,17 +261,7 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
             </button>
             {copied ? <span className="text-sm text-muted">{copied}</span> : null}
           </div>
-          <p className="text-sm text-muted">
-            {site.email || site.line || site.kakaoChannel
-              ? [
-                  site.email ? `Email: ${site.email}` : null,
-                  site.line ? `LINE: ${site.line}` : null,
-                  site.kakaoChannel ? `KakaoTalk: ${site.kakaoChannel}` : null,
-                ]
-                  .filter(Boolean)
-                  .join(" · ")
-              : "Our contact channels open with the launch of this site. Copy your request and keep it ready."}
-          </p>
+          <ContactList compact />
         </section>
       ) : null}
     </div>

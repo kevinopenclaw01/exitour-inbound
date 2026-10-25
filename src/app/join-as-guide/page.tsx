@@ -45,8 +45,8 @@ export default function Page() {
       <section className="grid gap-3">
         <h2 className="text-2xl font-bold">How to apply</h2>
         <p>
-          {site.email
-            ? `Email ${site.email} with your licence number, languages, areas and whether you drive a van.`
+          {site.whatsapp
+            ? `Message us on WhatsApp (${site.phone ?? site.whatsapp}) or KakaoTalk (ID ${site.kakaoId ?? "-"}) with your licence number, languages, areas and whether you drive a van.`
             : "Applications open with the launch of this site. Prepare your licence number, languages, areas and whether you drive a van."}
         </p>
       </section>

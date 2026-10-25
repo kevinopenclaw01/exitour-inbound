@@ -24,6 +24,21 @@ export function organizationLd(): Json {
     parentOrganization: { "@type": "TravelAgency", name: site.operator },
   };
   if (site.email) ld.email = site.email;
+  if (site.phone) {
+    ld.telephone = site.phone;
+    ld.contactPoint = {
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      telephone: site.phone,
+      availableLanguage: ["English", "Korean"],
+      hoursAvailable: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        opens: "09:00",
+        closes: "18:00",
+      },
+    };
+  }
   if (site.address) ld.address = site.address;
   if (site.sameAs.length > 0) ld.sameAs = site.sameAs;
   return ld;

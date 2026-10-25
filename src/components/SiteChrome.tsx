@@ -2,6 +2,7 @@ import Link from "next/link";
 import { nav, site } from "@/content/site";
 import { services } from "@/content/services";
 import { articles } from "@/content/articles";
+import { ContactList } from "./ContactList";
 import { Container } from "./ui";
 
 export function SiteHeader() {
@@ -39,7 +40,7 @@ export function SiteFooter() {
             {site.operatorLicense.number ? `, No. ${site.operatorLicense.number}` : ""}.
           </p>
           {site.address ? <p className="text-muted">{site.address}</p> : null}
-          <p className="text-muted">{site.officeHours}</p>
+          <ContactList compact />
         </div>
         <div className="grid content-start gap-1.5 text-sm">
           <p className="font-semibold">Services</p>
@@ -67,6 +68,9 @@ export function SiteFooter() {
           </Link>
           <Link href="/about" className="text-muted hover:text-ink">
             About us
+          </Link>
+          <Link href="/contact" className="text-muted hover:text-ink">
+            Contact us
           </Link>
           <Link href="/join-as-guide" className="text-muted hover:text-ink">
             Work with us as a guide

@@ -20,6 +20,7 @@ export function publicRoutes(): PublicRoute[] {
     { path: "/safety", title: "Licensed & safe", updated: SITE_UPDATED, priority: 0.8 },
     { path: "/plan", title: "Plan my trip", updated: SITE_UPDATED, priority: 0.7 },
     { path: "/faq", title: "FAQ", updated: SITE_UPDATED, priority: 0.7 },
+    { path: "/contact", title: "Contact us", updated: "2026-10-25", priority: 0.7 },
     { path: "/travel-guide", title: "Travel guide", updated: SITE_UPDATED, priority: 0.6 },
     ...articles.map((a) => ({ path: `/travel-guide/${a.slug}`, title: a.title, updated: a.updated, priority: 0.8 })),
     { path: "/about", title: "About us", updated: SITE_UPDATED, priority: 0.5 },

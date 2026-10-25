@@ -14,10 +14,14 @@ export const site = {
   },
   address: null as string | null,
   email: null as string | null,
-  whatsapp: null as string | null,
-  kakaoChannel: null as string | null,
-  line: null as string | null,
-  officeHours: "Mon–Fri 10:00–18:00 KST",
+  /** 국가번호 포함. WhatsApp·LINE·카카오가 모두 이 번호로 가입되어 있다(사장님, 2026-10-25). */
+  phone: "+82 10-9988-8846" as string | null,
+  whatsapp: "+821099888846" as string | null,
+  /** 카카오톡 개인 ID. 카카오톡 채널을 만들면 채널 주소로 바꾼다. */
+  kakaoId: "exitouroffice" as string | null,
+  /** LINE은 같은 전화번호로 친구 추가. LINE ID나 QR 링크를 받으면 바꾼다. */
+  line: "+82 10-9988-8846" as string | null,
+  officeHours: "We reply 09:00–18:00 Korea time (KST), and often outside those hours.",
   /** 소셜·후기 채널 주소(같은 회사임을 AI에게 알리는 sameAs). 계정을 만들면 넣는다. */
   sameAs: [] as string[],
   areaServed: ["Seoul", "Gyeonggi-do", "Incheon"],

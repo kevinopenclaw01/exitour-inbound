@@ -10,6 +10,20 @@ export const serviceOptions = [
 
 export type ServiceChoice = (typeof serviceOptions)[number]["value"];
 
+/** "어떻게 알게 되셨나요?" — AI 검색 효과를 재는 항목(docs/04_ai-search-strategy.md 측정 3번). */
+export const heardFromOptions = [
+  "ChatGPT or another AI assistant",
+  "Google or another search engine",
+  "YouTube",
+  "Instagram",
+  "TikTok",
+  "Reddit",
+  "Tripadvisor",
+  "Friend or family",
+  "Travel agency",
+  "Other",
+] as const;
+
 export interface Inquiry {
   service: ServiceChoice;
   startDate: string;
@@ -20,6 +34,7 @@ export interface Inquiry {
   interests: string;
   name: string;
   contact: string;
+  heardFrom: string;
 }
 
 export type InquiryErrors = Partial<Record<keyof Inquiry, string>>;
@@ -37,13 +52,62 @@ export function validateInquiry(input: Inquiry, today: string): InquiryErrors {
   if (input.language.trim().length < 2) errors.language = "Tell us which language you need.";
   if (input.name.trim().length < 1) errors.name = "Enter your name.";
   if (input.contact.trim().length < 5) errors.contact = "Enter an email, WhatsApp number or LINE ID.";
+  if (input.heardFrom && !(heardFromOptions as readonly string[]).includes(input.heardFrom))
+    errors.heardFrom = "Choose an option from the list.";
+  if (input.language.length > 60) errors.language = "Keep this under 60 characters.";
+  if (input.name.length > 100) errors.name = "Keep this under 100 characters.";
+  if (input.contact.length > 200) errors.contact = "Keep this under 200 characters.";
+  if (input.pickup.length > 200) errors.pickup = "Keep this under 200 characters.";
+  if (input.interests.length > 2000) errors.interests = "Keep this under 2,000 characters.";
   return errors;
 }
 
-export function inquiryMessage(input: Inquiry): string {
+/** DB 행(public.inquiries)으로 바꾼다. 앞뒤 공백 정리. */
+export function inquiryRow(input: Inquiry, id: string, sourcePage: string) {
+  return {
+    id,
+    service: input.service,
+    start_date: input.startDate,
+    days: input.days,
+    group_size: input.groupSize,
+    language: input.language.trim(),
+    pickup: input.pickup.trim(),
+    interests: input.interests.trim(),
+    name: input.name.trim(),
+    contact: input.contact.trim(),
+    heard_from: input.heardFrom,
+    source_page: sourcePage.slice(0, 200),
+  };
+}
+
+/** 손님에게 보여 주는 요청 번호(UUID 앞 8자리, 대문자). */
+export function referenceCode(id: string): string {
+  return id.replace(/-/g, "").slice(0, 8).toUpperCase();
+}
+
+/** 브라우저에서 온 값을 Inquiry로 정리한다. 모르는 값은 빈 값으로. */
+export function parseInquiry(body: unknown): Inquiry {
+  const b = (typeof body === "object" && body !== null ? body : {}) as Record<string, unknown>;
+  const str = (k: string) => (typeof b[k] === "string" ? (b[k] as string) : "");
+  const num = (k: string) => (typeof b[k] === "number" ? (b[k] as number) : Number.NaN);
+  return {
+    service: str("service") as ServiceChoice,
+    startDate: str("startDate"),
+    days: num("days"),
+    groupSize: num("groupSize"),
+    language: str("language"),
+    pickup: str("pickup"),
+    interests: str("interests"),
+    name: str("name"),
+    contact: str("contact"),
+    heardFrom: str("heardFrom"),
+  };
+}
+
+export function inquiryMessage(input: Inquiry, reference?: string): string {
   const service = serviceOptions.find((o) => o.value === input.service)?.label ?? input.service;
   const lines = [
-    "Trip request — Entour Korea",
+    reference ? `Trip request ${reference} — Entour Korea` : "Trip request — Entour Korea",
     `Service: ${service}`,
     `Start date: ${input.startDate} (${input.days} day${input.days === 1 ? "" : "s"})`,
     `Group size: ${input.groupSize}`,

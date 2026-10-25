@@ -25,6 +25,7 @@ export function buildLlmsTxt(): string {
     "- Prices are per group, not per person",
     "- Every guide holds the Korean tourist guide licence; drivers without the licence do not guide inside attractions",
     "- No forced shopping",
+    ...(site.whatsapp ? [`- Contact: WhatsApp ${site.phone ?? site.whatsapp}${site.kakaoId ? `, KakaoTalk ID ${site.kakaoId}` : ""}. ${site.officeHours}`] : []),
     "",
   );
   out.push("## Services", "");
@@ -45,6 +46,7 @@ export function buildLlmsTxt(): string {
     `- [Prices](${abs("/prices")})`,
     `- [Licensed & safe](${abs("/safety")})`,
     `- [Plan my trip](${abs("/plan")})`,
+    `- [Contact us](${abs("/contact")})`,
     `- [About us](${abs("/about")})`,
     "",
   );
