@@ -1,5 +1,13 @@
 # 변경 기록
 
+## 2026-10-28 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 품질 점검·지난 결정 대조·결제·도메인 조사 (사용자 "사이트 품질 체크하고 기존 대화에 입각해서 추가할 게 있는지, 결제, 도메인")
+
+- `docs/09_quality-payment-domain.md` 새 문서. 코드 변경 없음
+- 품질: 23개 페이지 200·깨진 링크 0·JSON-LD 정상·휴대폰 홈 278KB·CLS 0. 고칠 것 10개(약관·개인정보·환불 페이지 없음, 사업자 정보 없음, og:image 없음, 휴대폰 머리글 3줄, 요청 알림·측정 없음 등)
+- 대조: 10-24 회의 첫 상품(서울 도보 4시간·팀 정액·견적 전 가격 비공개)이 사이트에 없고 draft 가격이 화면에 보임. 001 문서의 네이버지도 병기·확인서 PDF·메신저 선택 미반영
+- 결제: Stripe 한국 불가 확인, 1단계 PayPal 인보이스 → 2단계 국내 PG 해외카드(토스 4.5%·나이스 3.8% 비교) + OTA 병행 추천
+- 도메인: entourkorea.com·entour.kr 미등록 확인(RDAP), entour.com은 등록됨. entourkorea.com 추천, KIPRIS 상표 확인은 남음
+
 ## 2026-10-28 — Claude (Claude Code, 사장님 PC) — 인수인계 G: 공항 픽업·샌딩 페이지와 안내 글 8편 (사용자 "이후 진행해줘")
 
 - **`/airport-transfer`** 새 페이지(`src/content/airportTransfer.ts` + `src/app/airport-transfer/page.tsx`): 짧은 답, 4단계, Best for·포함·불포함, 인천 T1/T2·김포 표, 가격 요인(견적 문의), 차량, FAQ 8개. JSON-LD Service(Airport ICN·GMP areaServed, 확정가 없어 Offer 없음)·FAQPage·Breadcrumb. 메뉴·바닥글·`llms.txt`·사이트맵·Private Driver 페이지 안내 띠에 연결

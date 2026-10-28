@@ -11,5 +11,6 @@
 | `05_legal-notes.md` | 렌터카 운전자 알선, 관광통역안내사, 여행업 등록 | 법 관련 문구를 쓸 때 |
 | `06_partner-call-2026-10-24.md` | 파트너(관광통역안내사) 상담 요약: 차종, 원가, 시장 상황 | 가격·공급을 다룰 때 |
 | `07_certification-plan.md` | 사장님 관광통역안내사 2027 합격 계획 | 공부 일정 |
+| `09_quality-payment-domain.md` | 2026-10-28 품질 점검, 지난 회의 결정 대조, 결제 붙이는 법(PG 비교), 도메인 추천, 사장님 결정 7개 | 결제·도메인·첫 상품을 정할 때 |
 
 시각 로드맵 페이지(공유용): https://claude.ai/artifact/DvzJABtpJvmsVqBhc2VWwC
