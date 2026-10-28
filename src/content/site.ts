@@ -52,6 +52,7 @@ export const nav = [
   { href: "/private-driver", label: "Private Driver" },
   { href: "/driver-guide", label: "Driver-Guide" },
   { href: "/guide-tour", label: "Guide Tour & Planning" },
+  { href: "/airport-transfer", label: "Airport Transfer" },
   { href: "/prices", label: "Prices" },
   { href: "/safety", label: "Licensed & Safe" },
 ] as const;

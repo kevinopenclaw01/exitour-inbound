@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { nav, site } from "@/content/site";
 import { services } from "@/content/services";
+import { airportTransfer } from "@/content/airportTransfer";
 import { articles } from "@/content/articles";
 import { ContactList } from "./ContactList";
 import { Container } from "./ui";
@@ -49,6 +50,9 @@ export function SiteFooter() {
               {s.name}
             </Link>
           ))}
+          <Link href={airportTransfer.path} className="text-muted hover:text-ink">
+            {airportTransfer.name}
+          </Link>
           <Link href="/prices" className="text-muted hover:text-ink">
             Prices
           </Link>

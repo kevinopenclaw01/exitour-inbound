@@ -10,9 +10,9 @@
 | 사이트 v0 | 완료. 서비스 3종, 가격, 합법·안전, 여행 요청 폼(영어 달력), FAQ, 연락처, 회사 소개, 가이드 모집, 질문형 글 2편, 홈 첫 화면(도로 안내표지 그림) |
 | AI 노출 장치 | 완료. Short answer 상자, JSON-LD 자동 생성, AI 크롤러 허용 robots.txt, sitemap.xml, llms.txt 자동 생성 |
 | 연락처 | 완료. WhatsApp·LINE `+82 10-9988-8846`, 카카오톡 ID `exitouroffice` |
-| Supabase | 프로젝트 `exitour-inbound`(ref `imzbtkzmbkblvtdmkxnk`) + `inquiries` 테이블·RLS 적용. **실제 사이트에서 저장되는지는 아직 한 번도 확인 못 함**(클라우드 환경 네트워크가 supabase.co를 막음) |
+| Supabase | 프로젝트 `exitour-inbound`(ref `imzbtkzmbkblvtdmkxnk`) + `inquiries` 테이블·RLS 적용. **2026-10-28 PC에서 실제 저장 확인 완료**(API·화면 두 경로, 시험 행은 spam 표시). 앱 변수 이름은 `EXITOUR_SUPABASE_*` |
 | GitHub | 비공개 `kevinopenclaw01/exitour-inbound`, CI(lint·typecheck·test·build) 통과 |
-| 메인 사진·영상 | 코드 준비 완료(`site.heroImage`, `site.heroVideo`). 힉스필드로 사진 3장 생성함. **파일은 아직 저장소에 없음**(클라우드에서 힉스필드 파일 서버 접속이 막혀 내려받지 못함) |
+| 메인 사진·영상 | 사진 3장 `public/images/`에 저장, 1번 단풍길을 `site.heroImage`로 연결(2026-10-28). 영상은 아직(크레딧 승인 대기) |
 | 배포 | 아직. Vercel 연결 전 |
 | 도메인 | 아직. 추천 `entourkorea.com` (구매 가능 여부 미확인) |
 
@@ -38,7 +38,7 @@
 
 ## 3. 남은 일 (순서대로)
 
-### A. Supabase 실제 저장 확인 — 가장 먼저
+### A. Supabase 실제 저장 확인 — **완료 2026-10-28 (PC Claude)**
 1. `npm.cmd run dev` 후 http://localhost:3000/plan 에서 시험 요청 1건(이름에 `TEST` 표시)
 2. 화면에 "We received your request (요청번호)"가 나오면 성공
 3. Supabase 대시보드 → Table Editor → `inquiries`에 행이 있는지 확인 → 시험 행은 지우거나 `status`를 `spam`으로
@@ -50,7 +50,7 @@
 3. Deploy → 나온 주소에서 A의 저장 시험을 한 번 더
 4. 이후 `main`에 push하면 자동 배포된다
 
-### C. 메인 사진·영상
+### C. 메인 사진·영상 — 사진 완료 2026-10-28, 영상은 승인 대기
 **사진** (힉스필드 2026-10-27 생성, 목록과 원본 주소는 `scripts/hero-assets.json`)
 ```
 node scripts/fetch-hero-assets.mjs hero-road
@@ -91,9 +91,10 @@ heroImage: { src: "/images/hero-road.webp", alt: "Autumn ginkgo and maple road i
 - 파트너 질문지(`docs/06_partner-call-2026-10-24.md` 끝)로 원가를 받은 뒤 `src/content/pricing.ts`의 값을 고치고, **사장님이 승인한 것만** `status: "confirmed"`로 바꾼다
 - confirmed가 되면 구조화 데이터·llms.txt에 가격이 자동으로 나간다
 
-### G. 콘텐츠 (사장님 정보 없이 가능)
-- 공항 픽업·샌딩 전용 페이지(`/airport-transfer`). 파트너가 "한국에 부족하다"고 한 첫 상품
-- 질문형 안내 글 8편 추가(`src/content/articles.ts`, 후보는 `docs/04_ai-search-strategy.md` 질문 지도)
+### G. 콘텐츠 — **완료 2026-10-28 (PC Claude)**
+- 공항 픽업·샌딩 전용 페이지(`/airport-transfer`) 추가: 내용은 `src/content/airportTransfer.ts`. 요금은 파트너 원가(질문지 5번)가 오면 `pricing.ts`에 넣고 페이지 "Price" 절을 표로 바꾼다
+- 질문형 안내 글 8편 추가(`src/content/articles.ts`, 2026-10-28 표시). 남은 후보: 5일 겨울 일정, 에버랜드, 언어별 개별 페이지(`docs/04` 질문 지도)
+- 글의 사실(시간표·요금·기도실·시설)은 2026-10 기준 일반 정보이며, 변하는 값은 "about", "check the current"로 써 두었다. 공개 전 사장님·가이드가 한 번 읽고 틀린 곳을 고친다
 - 새 공개 페이지는 `src/lib/routes.ts`에도 추가(시험이 확인)
 
 ### H. 회사 정보 (사장님 정보 필요)

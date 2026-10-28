@@ -1,5 +1,13 @@
 # 변경 기록
 
+## 2026-10-28 — Claude (Claude Code, 사장님 PC) — 인수인계 G: 공항 픽업·샌딩 페이지와 안내 글 8편 (사용자 "이후 진행해줘")
+
+- **`/airport-transfer`** 새 페이지(`src/content/airportTransfer.ts` + `src/app/airport-transfer/page.tsx`): 짧은 답, 4단계, Best for·포함·불포함, 인천 T1/T2·김포 표, 가격 요인(견적 문의), 차량, FAQ 8개. JSON-LD Service(Airport ICN·GMP areaServed, 확정가 없어 Offer 없음)·FAQPage·Breadcrumb. 메뉴·바닥글·`llms.txt`·사이트맵·Private Driver 페이지 안내 띠에 연결
+- **안내 글 8편** (`src/content/articles.ts`, `docs/04` 질문 지도): 남이섬 가는 법, 인천공항→서울 교통 비교, 내 언어 가이드(12개 자격 언어), 부모님 모시고 서울, 무슬림 친화(할랄 4분류·기도실), 인천공항 근처 노을·갈매기, 한강 라면, 인천 환승 투어. 모두 "driver is not a guide"·자격 가이드 원칙 유지, 요금·시간표는 범위로 표기
+- `tests/articles.test.ts` 추가: slug 중복·관련 서비스 id·짧은 답 길이·표 열 수·공항 페이지 데이터
+- 문서: `docs/03` 경로 표, `docs/04` 질문 지도 상태, `docs/08` A·C·G 상태 갱신
+- 검사: lint·typecheck 통과, test 38개 통과, build 통과(29개 경로). `/airport-transfer`·안내 글·`llms.txt` 화면 확인, 콘솔 오류 없음
+
 ## 2026-10-28 — Claude (Claude Code, 사장님 PC) — 인수인계 A·C 진행: Supabase 실제 저장 확인, 메인 사진 연결 (사용자 "이후 진행해줘")
 
 - **A. Supabase 저장 확인 완료**: PC에서 API(curl)와 `/plan` 화면 두 경로로 TEST 요청을 보내 `inquiries`에 행이 생기는 것 확인(요청번호 946A3681·85C35C77). 시험 행 2개는 `status=spam`·`admin_note`로 표시해 둠

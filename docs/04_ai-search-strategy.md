@@ -22,13 +22,14 @@
 | How much is a private driver in Seoul / Korea? | `/prices`, `/travel-guide/private-driver-korea-cost` | v0 있음 |
 | Is it legal to hire a driver in Korea? | `/safety`, `/travel-guide/is-hiring-a-driver-legal-in-korea` | v0 있음 |
 | Driver vs driver-guide vs guide in Korea | 홈의 비교표 | v0 있음 |
-| How to get to Nami Island from Seoul? | 안내 글 (셔틀·기차·프라이빗 공정 비교) | 할 일 |
-| Korea tour with a Thai / Vietnamese / Indonesian / Chinese speaking guide | 언어별 가이드 페이지 | 할 일 |
-| Seoul with elderly parents / toddlers / wheelchair | 가족 여행 페이지 | 할 일 |
-| Halal food near Nami Island / Muslim-friendly Korea tour | 무슬림 친화 안내 | 할 일 |
-| Where to see sunset and seagulls near Incheon Airport? | Sunset & Seagulls 글 | 할 일 |
-| How to make Han River ramen? | Han River Evening 글 | 할 일 |
-| Incheon layover tour | 환승 투어 | 할 일 |
+| How to get to Nami Island from Seoul? | `/travel-guide/nami-island-from-seoul` | 2026-10-28 있음 |
+| Korea tour with a Thai / Vietnamese / Indonesian / Chinese speaking guide | `/travel-guide/tour-guide-in-your-language-korea` (언어별 개별 페이지는 v1) | 2026-10-28 글 있음 |
+| Seoul with elderly parents / toddlers / wheelchair | `/travel-guide/seoul-with-elderly-parents` (유아·휠체어는 추가 예정) | 2026-10-28 있음 |
+| Halal food near Nami Island / Muslim-friendly Korea tour | `/travel-guide/muslim-friendly-korea-tour` | 2026-10-28 있음 |
+| Where to see sunset and seagulls near Incheon Airport? | `/travel-guide/sunset-near-incheon-airport` | 2026-10-28 있음 |
+| How to make Han River ramen? | `/travel-guide/han-river-ramen` | 2026-10-28 있음 |
+| Incheon layover tour | `/travel-guide/incheon-layover-tour` | 2026-10-28 있음 |
+| Incheon Airport to Seoul: train, bus, taxi or van? | `/travel-guide/incheon-airport-to-seoul`, `/airport-transfer` | 2026-10-28 있음 |
 | 5-day Korea itinerary in winter with snow | 일정 예시 | 할 일 |
 | Everland tickets and queues with a private guide | 에버랜드 글 | 할 일 |
 

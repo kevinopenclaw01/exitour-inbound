@@ -10,6 +10,6 @@
 
 | 시각 | 누가 | 한 일 |
 |---|---|---|
-| 2026-10-28 | Claude (Claude Code, 사장님 PC) | 인수인계 A 완료(Supabase 저장 확인, 환경변수 `EXITOUR_SUPABASE_*`로 변경), C 사진 3장 내려받아 1번을 메인에 연결. 남은 것: B Vercel(사장님 로그인)·C 영상(크레딧 승인)·D 도메인(구매) |
+| 2026-10-28 | Claude (Claude Code, 사장님 PC) | 인수인계 A 완료(Supabase 저장 확인, 환경변수 `EXITOUR_SUPABASE_*`), C 사진 3장·메인 연결, G 완료(`/airport-transfer` + 안내 글 8편). 남은 것: B Vercel(사장님 로그인)·C 영상(크레딧 승인)·D 도메인(구매)·E·F·H(사장님 정보)·I |
 | 2026-10-28 | Claude (Claude Code, 클라우드 세션) | 연락처·Supabase 저장·영어 달력·메인 화면·메인 영상 자리, 그리고 PC 인수인계 문서(`docs/08_handoff.md`). 다음 작업은 PC에서 handoff의 "남은 일" A부터 |
 | 2026-10-24 | Claude (Claude Code, 클라우드 세션) | 저장소 시작: 사이트 v0(서비스 3종, 가격, 안전, 요청 폼, 안내 글 2편, AI 노출 장치)와 기획 문서 |

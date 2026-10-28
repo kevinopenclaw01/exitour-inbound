@@ -1,3 +1,4 @@
+import { airportTransfer } from "@/content/airportTransfer";
 import { articles } from "@/content/articles";
 import { generalFaqs } from "@/content/faqs";
 import { planIdeas } from "@/content/plans";
@@ -33,6 +34,7 @@ export function buildLlmsTxt(): string {
     out.push(`- [${s.name}](${abs(s.path)}): ${s.answer}`);
     for (const r of ratesFor(s.id)) out.push(`  - ${r.label}: ${aiPriceText(r)}`);
   }
+  out.push(`- [${airportTransfer.name}](${abs(airportTransfer.path)}): ${airportTransfer.answer}`, "  - Quote on request");
   out.push("", "## Planned day examples", "");
   for (const p of planIdeas) out.push(`- [${p.name}](${abs(`/guide-tour#${p.slug}`)}): ${p.summary}`);
   out.push("", "## Travel guide", "");

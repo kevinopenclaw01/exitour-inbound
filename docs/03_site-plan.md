@@ -12,11 +12,12 @@ AI 검색(ChatGPT, 퍼플렉시티, 구글 AI 모드, 제미나이, Claude, Copi
 | `/private-driver` | 차량 + 기사 |
 | `/driver-guide` | 차량 + 자격 가이드 |
 | `/guide-tour` | 가이드 투어 + 일정 설계 (예시: Han River Evening, Sunset & Seagulls) |
+| `/airport-transfer` | 공항 픽업·샌딩(인천 T1·T2, 김포). 견적 문의, 확정가 전까지 Offer 없음 (2026-10-28 추가) |
 | `/prices` | 그룹당 가격 전체 표 |
 | `/safety` | 합법 구조(여행업 등록, 렌터카 알선, 자격 가이드, 쇼핑 강요 없음) |
 | `/plan` | 여행 요청 폼. v0는 저장하지 않고 메시지를 만들어 손님이 복사하거나 WhatsApp으로 보낸다 |
 | `/faq`, `/about`, `/join-as-guide` | FAQ, 회사 소개(Entour 이름의 뜻), 가이드 모집 |
-| `/travel-guide/...` | 질문형 안내 글 2편: 비용, 합법성 |
+| `/travel-guide/...` | 질문형 안내 글 10편: 비용, 합법성 (2026-10-24) + 남이섬 가는 법, 인천공항→서울, 내 언어 가이드, 부모님 모시고 서울, 무슬림 친화, 인천공항 근처 노을, 한강 라면, 인천 환승 투어 (2026-10-28) |
 | `/robots.txt`, `/sitemap.xml`, `/llms.txt` | AI·검색 크롤러용. `llms.txt`는 콘텐츠 데이터에서 자동 생성 |
 
 ## 모든 페이지의 틀

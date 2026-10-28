@@ -1,3 +1,4 @@
+import { airportTransfer } from "@/content/airportTransfer";
 import { articles } from "@/content/articles";
 import { services } from "@/content/services";
 
@@ -16,6 +17,7 @@ export function publicRoutes(): PublicRoute[] {
   return [
     { path: "/", title: "Home", updated: SITE_UPDATED, priority: 1 },
     ...services.map((s) => ({ path: s.path, title: s.name, updated: s.updated, priority: 0.9 })),
+    { path: airportTransfer.path, title: airportTransfer.name, updated: airportTransfer.updated, priority: 0.9 },
     { path: "/prices", title: "Prices", updated: SITE_UPDATED, priority: 0.9 },
     { path: "/safety", title: "Licensed & safe", updated: SITE_UPDATED, priority: 0.8 },
     { path: "/plan", title: "Plan my trip", updated: SITE_UPDATED, priority: 0.7 },
