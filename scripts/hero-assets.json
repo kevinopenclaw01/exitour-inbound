@@ -1,0 +1,26 @@
+{
+  "_설명": "힉스필드로 만든 메인 화면 후보(2026-10-27, GPT Image 2.5, 2688x1520). node scripts/fetch-hero-assets.mjs 로 내려받아 public/에 웹용으로 저장한다. 영상이 생기면 아래 목록에 type video로 추가한다.",
+  "assets": [
+    {
+      "name": "hero-road",
+      "type": "image",
+      "note": "1번 가평 단풍길 + 멀리 밴 (추천 메인)",
+      "job_id": "488a6185-fa02-4b1d-a3a6-a72e9920f070",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_365yJ2kiumbOEfdscBZxxNKzX6c/hf_20261027_045224_488a6185-fa02-4b1d-a3a6-a72e9920f070.png"
+    },
+    {
+      "name": "hero-han-river",
+      "type": "image",
+      "note": "2번 한강 노을, 반포대교",
+      "job_id": "0cc95d0a-7177-4e50-84a9-1d5d10411959",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_365yJ2kiumbOEfdscBZxxNKzX6c/hf_20261027_045224_0cc95d0a-7177-4e50-84a9-1d5d10411959.png"
+    },
+    {
+      "name": "hero-palace",
+      "type": "image",
+      "note": "3번 아침의 경복궁",
+      "job_id": "7f5972fb-6584-4f71-8a73-3cdcdc502fb0",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_365yJ2kiumbOEfdscBZxxNKzX6c/hf_20261027_045224_7f5972fb-6584-4f71-8a73-3cdcdc502fb0.png"
+    }
+  ]
+}

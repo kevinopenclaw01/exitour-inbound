@@ -4,7 +4,8 @@ import { services } from "@/content/services";
 import { site } from "@/content/site";
 import { Container } from "./ui";
 
-// 홈 첫 화면. 사진(site.heroImage)이 있으면 배경으로 깔고, 없으면 한국 도로 안내표지 그림을 보여 준다.
+// 홈 첫 화면. 영상(site.heroVideo)이 있으면 소리 없이 반복 재생하고(사진은 영상이 뜨기 전·움직임 줄이기 설정용 정지 화면),
+// 사진(site.heroImage)만 있으면 사진을 깔고, 둘 다 없으면 한국 도로 안내표지 그림을 보여 준다.
 
 const shortNames: Record<string, { label: string; hint: string }> = {
   "private-driver": { label: "Private driver", hint: "Van + driver" },
@@ -88,11 +89,27 @@ function RouteSign() {
 
 export function Hero() {
   const photo = site.heroImage;
+  const video = site.heroVideo;
+  const hasMedia = Boolean(photo || video);
   return (
     <section className="relative overflow-hidden bg-sign-deep text-white">
-      {photo ? (
+      {hasMedia ? (
         <>
-          <Image src={photo.src} alt={photo.alt} fill priority sizes="100vw" className="object-cover" />
+          {photo ? <Image src={photo.src} alt={photo.alt} fill priority sizes="100vw" className="object-cover" /> : null}
+          {video ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={photo?.src}
+              aria-hidden="true"
+            >
+              <source src={video} type="video/mp4" />
+            </video>
+          ) : null}
           <div className="absolute inset-0 bg-gradient-to-r from-sign-deep via-sign-deep/85 to-sign-deep/30" aria-hidden="true" />
         </>
       ) : (
@@ -140,7 +157,7 @@ export function Hero() {
           </div>
         </div>
 
-        {photo ? null : (
+        {hasMedia ? null : (
           <div className="flex justify-center lg:justify-end">
             <RouteSign />
           </div>

@@ -31,6 +31,11 @@ export const site = {
    * 사진은 public/images/에 두고 src는 "/images/파일이름.jpg". 직접 찍은 사진이나 사용 조건을 확인한 사진만 쓴다(출처가 필요하면 credit).
    */
   heroImage: null as { src: string; alt: string; credit?: string } | null,
+  /**
+   * 홈 첫 화면 배경 영상(mp4, 소리 없음, 반복). 예: "/videos/hero.mp4". heroImage는 영상의 정지 화면으로 쓰이니 같이 넣는다.
+   * 휴대폰 데이터를 생각해 4MB 이하로. 만드는 법: docs/08_handoff.md "메인 사진·영상".
+   */
+  heroVideo: null as string | null,
   /** 소셜·후기 채널 주소(같은 회사임을 AI에게 알리는 sameAs). 계정을 만들면 넣는다. */
   sameAs: [] as string[],
   areaServed: ["Seoul", "Gyeonggi-do", "Incheon"],

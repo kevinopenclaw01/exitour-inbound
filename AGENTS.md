@@ -9,7 +9,8 @@ Claude(데스크톱 앱, Claude Code)와 넥서스 코딩 탭(Codex, Qwen, GLM, 
 1. 이 파일
 2. `CHANGELOG.md` 맨 위 3개 항목
 3. `MAINTAINER.md`: 지금 누가 작업 중인지 표시하는 잠금판
-4. 작업과 관련된 `docs/` 문서 (목록은 `docs/README.md`)
+4. `docs/08_handoff.md`: 지금 상태와 남은 일 순서(클라우드 → PC 인수인계, 2026-10-28)
+5. 작업과 관련된 `docs/` 문서 (목록은 `docs/README.md`)
 
 ## 2. 절대 규칙
 
@@ -45,6 +46,8 @@ Claude(데스크톱 앱, Claude Code)와 넥서스 코딩 탭(Codex, Qwen, GLM, 
 | `src/app/` | 페이지. 새 공개 페이지를 만들면 `src/lib/routes.ts`에도 넣는다(시험이 확인한다) |
 | `src/components/` | 공통 화면 조각. `ServicePage.tsx`가 서비스 3종 페이지의 틀이다 |
 | `tests/` | Vitest 단위 시험 |
+| `scripts/` | `fetch-hero-assets.mjs`: 메인 사진·영상을 내려받아 `public/`에 웹용으로 저장(목록은 `hero-assets.json`) |
+| `public/images`, `public/videos` | 메인 화면 사진·영상. `site.ts`의 `heroImage`·`heroVideo`가 가리킨다(`tests/assets.test.ts`가 파일이 있는지 확인) |
 
 ## 5. 이 프로젝트의 Next.js는 16 버전
 
