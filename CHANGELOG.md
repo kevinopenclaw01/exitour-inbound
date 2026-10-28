@@ -1,5 +1,13 @@
 # 변경 기록
 
+## 2026-10-28 — Claude (Claude Code, 사장님 PC) — 인수인계 A·C 진행: Supabase 실제 저장 확인, 메인 사진 연결 (사용자 "이후 진행해줘")
+
+- **A. Supabase 저장 확인 완료**: PC에서 API(curl)와 `/plan` 화면 두 경로로 TEST 요청을 보내 `inquiries`에 행이 생기는 것 확인(요청번호 946A3681·85C35C77). 시험 행 2개는 `status=spam`·`admin_note`로 표시해 둠
+- **환경변수 이름 변경** `SUPABASE_URL`·`SUPABASE_PUBLISHABLE_KEY` → `EXITOUR_SUPABASE_URL`·`EXITOUR_SUPABASE_PUBLISHABLE_KEY`(`src/lib/supabase.ts`, AGENTS.md, handoff). 이유: 사장님 PC 사용자 환경변수에 오픈클로용 `SUPABASE_URL`(옛 프로젝트 `afwauzrvawoctomkotye`)이 남아 있고 Next.js는 PC 환경변수를 `.env.local`보다 우선해서, 첫 시험이 그 주소로 가 `ENOTFOUND`로 실패했음. PC 환경변수는 다른 프로그램이 쓸 수 있어 건드리지 않음. **Vercel에도 새 이름으로 넣어야 한다**
+- **C. 사진**: `scripts/fetch-hero-assets.mjs`를 PC에서 처음 실행, 3장 모두 내려받아 `public/images/hero-road.webp`(0.56MB)·`hero-han-river.webp`·`hero-palace.webp` 저장(가로 2400px). 세 장 육안 확인: 로고·글자·왜곡 없음. 1번 단풍길을 `site.heroImage`로 연결, 출처 표시 "AI-generated scenery". 2·3번은 서비스 페이지 사진 후보로 보관
+- 영상(C 후반)은 크레딧 사용이라 사장님 승인 대기. B(Vercel)·D(도메인)는 사장님 계정 로그인·구매가 필요해 대기
+- 검사: lint·typecheck 통과, test 33개 통과, build 통과(20개 경로). 홈 1024px·390px 화면 확인
+
 ## 2026-10-28 — Claude (Claude Code, 클라우드) — PC에서 이어 가기 위한 인수인계 + 메인 영상 자리 (사용자 "이후 작업 로컬에서 이어갈 수 있게 진행해줘")
 
 - **`docs/08_handoff.md`**: 지금 상태, PC 처음 준비, 남은 일 A~I(Supabase 저장 확인 → Vercel → 메인 사진·영상 → 도메인 → 검색엔진 등록 → 확정 가격 → 콘텐츠 → 회사 정보 → MVP), 함정, 연결된 자원, PC Claude Code에 붙여 넣을 첫 말

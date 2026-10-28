@@ -28,8 +28,8 @@
    ```
 3. `.env.local` 만들기(커밋되지 않는 파일). 키는 Supabase 대시보드 → exitour-inbound → Project Settings → API Keys의 **publishable 키**(`sb_publishable_...`)를 복사한다. service_role 키는 쓰지 않는다.
    ```
-   SUPABASE_URL=https://imzbtkzmbkblvtdmkxnk.supabase.co
-   SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+   EXITOUR_SUPABASE_URL=https://imzbtkzmbkblvtdmkxnk.supabase.co
+   EXITOUR_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
    NEXT_PUBLIC_SITE_URL=http://localhost:3000
    ```
 4. `npm.cmd run dev` → **그 PC의 브라우저에서** http://localhost:3000
@@ -46,7 +46,7 @@
 
 ### B. Vercel 배포
 1. https://vercel.com → Continue with GitHub(kevinopenclaw01) → Add New → Project → `exitour-inbound` Import
-2. Environment Variables: `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` (도메인 연결 전에는 `NEXT_PUBLIC_SITE_URL`을 넣지 않는다 — 비워 두면 Vercel 운영 주소를 자동으로 쓴다)
+2. Environment Variables: `EXITOUR_SUPABASE_URL`, `EXITOUR_SUPABASE_PUBLISHABLE_KEY` (도메인 연결 전에는 `NEXT_PUBLIC_SITE_URL`을 넣지 않는다 — 비워 두면 Vercel 운영 주소를 자동으로 쓴다)
 3. Deploy → 나온 주소에서 A의 저장 시험을 한 번 더
 4. 이후 `main`에 push하면 자동 배포된다
 
@@ -110,6 +110,7 @@ heroImage: { src: "/images/hero-road.webp", alt: "Autumn ginkgo and maple road i
 | Next.js 16은 예전과 다름 | `node_modules/next/dist/docs/` 확인. `params`는 Promise |
 | Windows에서 `npm` 대신 | `npm.cmd` |
 | 환경변수 바꾼 뒤 반영 안 됨 | `npm.cmd run dev` 재시작, Vercel은 재배포 |
+| 저장이 엉뚱한 Supabase 프로젝트(`afwauzrvawoctomkotye`)로 가서 `ENOTFOUND` | 사장님 PC 사용자 환경변수에 오픈클로용 `SUPABASE_URL`·`SUPABASE_SERVICE_ROLE_KEY`가 남아 있고 Next.js는 PC 환경변수를 `.env.local`보다 우선한다. 그래서 이 앱은 `EXITOUR_SUPABASE_*` 이름을 쓴다(2026-10-28). PC 환경변수는 주식 프로그램 등이 쓸 수 있으니 지우지 않는다 |
 | `localhost` 링크가 안 열림 | 그 PC에서 `npm.cmd run dev`를 켜야 열린다. 휴대폰에서는 안 열린다 |
 | draft 가격 | 화면에만 "draft rate". 구조화 데이터·llms.txt에는 안 나간다. 마음대로 confirmed로 바꾸지 않는다 |
 | 원가·마진 | 이 비공개 저장소 `docs/`에만. 공개 저장소 `exitour-platform`에 옮기지 않는다 |

@@ -57,7 +57,7 @@ Next.js 16은 예전 버전과 다르다. `params`는 Promise이고, Turbopack�
 
 - 프로젝트: `exitour-inbound` (ref `imzbtkzmbkblvtdmkxnk`, 서울 리전, 무료). 기존 `exitour-platform` 프로젝트와 섞지 않는다
 - 테이블 변경은 반드시 `supabase/migrations/`에 SQL 파일로 남기고 같은 내용을 적용한다. 대시보드에서 손으로만 바꾸지 않는다
-- 앱은 **publishable 키만** 서버에서 쓴다(`SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `.env.local`). service_role 키는 앱·저장소에 넣지 않는다
+- 앱은 **publishable 키만** 서버에서 쓴다(`EXITOUR_SUPABASE_URL`, `EXITOUR_SUPABASE_PUBLISHABLE_KEY`, `.env.local`). 이름에 `EXITOUR_`를 붙인 이유: 사장님 PC에 다른 프로젝트의 `SUPABASE_URL` 사용자 환경변수가 있고 Next.js는 그것을 `.env.local`보다 우선한다. service_role 키는 앱·저장소에 넣지 않는다
 - 손님 정보가 있는 테이블은 RLS로 "넣기만" 허용한다. 공개 조회 정책을 만들지 않는다
 - 여행 요청 확인: Supabase 대시보드 → Table Editor → `inquiries` (상태 칸 `status`: new → contacted → quoted → booked/closed)
 

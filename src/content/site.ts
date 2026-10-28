@@ -30,7 +30,12 @@ export const site = {
    * 홈 첫 화면 사진. 넣으면 도로 표지 그림 대신 배경 사진이 된다.
    * 사진은 public/images/에 두고 src는 "/images/파일이름.jpg". 직접 찍은 사진이나 사용 조건을 확인한 사진만 쓴다(출처가 필요하면 credit).
    */
-  heroImage: null as { src: string; alt: string; credit?: string } | null,
+  heroImage: {
+    src: "/images/hero-road.webp",
+    alt: "Autumn ginkgo and maple road by a lake in Gapyeong, Korea",
+    // 화면 오른쪽 아래에 작게 표시된다(docs/decisions.md 2026-10-25 5번: AI 이미지는 풍경만, 우리 차량·가이드처럼 쓰지 않는다)
+    credit: "AI-generated scenery",
+  } as { src: string; alt: string; credit?: string } | null,
   /**
    * 홈 첫 화면 배경 영상(mp4, 소리 없음, 반복). 예: "/videos/hero.mp4". heroImage는 영상의 정지 화면으로 쓰이니 같이 넣는다.
    * 휴대폰 데이터를 생각해 4MB 이하로. 만드는 법: docs/08_handoff.md "메인 사진·영상".
