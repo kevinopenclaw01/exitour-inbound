@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DayPlanNote } from "@/components/DayPlanCards";
+import { PlacePhotoRow } from "@/components/Photos";
 import { AnswerBox, Breadcrumbs, BulletList, Container, CtaBand, JsonLd } from "@/components/ui";
 import { dayPlans } from "@/content/dayPlans";
+import { placePhotos, type PlacePhotoKey } from "@/content/photos";
 import { dayProduct, regionLabels, regionOrder } from "@/content/pricing";
 import { site } from "@/content/site";
 import { durationText, planEnd, planTimeline } from "@/lib/dayPlans";
@@ -27,7 +29,7 @@ export default function Page() {
         <h1 className="font-display text-3xl leading-tight sm:text-4xl">What fits in a {dayProduct.hours}-hour day</h1>
         <AnswerBox updated={site.contentUpdated}>
           A {dayProduct.hours}-hour private van day from a central Seoul hotel fits four to six stops inside Seoul, or two main
-          stops plus lunch on a Gyeonggi day trip, because the drive each way takes about one to two hours. Below are four example
+          stops plus lunch on a Gyeonggi day trip, because the drive out and the drive back each take about one to two hours. Below are four example
           days for families, hour by hour. They are examples: we change the stops, the order and the start time with you.
         </AnswerBox>
         <DayPlanNote />
@@ -55,6 +57,7 @@ export default function Page() {
                   <h3 className="text-xl font-bold">{plan.name}</h3>
                   <p className="text-muted">{plan.summary}</p>
                 </div>
+                <PlacePhotoRow keys={(plan.photos ?? []).filter((key): key is PlacePhotoKey => key in placePhotos)} />
                 <ol className="grid">
                   {planTimeline(plan).map((stop, i) => (
                     <li

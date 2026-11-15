@@ -8,7 +8,7 @@ import { Container } from "./ui";
 // 홈 첫 화면. 흰 바탕에 글과 버튼을 왼쪽에, 사진을 오른쪽 틀 안에 둔다(큰 색 면을 쓰지 않는다).
 // 영상(site.heroVideo)이 있으면 사진 틀 안에서 소리 없이 반복 재생하고(사진은 영상이 뜨기 전·움직임 줄이기 설정용 정지 화면),
 // 사진도 영상도 없으면 한국 도로 안내표지 그림을 보여 준다.
-// 사진은 4:3 틀에 왼쪽 기준으로 잘라 넣는다: 지금 사진 오른쪽 멀리 차가 한 대 있어서 우리 차량처럼 보이지 않게 풍경만 쓴다.
+// 사진은 4:3 틀에 맞춰 잘라 넣는다. 자르는 기준(가운데·왼쪽)은 site.heroImage.position.
 
 const trust = [
   "Registered travel agency",
@@ -137,12 +137,12 @@ export function Hero() {
                   fill
                   priority
                   sizes="(min-width: 1024px) 460px, 100vw"
-                  className="object-cover object-left"
+                  className={`object-cover ${photo.position === "left" ? "object-left" : "object-center"}`}
                 />
               ) : null}
               {video ? (
                 <video
-                  className="absolute inset-0 h-full w-full object-cover object-left motion-reduce:hidden"
+                  className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
                   autoPlay
                   muted
                   loop
@@ -155,7 +155,7 @@ export function Hero() {
                 </video>
               ) : null}
             </div>
-            {photo?.credit ? <figcaption className="text-right text-xs text-muted">Photo: {photo.credit}</figcaption> : null}
+            {photo?.credit ? <figcaption className="text-right text-xs text-muted">{photo.credit}</figcaption> : null}
           </figure>
         ) : (
           <div className="flex justify-center lg:justify-end">

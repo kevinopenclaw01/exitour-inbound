@@ -1,21 +1,54 @@
 import type { CrewMember } from "./types";
 
 // 기사·가이드 소개 자리. 홈과 /driver-guide에 "Meet your driver-guide" 구역으로 나온다.
-// ■ 자료가 없으면(아래 배열이 비어 있으면) 구역 자체가 화면에 나오지 않는다.
-// ■ 사장님이 준 실제 자료만 넣는다. 이름·사진·자격을 지어내지 않는다. AI로 만든 사람 사진을 쓰지 않는다(docs/decisions.md).
-// ■ 사진은 본인 동의를 받은 실제 사진을 public/images/crew/에 두고 src를 "/images/crew/파일이름.jpg"로 적는다
-//   (tests/assets.test.ts가 파일이 있는지 확인한다).
+// ■ 아래 crewEntries에서 show가 true이고 이름·소개가 채워진 사람만 화면에 나온다. 한 명도 없으면 구역 자체가 안 나온다.
+// ■ 사장님이 준 실제 자료만 넣는다. 이름·자격·소개를 지어내지 않는다. AI로 만든 사람 사진을 쓰지 않는다(docs/decisions.md).
+// ■ 사진은 본인 동의를 받은 실제 사진을 public/images/crew/에 둔다(tests/assets.test.ts가 파일이 있는지 확인한다).
 //
-// 넣는 모양(예시 — 실제 값으로 바꿔서 배열에 넣는다):
-//   {
-//     name: "받은 이름(영문)",
-//     role: "Driver-guide",
-//     photo: { src: "/images/crew/파일이름.jpg", alt: "이름, driver-guide at Entour Korea" },
-//     licence: "Korean tourist guide licence (관광통역안내사), English",   ← 자격증 사본에 적힌 언어 그대로
-//     languages: ["English", "Tagalog"],                                  ← 손님과 말할 수 있는 언어
-//     intro: "한두 문장 소개(영어)",
-//   },
-export const crew: CrewMember[] = [];
+// 지금 상태(2026-11-16): 사진만 연결해 두었다. 사장님이 얼굴 사용을 허락했다("맞아, 써도 돼").
+//   이름·자격·말할 수 있는 언어·소개는 아직 받지 못해서 show는 false다. 구역은 화면에 나오지 않는다.
+//   사진은 편집본 폴더의 `기사님\driver-on-boat-square` (배 위에서 찍은 사진, 정사각형). 같은 폴더에 세로형과 공항 사진도 있다.
+//   **배포 전에** 사진 세 장이 모두 기사님 본인인지 사장님이 한 번 확인한다(docs/10_narrow-launch.md 3장).
+//
+// 켜는 법: 아래 빈칸(null·빈 배열)을 받은 값으로 채우고 show를 true로 바꾼다.
+//   name:      영문 표기 이름
+//   licence:   자격증 사본에 적힌 그대로. 예: "Korean tourist guide licence (관광통역안내사), English"
+//   languages: 손님과 말할 수 있는 언어. 예: ["English", "Tagalog"]
+//   intro:     한두 문장 소개(영어)
+// 켠 뒤 tests/products.test.ts의 "stays hidden until …" 기대값을 인원 수에 맞게 고친다.
+
+export interface CrewEntry {
+  show: boolean;
+  name: string | null;
+  role: string;
+  photo: { src: string; alt: string } | null;
+  licence: string | null;
+  languages: string[];
+  intro: string | null;
+}
+
+export const crewEntries: CrewEntry[] = [
+  {
+    show: false,
+    name: null,
+    role: "Driver-guide",
+    photo: {
+      src: "/images/crew/driver-on-boat-square.webp",
+      // 이름을 받으면 "<이름>, driver-guide at Entour Korea, on a boat …"로 바꾼다.
+      alt: "Our driver-guide on a boat, with a river and green hills behind",
+    },
+    licence: null,
+    languages: [],
+    intro: null,
+  },
+];
+
+/** 화면에 나오는 사람: show가 켜져 있고 이름과 소개가 있는 항목만. */
+export const crew: CrewMember[] = crewEntries.flatMap((entry) =>
+  entry.show && entry.name && entry.intro
+    ? [{ name: entry.name, role: entry.role, photo: entry.photo, licence: entry.licence, languages: entry.languages, intro: entry.intro }]
+    : [],
+);
 
 /**
  * "영어와 따갈로그로 안내" 문구(초안). enabled를 true로 바꾸기 전에는 화면·구조화 데이터·llms.txt 어디에도 나가지 않는다.

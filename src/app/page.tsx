@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CrewSection } from "@/components/CrewSection";
 import { DayPlanCards, DayPlanNote } from "@/components/DayPlanCards";
 import { Hero } from "@/components/Hero";
+import { GuestMoments, HomePlaceStrip } from "@/components/Photos";
 import { ProductMatrix } from "@/components/ProductMatrix";
 import { AnswerBox, BulletList, Container, CtaBand, FaqList, JsonLd } from "@/components/ui";
 import { generalFaqs } from "@/content/faqs";
@@ -92,11 +93,14 @@ export default function Home() {
             <h2 className="text-2xl font-bold">What fits in {dayProduct.hours} hours</h2>
             <p className="mt-1 text-muted">Four example days for families: two in Seoul and two Gyeonggi day trips.</p>
           </div>
+          <HomePlaceStrip />
           <DayPlanCards />
           <DayPlanNote />
         </section>
 
         <CrewSection />
+
+        <GuestMoments />
 
         <section className="grid gap-4">
           <h2 className="text-2xl font-bold">How booking works</h2>

@@ -6,6 +6,7 @@ import type { DayPlan } from "./types";
 // - 이동 시간은 평일 낮 기준 어림값이다. 화면에는 "about"으로 나오고, 주말·연휴에는 더 걸린다고 밝힌다.
 // - 입장료·운영 시간·휴무일·공연 시간처럼 바뀌는 값은 적지 않는다("we check for your date").
 // - 출발지는 서울 도심(명동·종로·시청 근처) 호텔로 잡았다.
+// - photos는 사장님이 주신 실제 장소 사진이 있는 일정에만 붙인다(src/content/photos.ts). 그 장소가 아닌 사진을 붙이지 않는다.
 
 export const dayPlans: DayPlan[] = [
   {
@@ -52,6 +53,7 @@ export const dayPlans: DayPlan[] = [
       "The longest walks are inside the palace and around the tower. Tell us if someone needs a wheelchair or a slower pace and we cut a stop.",
       "Short city hops are 10 to 25 minutes on a normal weekday; rush hour adds time.",
     ],
+    photos: ["gyeonghoeru", "nSeoulTower"],
     updated: "2026-11-16",
   },
   {
@@ -94,12 +96,12 @@ export const dayPlans: DayPlan[] = [
     updated: "2026-11-16",
   },
   {
-    slug: "gyeonggi-nami-island-garden",
+    slug: "gyeonggi-nami-island-dumulmeori",
     region: "gyeonggi",
-    name: "Nami Island and the Garden of Morning Calm",
-    area: "Gyeonggi: Gapyeong",
+    name: "Nami Island and the Dumulmeori riverside",
+    area: "Gyeonggi: Gapyeong and Yangpyeong",
     summary:
-      "An early start to reach the Nami Island ferry before the crowds, a slow morning on the island, dakgalbi for lunch, then the Garden of Morning Calm on the way back to Seoul.",
+      "An early start to reach the Nami Island ferry before the crowds, a slow morning on the island, dakgalbi for lunch, then the quiet riverside at Dumulmeori on the way back to Seoul.",
     start: "08:00",
     stops: [
       { kind: "pickup", title: "Hotel pick-up in central Seoul", minutes: 0 },
@@ -107,24 +109,25 @@ export const dayPlans: DayPlan[] = [
       {
         kind: "visit",
         title: "Nami Island, including the short ferry each way",
-        minutes: 180,
+        minutes: 200,
         note: "The island is flat and car-free, easy with a stroller. Ferries run through the day; we check the times for your date.",
       },
-      { kind: "meal", title: "Dakgalbi lunch near the dock", minutes: 60 },
-      { kind: "drive", title: "Drive to the Garden of Morning Calm", minutes: 35 },
+      { kind: "meal", title: "Dakgalbi lunch near the dock", minutes: 70 },
+      { kind: "drive", title: "Drive to Dumulmeori in Yangpyeong", minutes: 60 },
       {
         kind: "visit",
-        title: "The Garden of Morning Calm",
-        minutes: 110,
-        note: "Swap this for Petite France, which is closer to the dock, if your family prefers. Doing both makes the day a rush.",
+        title: "Dumulmeori: the riverside walk and the picture-frame photo spot",
+        minutes: 80,
+        note: "Swap this for the Garden of Morning Calm or Petite France, both nearer the island, if your family prefers. Doing all of them makes the day a rush.",
       },
-      { kind: "drive", title: "Drive back to Seoul", minutes: 125 },
+      { kind: "drive", title: "Drive back to Seoul", minutes: 100 },
       { kind: "dropoff", title: "Hotel drop-off", minutes: 0 },
     ],
     goodToKnow: [
       "The ferry dock is in Gapyeong, Gyeonggi; the island itself belongs to Chuncheon.",
-      "The return drive is the long one. On weekends and in autumn-leaf season the roads are slower, so we leave earlier or shorten the second stop.",
+      "On weekends and in autumn-leaf season the roads are slower, so we leave earlier or shorten the second stop.",
     ],
+    photos: ["namiIsland", "dumulmeori"],
     updated: "2026-11-16",
   },
   {

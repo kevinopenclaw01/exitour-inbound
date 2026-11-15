@@ -1,5 +1,17 @@
 # 변경 기록
 
+## 2026-11-16 — Claude (Claude Code, 사장님 PC, Fable 5.2) — 사장님이 주신 실제 사진 반영 (다른 세션이 편집해 넘긴 사진: 차량·장소·기사님·손님 뒷모습)
+
+- **실제 차량 사진 4장**(`public/images/van/`): 두 상품 쪽 "Your van"에 앞 옆모습·좌석·앞좌석·운전석. "번호판은 가렸다"고 밝힘
+- **실제 장소 사진 4장**(`public/images/places/`): 경회루·남산타워·두물머리·남이섬. 홈 "What fits in 10 hours" 위 사진 줄과 `/day-plans`의 해당 일정에 붙임
+- **홈 첫 화면 사진을 AI 풍경 → 실제 사진(경복궁 경회루)** 으로. 화면에서 비교해 실제 사진 쪽으로 정함(출처 표시 "AI-generated scenery" 대신 장소 이름)
+- **기사님 사진**(`public/images/crew/driver-on-boat-square.webp`)을 소개 자리에 연결. 사장님이 얼굴 사용을 허락함. 이름·자격·소개가 없어 **구역은 그대로 꺼져 있음**(`crew.ts`의 `crewEntries`, `show: false`)
+- **손님 뒷모습 6장은 자리만**(`photos.ts`의 `guestPhotos`, `GuestMoments`): 꺼 둠. 손님 확인 전이라 파일도 `public/`에 넣지 않음(시험이 확인)
+- 경기 예시 하나를 "남이섬 + 아침고요수목원" → **"남이섬 + 두물머리"**(실제 사진이 있는 곳, 구간 합 600분 유지)
+- 쓰지 않은 사진: 별마당 도서관(지점 미확인), 소나무 정원(이름 미확인), 차량 정면(겹침), 세로 사진들
+- 받을 것에 추가: 손님 뒷모습 사진 사용 확인, 기사님 사진 세 장 본인 확인, 장소 이름 두 곳(`docs/10` 3장 12-1·17·18)
+- 검사: lint·typecheck 통과, test 94개 통과, build 통과(61개 경로), `check:pages` 27쪽 문제 없음. 홈·두 상품·Prices·Plan·Day plans를 1440px·390px으로 다시 확인
+
 ## 2026-11-16 — Claude (Claude Code, 사장님 PC, Fable 5.2) — 좁혀서 열기: 드라이빙 가이드 두 상품 중심으로, 배포 직전까지 (사장님 "새로 만들지 않고 이 사이트를 좁혀서 연다 — 그렇게 해 줘")
 
 - **문을 좁힘**: 메뉴·바닥글에 Private Driver·Driver-Guide·Prices·Plan·FAQ·About·Contact만. `/guide-tour`·`/join-as-guide`는 코드만 두고 noindex, 사이트맵·`llms.txt`·메뉴에서 뺌. 안내 글·`/airport-transfer`·`/safety`는 그대로(한강 글의 숨긴 상품 문단만 정리)

@@ -42,15 +42,17 @@ export const site = {
   /**
    * 홈 첫 화면 사진. 직접 찍은 사진이나 사용 조건을 확인한 사진만 쓴다(출처가 필요하면 credit).
    * 사진은 public/images/에 두고 src는 "/images/파일이름.jpg".
-   * 지금 사진은 AI로 만든 풍경이라 실제 지명을 붙이지 않는다. 오른쪽 멀리 차가 한 대 보여서, 홈에서는 왼쪽(호수·나무)만 보이게 잘라 쓴다
-   * (Hero.tsx의 object-left + 4:3 틀. 우리 차량처럼 보이지 않게 — docs/decisions.md 2026-10-25 5번).
+   * 2026-11-16: 사장님이 주신 실제 사진(경복궁 경회루)으로 바꿨다. 사진 아래에는 장소 이름이 나온다(credit).
+   * 그전의 AI 풍경(/images/hero-road.webp)은 파일만 남아 있다. 다시 쓰려면 credit을 "AI-generated scenery"로 하고
+   * position을 "left"로 둔다(오른쪽 멀리 차가 한 대 있어서 우리 차량처럼 보이지 않게 왼쪽만 쓴다 — docs/decisions.md).
+   * position: 4:3 틀에 맞춰 자를 때 기준(가운데 / 왼쪽).
    */
   heroImage: {
-    src: "/images/hero-road.webp",
-    alt: "A lakeside road lined with golden ginkgo and red maple trees in autumn",
-    // 사진 아래에 작게 표시된다(docs/decisions.md 2026-10-25 5번: AI 이미지는 풍경만, 우리 차량·가이드처럼 쓰지 않는다)
-    credit: "AI-generated scenery",
-  } as { src: string; alt: string; credit?: string } | null,
+    src: "/images/places/seoul-gyeonghoeru-pavilion.webp",
+    alt: "Gyeonghoeru Pavilion standing over its pond at Gyeongbokgung Palace under a blue sky",
+    credit: "Gyeonghoeru Pavilion, Gyeongbokgung Palace",
+    position: "center",
+  } as { src: string; alt: string; credit?: string; position?: "center" | "left" } | null,
   /**
    * 홈 첫 화면 영상(mp4, 소리 없음, 반복). 예: "/videos/hero.mp4". heroImage는 영상의 정지 화면으로 쓰이니 같이 넣는다.
    * 휴대폰 데이터를 생각해 4MB 이하로. 만드는 법: docs/08_handoff.md "메인 사진·영상".

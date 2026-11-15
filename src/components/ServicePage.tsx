@@ -10,6 +10,7 @@ import { productFaqs } from "@/lib/productFaqs";
 import { breadcrumbLd, faqLd, serviceLd } from "@/lib/schema";
 import { CrewSection } from "./CrewSection";
 import { DayPlanCards, DayPlanNote } from "./DayPlanCards";
+import { VanGallery } from "./Photos";
 import { PriceTable } from "./PriceTable";
 import { ProductMatrix } from "./ProductMatrix";
 import { AnswerBox, Breadcrumbs, BulletList, Container, CtaBand, FaqList, JsonLd } from "./ui";
@@ -75,12 +76,13 @@ export function ServicePage({ service, children }: { service: Service; children?
             </p>
           </section>
 
-          <section className="grid gap-2">
+          <section className="grid gap-3">
             <h2 className="text-2xl font-bold">Your van</h2>
             <p>
               One {dayProduct.vehicle} van, for your group only, with seats for up to {dayProduct.maxPassengers} passengers. Tell
               us how many suitcases or strollers you are bringing so we can check the space for your day.
             </p>
+            <VanGallery />
           </section>
 
           {service.id === "driver-guide" ? <CrewSection /> : null}

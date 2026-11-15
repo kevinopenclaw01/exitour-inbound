@@ -22,6 +22,8 @@
 | 틀만 있고 값 대기 | `/terms`, `/privacy`, `/cancellation-policy` | noindex, 메뉴·사이트맵에 없음. 주소를 치면 "Draft" 표시와 빈칸이 보인다 |
 | 로봇용 | `/robots.txt`, `/sitemap.xml`, `/llms.txt`, `/og/<쪽>.png`(공유 그림 27장), `/icon.svg`, IndexNow 키 파일 | 자동 생성 |
 
+**실제 사진**(2026-11-16 사장님 제공, 자료는 `src/content/photos.ts`): 차량 4장은 두 상품 쪽 "Your van"에, 장소 4장(경회루·남산타워·두물머리·남이섬)은 홈 첫 화면·홈 사진 줄·`/day-plans`에 쓴다. 기사님 사진 1장은 연결만 해 두었고(소개 구역은 꺼져 있음), 손님 뒷모습 6장은 자리만 있고 꺼져 있다(파일도 `public/`에 넣지 않았다). 편집본과 원본 번호는 `C:\Users\kevin\Desktop\바탕화면\AI\semi ochestra\.orchestra\out put\2026-11-16\EntourKorea_사진편집\README.md`.
+
 **네 칸 표**(홈·`/prices`·두 상품 쪽이 같은 자료에서 그린다): 세로 Driver only / Driver-guide, 가로 Seoul / Gyeonggi. 칸마다 10시간·스타리아·최대 7인·값·포함 항목.
 자료는 `src/content/pricing.ts`의 `dayRates` 한 곳이다.
 
@@ -42,11 +44,14 @@
 | 9 | 회사 정보: 대표자, 사업자등록번호, 관광사업자 등록번호, 통신판매업 신고번호, 주소, 이메일 | `src/content/site.ts` `representative`·`businessNumber`·`operatorLicense.number`·`mailOrderNumber`·`address`·`email` | 바닥글·약관에 안 나옴 | 바닥글·약관·개인정보처리방침·구조화 데이터에 나온다 |
 | 10 | 개인정보 보호책임자·연락처, 보관 기간, 여권 정보 처리 방식 | `src/content/legal.ts` `privacy` | `/privacy`가 Draft | 다 채우면 폼 아래 "Privacy policy" 링크가 생긴다 |
 | 11 | 보험 보장 범위·책임 한도 문구, 관할 법원, 시행일 | `src/content/legal.ts` `liability`·`court`·`effectiveDate` | `/terms`가 Draft | 약관 공개 |
-| 12 | 기사(가이드) 이름·얼굴 사진·자격·말할 수 있는 언어·소개 | `src/content/crew.ts` `crew` 배열 + 사진은 `public/images/crew/` | "Meet your driver-guide" 구역이 아예 없음 | 홈과 `/driver-guide`에 구역이 생긴다 |
+| 12 | 기사(가이드) 이름·자격·말할 수 있는 언어·소개 (사진은 받아서 연결해 둠: `public/images/crew/driver-on-boat-square.webp`, 얼굴 사용은 사장님이 허락) | `src/content/crew.ts` `crewEntries`의 빈칸 + `show: true` | "Meet your driver-guide" 구역이 아예 없음 | 홈과 `/driver-guide`에 사진과 함께 구역이 생긴다 |
+| 12-1 | 기사님 사진 세 장(배 위 정사각형·세로형, 공항)이 모두 기사님 본인인지 확인 | 확인만. 아니면 `crew.ts`의 `photo`를 바꾸고 `public/images/crew/`의 파일을 지운다 | — | **배포 전에** 확인한다(사진 파일은 화면에 안 걸려도 주소로 열린다) |
 | 13 | 자격증에 적힌 언어(영어인지), 따갈로그 문구를 켤지 | `src/content/crew.ts` `crewLanguageClaim.enabled` (+ `site.ts` `guideLanguages`) | 사이트 어디에도 따갈로그 없음 | 문구가 `/driver-guide`에 나온다 |
 | 14 | 도메인 | Vercel 환경변수 `NEXT_PUBLIC_SITE_URL` | 주소가 localhost / Vercel 임시 주소 | canonical·사이트맵·공유 그림 주소가 도메인으로 |
 | 15 | 검색엔진 소유 확인 코드(구글·Bing·네이버) | `src/content/site.ts` `verification` | `<head>`에 없음 | 확인용 `<meta>`가 들어간다 |
 | 16 | 알림 받을 곳(텔레그램·이메일·웹훅 중) | 환경변수(7장) | 알림 없음 | 요청이 오면 바로 알림 |
+| 17 | 손님 뒷모습 사진 6장을 사이트에 써도 되는지(손님께 확인) | 확인받은 사진만 편집본 폴더 `손님_뒷모습\`에서 `public/images/guests/`로 복사 → `src/content/photos.ts` `guestPhotos`에서 나머지를 지우고 `enabled: true` | 구역 없음, 파일도 저장소에 없음 | 홈에 "Days out with our guests" 구역 |
+| 18 | 장소 이름 두 곳: 별마당 도서관 사진의 지점, 소나무 정원의 이름 | 확인되면 `photos.ts` `placePhotos`에 추가(파일은 편집본 폴더 `풍경\`) | 그 두 사진은 쓰지 않음 | 맞는 일정에 붙인다 |
 
 ### 값 확정하는 예 (1번)
 
@@ -66,7 +71,7 @@
 
 ### 기사 소개 넣는 예 (12번)
 
-`src/content/crew.ts` 맨 위 주석에 모양이 있다. 실제 이름·실제 사진(본인 동의)·자격증 사본으로 확인한 자격만 넣는다. 넣은 뒤 `tests/products.test.ts`의 "stays hidden until real crew details are added" 기대값을 인원 수에 맞게 고친다.
+`src/content/crew.ts`의 `crewEntries`에 사진은 이미 들어 있다. 빈칸(`name`·`licence`·`languages`·`intro`)을 채우고 `show`를 `true`로 바꾸면 켜진다. 실제 이름·자격증 사본으로 확인한 자격만 넣는다. 켠 뒤 `tests/products.test.ts`의 "stays hidden until real crew details are added" 기대값을 인원 수에 맞게 고친다.
 
 ## 4. 이번에 채운 것 (`docs/09` 고칠 것 목록)
 
@@ -149,6 +154,8 @@ node scripts/capture-screens.mjs http://localhost:3210 "C:\저장할\폴더"
 - **`/safety`와 FAQ에 "가이드 자격증 사본을 보관한다"고 적혀 있다.** 공개 전에 실제로 사본을 받아 둔다(13번과 같이)
 - **남이섬**: 선착장은 경기 가평, 섬은 강원 춘천이다. 예시(`/day-plans`)에는 경기 일정으로 넣었다. 경기 상품 값에 남이섬이 들어가는지 확인 필요
 - 예약 절차 문구에서 "선금을 내면 확정" 문장을 뺐다(선금·결제 방법이 아직 정해지지 않아서). 8번을 받으면 약관에 들어간다
-- 홈 사진(`public/images/hero-road.webp`)은 AI로 만든 풍경이다. 오른쪽 멀리 차가 한 대 있어서 홈에서는 왼쪽(호수·나무)만 보이게 잘라 쓰고, 설명글에서 지명("가평")을 뺐다. 실제 차량·기사 사진이 생기면 바꾼다
+- 홈 첫 화면 사진을 AI 풍경에서 **실제 사진(경복궁 경회루)** 으로 바꿨다. 사진 아래에 장소 이름이 나온다. AI 풍경 파일(`public/images/hero-road.webp` 등 3장)은 남아 있지만 쓰지 않는다
+- 차량 사진은 주차장에서 찍은 것이라 옆 차가 같이 보인다(번호판은 안 보임). 한적한 곳에서 다시 찍은 사진이 생기면 `photos.ts`의 `vanPhotos`만 바꾸면 된다(다시 찍으면 좋은 구도는 편집본 README에 있다)
+- 경기 예시 하나를 "남이섬 + 아침고요수목원"에서 **"남이섬 + 두물머리"** 로 바꿨다(실제 사진이 있는 곳으로). 수목원·쁘띠프랑스는 바꿔 넣을 수 있다고 적어 두었다
 - Next.js를 16.2.4 → **16.4.6**으로 올렸다(`npm audit` 치명 1·높음 2건, 그중 하나가 이번에 쓰기 시작한 공유 그림 생성 기능의 취약점). 올린 뒤 `npm audit --omit=dev` 0건. 개발용 `sharp` 0.34.5(사진 내려받기 스크립트에서만 씀)는 그대로
 - 방문 측정(Q6), 스팸 방지(Q10), 결제, 상표(KIPRIS) 확인은 하지 않았다

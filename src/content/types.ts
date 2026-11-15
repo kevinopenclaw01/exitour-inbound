@@ -106,6 +106,8 @@ export interface DayPlan {
   start: string;
   stops: DayStop[];
   goodToKnow: string[];
+  /** 이 일정의 실제 장소 사진(src/content/photos.ts의 placePhotos 키). 없으면 사진 없이 나온다. */
+  photos?: string[];
   updated: string;
 }
 
