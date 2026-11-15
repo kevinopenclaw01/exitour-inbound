@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
+import { formUi as u } from "@/i18n/formStrings";
+import { messageTranslator, type Messages } from "@/i18n/interpolate";
 import {
+  heardFromLabels,
   heardFromOptions,
   inquiryMessage,
   serviceOptions,
@@ -13,9 +16,11 @@ import {
 } from "@/lib/inquiry";
 import { todayKst } from "@/lib/dates";
 import Link from "next/link";
-import { ContactList } from "./ContactList";
 import { DatePicker } from "./DatePicker";
 import { site } from "@/content/site";
+
+// 폼의 문구는 영어 원문을 열쇠로 messages(서버가 그 언어로 번역해 넘긴 작은 사전)에서 찾는다(src/i18n/formStrings.ts).
+// 저장 값(service·heardFrom)과 사장님께 가는 요청 메시지는 영어 그대로다.
 
 const empty: Inquiry = {
   service: "not-sure",
@@ -32,10 +37,30 @@ const empty: Inquiry = {
 
 type Result = { kind: "saved"; reference: string | null } | { kind: "not-saved"; reason: string };
 
+/** API가 돌려준 오류도 영어 원문이라 화면에 낼 때 번역한다. */
+const translateErrors = (errors: InquiryErrors, tr: (s: string) => string): InquiryErrors =>
+  Object.fromEntries(Object.entries(errors).map(([k, v]) => [k, v ? tr(v) : v]));
+
 const field = "w-full rounded-md border border-line bg-surface px-3 py-2 text-base";
 
-/** privacyHref: 개인정보처리방침이 공개된 뒤에만 넘긴다(값이 다 채워지기 전에는 링크를 걸지 않는다). */
-export function InquiryForm({ initialService, privacyHref }: { initialService?: ServiceChoice; privacyHref?: string }) {
+/**
+ * privacyHref: 개인정보처리방침이 공개된 뒤에만 넘긴다(값이 다 채워지기 전에는 링크를 걸지 않는다).
+ * messages·locale: 그 언어의 폼 문구와 날짜 표기. contact: 결과 상자 아래에 보일 연락처(서버 조각).
+ */
+export function InquiryForm({
+  initialService,
+  privacyHref,
+  messages = {},
+  locale = "en-GB",
+  contact,
+}: {
+  initialService?: ServiceChoice;
+  privacyHref?: string;
+  messages?: Messages;
+  locale?: string;
+  contact?: ReactNode;
+}) {
+  const tr = messageTranslator(messages);
   const [form, setForm] = useState<Inquiry>({ ...empty, service: initialService ?? empty.service });
   const [website, setWebsite] = useState("");
   const [errors, setErrors] = useState<InquiryErrors>({});
@@ -50,7 +75,7 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const found = validateInquiry(form, todayKst());
-    setErrors(found);
+    setErrors(translateErrors(found, tr));
     setCopied("");
     if (Object.keys(found).length > 0) {
       setResult(null);
@@ -66,11 +91,11 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; reference?: string | null; errors?: InquiryErrors };
       if (res.ok && data.ok) setResult({ kind: "saved", reference: data.reference ?? null });
       else if (data.errors) {
-        setErrors(data.errors);
+        setErrors(translateErrors(data.errors, tr));
         setResult(null);
-      } else setResult({ kind: "not-saved", reason: "Our online form could not save your request right now." });
+      } else setResult({ kind: "not-saved", reason: tr(u.reasonServer) });
     } catch {
-      setResult({ kind: "not-saved", reason: "Your connection dropped before the request was saved." });
+      setResult({ kind: "not-saved", reason: tr(u.reasonConnection) });
     } finally {
       setSending(false);
     }
@@ -81,9 +106,9 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
   async function copy() {
     try {
       await navigator.clipboard.writeText(message);
-      setCopied("Copied.");
+      setCopied(tr(u.copied));
     } catch {
-      setCopied("Copy is blocked in this browser. Select the text above and copy it.");
+      setCopied(tr(u.copyBlocked));
     }
   }
 
@@ -99,12 +124,12 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
       <form onSubmit={onSubmit} noValidate className="grid gap-4 rounded-md border border-line bg-surface p-4 sm:p-6">
         <div className="grid gap-1">
           <label htmlFor="service" className="font-semibold">
-            Service
+            {tr(u.service)}
           </label>
           <select id="service" className={field} value={form.service} onChange={(e) => set("service", e.target.value as ServiceChoice)}>
             {serviceOptions.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {tr(o.label)}
               </option>
             ))}
           </select>
@@ -114,7 +139,7 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="grid gap-1">
             <label htmlFor="startDate" className="font-semibold">
-              First tour date
+              {tr(u.firstDate)}
             </label>
             <DatePicker
               id="startDate"
@@ -122,19 +147,27 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
               min={todayKst()}
               onChange={(v) => set("startDate", v)}
               describedBy={errors.startDate ? "startDate-error" : undefined}
+              locale={locale}
+              labels={{
+                choose: tr(u.chooseDate),
+                dialog: tr(u.chooseFirstDate),
+                prev: tr(u.prevMonth),
+                next: tr(u.nextMonth),
+                koreaTime: tr(u.koreaTime),
+              }}
             />
             {err("startDate")}
           </div>
           <div className="grid gap-1">
             <label htmlFor="days" className="font-semibold">
-              Number of days
+              {tr(u.days)}
             </label>
             <input id="days" type="number" min={1} max={30} className={field} value={form.days} onChange={(e) => set("days", Number(e.target.value))} />
             {err("days")}
           </div>
           <div className="grid gap-1">
             <label htmlFor="groupSize" className="font-semibold">
-              Group size
+              {tr(u.groupSize)}
             </label>
             <input
               id="groupSize"
@@ -152,14 +185,14 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="grid gap-1">
             <label htmlFor="language" className="font-semibold">
-              Guide language
+              {tr(u.language)}
             </label>
             <input id="language" className={field} value={form.language} onChange={(e) => set("language", e.target.value)} />
             {err("language")}
           </div>
           <div className="grid gap-1">
             <label htmlFor="pickup" className="font-semibold">
-              Hotel or pick-up area <span className="font-normal text-muted">(optional)</span>
+              {tr(u.pickup)} <span className="font-normal text-muted">{tr(u.optional)}</span>
             </label>
             <input id="pickup" className={field} value={form.pickup} onChange={(e) => set("pickup", e.target.value)} />
             {err("pickup")}
@@ -168,13 +201,13 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
 
         <div className="grid gap-1">
           <label htmlFor="interests" className="font-semibold">
-            What would you like to do? <span className="font-normal text-muted">(optional)</span>
+            {tr(u.interests)} <span className="font-normal text-muted">{tr(u.optional)}</span>
           </label>
           <textarea
             id="interests"
             rows={4}
             className={field}
-            placeholder="For example: a first day in Seoul with grandparents, Nami Island with kids, or another region you want to visit"
+            placeholder={tr(u.interestsPlaceholder)}
             value={form.interests}
             onChange={(e) => set("interests", e.target.value)}
           />
@@ -184,14 +217,14 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="grid gap-1">
             <label htmlFor="name" className="font-semibold">
-              Your name
+              {tr(u.name)}
             </label>
             <input id="name" className={field} value={form.name} onChange={(e) => set("name", e.target.value)} />
             {err("name")}
           </div>
           <div className="grid gap-1">
             <label htmlFor="contact" className="font-semibold">
-              Email, WhatsApp or LINE
+              {tr(u.contact)}
             </label>
             <input id="contact" className={field} value={form.contact} onChange={(e) => set("contact", e.target.value)} />
             {err("contact")}
@@ -200,13 +233,13 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
 
         <div className="grid gap-1">
           <label htmlFor="heardFrom" className="font-semibold">
-            How did you find us? <span className="font-normal text-muted">(optional)</span>
+            {tr(u.heardFrom)} <span className="font-normal text-muted">{tr(u.optional)}</span>
           </label>
           <select id="heardFrom" className={field} value={form.heardFrom} onChange={(e) => set("heardFrom", e.target.value)}>
-            <option value="">Choose one</option>
+            <option value="">{tr(u.chooseOne)}</option>
             {heardFromOptions.map((o) => (
               <option key={o} value={o}>
-                {o}
+                {tr(heardFromLabels[o])}
               </option>
             ))}
           </select>
@@ -224,15 +257,15 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
           disabled={sending}
           className="justify-self-start rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep disabled:opacity-60"
         >
-          {sending ? "Sending…" : "Send my request"}
+          {sending ? tr(u.sending) : tr(u.send)}
         </button>
         <p className="text-sm text-muted">
-          We use these details only to reply to your request and prepare your quote.
+          {tr(u.privacyNote)}
           {privacyHref ? (
             <>
               {" "}
-              <Link href={privacyHref} className="underline">
-                Privacy policy
+              <Link href={privacyHref} hrefLang="en" className="underline">
+                {tr(u.privacyLink)}
               </Link>
             </>
           ) : null}
@@ -244,16 +277,17 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
           {result.kind === "saved" ? (
             <>
               <h2 className="text-lg font-bold">
-                We received your request{result.reference ? ` (${result.reference})` : ""}
+                {result.reference ? tr(u.savedTitleRef, { reference: result.reference }) : tr(u.savedTitle)}
               </h2>
-              <p>We will reply on the contact you gave us. For a faster answer, send the same request on WhatsApp.</p>
+              <p>{tr(u.savedText)}</p>
             </>
           ) : (
             <>
-              <h2 className="text-lg font-bold">Your request was not sent yet</h2>
-              <p>{result.reason} Send it to us on WhatsApp, or copy it and use any channel below.</p>
+              <h2 className="text-lg font-bold">{tr(u.notSentTitle)}</h2>
+              <p>{tr(u.notSentText, { reason: result.reason })}</p>
             </>
           )}
+          {locale.startsWith("en") ? null : <p className="text-sm text-muted">{tr(u.messageNote)}</p>}
           <pre className="overflow-x-auto rounded bg-surface p-3 text-sm whitespace-pre-wrap">{message}</pre>
           <div className="flex flex-wrap items-center gap-3">
             {site.whatsapp ? (
@@ -263,15 +297,15 @@ export function InquiryForm({ initialService, privacyHref }: { initialService?: 
                 rel="noopener noreferrer"
                 className="rounded-md bg-sign px-4 py-2 font-semibold text-white hover:bg-sign-deep"
               >
-                Send on WhatsApp
+                {tr(u.sendWhatsApp)}
               </a>
             ) : null}
             <button type="button" onClick={copy} className="rounded-md border border-sign px-4 py-2 font-semibold text-sign-deep">
-              Copy the request
+              {tr(u.copy)}
             </button>
             {copied ? <span className="text-sm text-muted">{copied}</span> : null}
           </div>
-          <ContactList compact />
+          {contact}
         </section>
       ) : null}
     </div>

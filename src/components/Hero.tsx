@@ -3,7 +3,9 @@ import Link from "next/link";
 import { dayProduct, productLabels, productOrder } from "@/content/pricing";
 import { getService } from "@/content/services";
 import { site } from "@/content/site";
+import { getT } from "@/i18n/server";
 import { Container } from "./ui";
+import { msg } from "@/i18n/msg";
 
 // 홈 첫 화면. 흰 바탕에 글과 버튼을 왼쪽에, 사진을 오른쪽 틀 안에 둔다(큰 색 면을 쓰지 않는다).
 // 영상(site.heroVideo)이 있으면 사진 틀 안에서 소리 없이 반복 재생하고(사진은 영상이 뜨기 전·움직임 줄이기 설정용 정지 화면),
@@ -11,11 +13,11 @@ import { Container } from "./ui";
 // 사진은 4:3 틀에 맞춰 잘라 넣는다. 자르는 기준(가운데·왼쪽)은 site.heroImage.position.
 
 const trust = [
-  "Registered travel agency",
-  "Government-licensed guides",
-  "Registered rental vans",
-  "No forced shopping",
-  "Replies on WhatsApp",
+  msg("Registered travel agency"),
+  msg("Government-licensed guides"),
+  msg("Registered rental vans"),
+  msg("No forced shopping"),
+  msg("Replies on WhatsApp"),
 ];
 
 /** 한국 고속도로 방향 안내표지 모양의 그림. 한글 지명은 크게, 영어는 작게(실제 표지 방식). */
@@ -84,21 +86,24 @@ function RouteSign() {
   );
 }
 
-export function Hero() {
-  const photo = site.heroImage;
+export async function Hero() {
+  const t = await getT();
+  const photo = site.heroImage ? t.obj(site.heroImage) : null;
   const video = site.heroVideo;
   const hasMedia = Boolean(photo || video);
   return (
     <section className="border-b border-line bg-surface">
       <Container className="grid items-center gap-8 py-10 sm:py-14 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:py-16">
         <div className="grid gap-5">
-          <p className="text-xs font-bold tracking-[0.14em] text-sign uppercase">Seoul · Gyeonggi · private van days</p>
+          <p className="text-xs font-bold tracking-[0.14em] text-sign uppercase">{t("Seoul · Gyeonggi · private van days")}</p>
           <h1 className="font-display text-4xl leading-[1.08] text-ink sm:text-5xl">
-            Your own van and driver in Korea, for a {dayProduct.hours}-hour day.
+            {t("Your own van and driver in Korea, for a {hours}-hour day.", { hours: dayProduct.hours })}
           </h1>
           <p className="max-w-xl text-lg text-muted">
-            A private {dayProduct.vehicle} for up to {dayProduct.maxPassengers} passengers, in Seoul or on a Gyeonggi day trip.
-            Choose a driver only, or a licensed guide who drives. Priced per group.
+            {t(
+              "A private {vehicle} for up to {max} passengers, in Seoul or on a Gyeonggi day trip. Choose a driver only, or a licensed guide who drives. Priced per group.",
+              { vehicle: dayProduct.vehicle, max: dayProduct.maxPassengers },
+            )}
           </p>
 
           <div className="grid gap-2 sm:grid-cols-2">
@@ -107,22 +112,25 @@ export function Hero() {
               return (
                 <Link
                   key={id}
-                  href={service.path}
+                  href={t.href(service.path)}
                   className="grid gap-0.5 rounded-md border border-line px-4 py-3 transition-colors hover:border-sign hover:bg-sign-soft"
                 >
-                  <span className="font-semibold text-sign-deep">{productLabels[id].name} →</span>
-                  <span className="text-sm text-muted">{productLabels[id].hint}</span>
+                  <span className="font-semibold text-sign-deep">{t(productLabels[id].name)} →</span>
+                  <span className="text-sm text-muted">{t(productLabels[id].hint)}</span>
                 </Link>
               );
             })}
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Link href="/plan" className="rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep">
-              Plan my trip
+            <Link href={t.href("/plan")} className="rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep">
+              {t("Plan my trip")}
             </Link>
-            <Link href="/prices" className="rounded-md border border-sign px-5 py-3 font-semibold text-sign-deep hover:bg-sign-soft">
-              See prices
+            <Link
+              href={t.href("/prices")}
+              className="rounded-md border border-sign px-5 py-3 font-semibold text-sign-deep hover:bg-sign-soft"
+            >
+              {t("See prices")}
             </Link>
           </div>
         </div>
@@ -172,7 +180,7 @@ export function Hero() {
                 <span aria-hidden="true" className="text-sign">
                   ✓
                 </span>
-                {item}
+                {t(item)}
               </li>
             ))}
           </ul>

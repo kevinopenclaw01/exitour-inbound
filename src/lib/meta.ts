@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { articles } from "@/content/articles";
 import { pages, type PageKey, type PageMeta } from "@/content/pages";
 import { site } from "@/content/site";
+import { defaultLang, isLang, localeInfo, localizePath, locales, type Lang } from "@/i18n/config";
+import { translator } from "@/i18n/translate";
 
 // 쪽별 메타데이터(제목·설명·canonical·공유 그림)를 한 모양으로 만든다.
 // Next.js는 openGraph·robots 같은 묶음을 쪽에서 다시 정하면 통째로 바꿔 쓰므로(합쳐 주지 않는다) 여기서 전부 채운다.
@@ -48,16 +50,35 @@ export function ogEntries(): { key: string; title: string; sub: string }[] {
   ];
 }
 
-function social(title: string, description: string, path: string, ogKey: string, type: "website" | "article", modifiedTime?: string) {
+/** 언어별 주소 묶음(hreflang). 영어만 있는 쪽은 넣지 않는다. x-default는 영어 쪽. */
+export function languageAlternates(path: string): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const l of locales) out[localeInfo[l].tag] = localizePath(path, l);
+  out["x-default"] = path;
+  return out;
+}
+
+function social(
+  lang: Lang,
+  title: string,
+  description: string,
+  path: string,
+  ogKey: string,
+  type: "website" | "article",
+  modifiedTime?: string,
+  translated = true,
+) {
+  // 공유 그림은 영어판 하나를 모든 언어가 같이 쓴다(그림 글꼴에 한자·태국 문자가 없어서).
   const image = { url: ogImagePath(ogKey), ...OG_SIZE, alt: `${title} — ${site.brand}` };
   return {
     openGraph: {
       type,
       siteName: site.brand,
-      locale: "en_US",
+      locale: localeInfo[lang].ogLocale,
+      ...(translated ? { alternateLocale: locales.filter((l) => l !== lang).map((l) => localeInfo[l].ogLocale) } : {}),
       title,
       description,
-      url: path,
+      url: localizePath(path, lang),
       images: [image],
       ...(type === "article" && modifiedTime ? { modifiedTime } : {}),
     },
@@ -65,27 +86,52 @@ function social(title: string, description: string, path: string, ogKey: string,
   };
 }
 
+/** 영어로만 두는 쪽(약관 초안·숨긴 쪽). 다른 언어 주소에서는 열리지 않는다(notFound). */
+export const englishOnlyPages = new Set<PageKey>(["terms", "privacy", "cancellation", "guide-tour", "join-as-guide"]);
+
 /** src/content/pages.ts의 쪽 하나에 대한 메타데이터. published가 false면(약관 틀 등) noindex로 내보낸다. */
-export function pageMetadata(key: PageKey, options: { published?: boolean } = {}): Metadata {
+export function pageMetadata(key: PageKey, options: { published?: boolean; lang?: Lang } = {}): Metadata {
+  const lang = options.lang ?? defaultLang;
+  const t = translator(lang);
   const page: PageMeta = pages[key];
   const index = page.index !== false && options.published !== false;
+  const translated = !englishOnlyPages.has(key);
+  const title = t(page.title);
+  const description = t(page.description);
   return {
     // 홈은 브랜드 이름이 제목 안에 이미 있어서 " | Entour Korea"를 붙이지 않는다.
-    title: key === "home" ? { absolute: page.title } : page.title,
-    description: page.description,
-    alternates: { canonical: page.path },
+    title: key === "home" ? { absolute: title } : title,
+    description,
+    alternates: {
+      canonical: localizePath(page.path, lang),
+      ...(translated && index ? { languages: languageAlternates(page.path) } : {}),
+    },
     robots: index ? indexRobots : noindexRobots,
-    ...social(page.title, page.description, page.path, key, "website"),
+    ...social(lang, title, description, page.path, key, "website", undefined, translated),
   };
 }
 
-export function articleMetadata(article: { slug: string; title: string; description: string; updated: string }): Metadata {
+/** 쪽 파일에서 쓰는 generateMetadata. 예: export const generateMetadata = metadataFor("prices"); */
+export function metadataFor(key: PageKey, options: { published?: boolean } = {}) {
+  return async ({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> => {
+    const { lang } = await params;
+    return pageMetadata(key, { ...options, lang: isLang(lang) ? lang : defaultLang });
+  };
+}
+
+export function articleMetadata(
+  article: { slug: string; title: string; description: string; updated: string },
+  lang: Lang = defaultLang,
+): Metadata {
+  const t = translator(lang);
   const path = `/travel-guide/${article.slug}`;
+  const title = t(article.title);
+  const description = t(article.description);
   return {
-    title: article.title,
-    description: article.description,
-    alternates: { canonical: path },
+    title,
+    description,
+    alternates: { canonical: localizePath(path, lang), languages: languageAlternates(path) },
     robots: indexRobots,
-    ...social(article.title, article.description, path, articleOgKey(article.slug), "article", article.updated),
+    ...social(lang, title, description, path, articleOgKey(article.slug), "article", article.updated),
   };
 }

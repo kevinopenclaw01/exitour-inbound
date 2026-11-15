@@ -61,7 +61,9 @@ describe("crew section", () => {
     expect(crewLanguageClaim.text).toContain("Tagalog");
     if (!crewLanguageClaim.enabled) {
       expect(crewLanguageLine()).toBeNull();
-      expect(buildLlmsTxt()).not.toContain("Tagalog");
+      // 끝의 "Other languages"(사이트 번역판 목록 — 따갈로그판 쪽 포함)는 가이드 언어 주장이 아니라서 빼고 본다.
+      const [facts] = buildLlmsTxt().split("## Other languages");
+      expect(facts).not.toContain("Tagalog");
       expect(JSON.stringify([listedServices, generalFaqs, site.guideLanguages])).not.toContain("Tagalog");
     }
   });

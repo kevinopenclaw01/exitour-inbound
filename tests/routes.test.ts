@@ -4,9 +4,10 @@ import { describe, expect, it } from "vitest";
 import { nav } from "@/content/site";
 import { aiCrawlers } from "@/lib/crawlers";
 import { buildLlmsTxt } from "@/lib/llms";
-import { hiddenRoutes, publicRoutes } from "@/lib/routes";
+import { englishOnlyRoutes, hiddenRoutes, publicRoutes } from "@/lib/routes";
 
-const appDir = join(__dirname, "..", "src", "app");
+// 쪽 파일은 언어 칸 아래에 있다(src/app/[lang]/...). 2026-11-16 7개 언어 추가.
+const appDir = join(__dirname, "..", "src", "app", "[lang]");
 
 describe("public routes", () => {
   it("every listed route has a page file", () => {
@@ -46,12 +47,20 @@ describe("narrowed menu (2026-11-16)", () => {
     }
   });
 
-  it("hidden pages still exist as code and are marked noindex", () => {
+  it("hidden pages still exist as code, are marked noindex and are English only", () => {
     for (const hidden of hiddenRoutes()) {
       const file = join(appDir, hidden, "page.tsx");
       expect(existsSync(file), hidden).toBe(true);
-      // 쪽 파일이 pageMetadata를 쓰고, 그 쪽의 색인 여부는 tests/meta.test.ts가 확인한다.
-      expect(readFileSync(file, "utf8"), hidden).toContain("pageMetadata(");
+      const code = readFileSync(file, "utf8");
+      // 쪽 파일이 metadataFor(pageMetadata)를 쓰고, 그 쪽의 색인 여부는 tests/meta.test.ts가 확인한다.
+      expect(code, hidden).toContain("metadataFor(");
+      expect(code, hidden).toContain("await englishOnly()");
+    }
+  });
+
+  it("legal pages are English only", () => {
+    for (const path of englishOnlyRoutes()) {
+      expect(readFileSync(join(appDir, path, "page.tsx"), "utf8"), path).toContain("await englishOnly()");
     }
   });
 

@@ -25,7 +25,7 @@ Claude(데스크톱 앱, Claude Code)와 넥서스 코딩 탭(Codex, Qwen, GLM, 
 | 법 관련 표현(렌터카 운전자 알선, 관광통역안내사 자격, 자가용 유상운송 금지)은 `docs/05_legal-notes.md`와 다르게 쓰지 않는다 | 사실과 다른 법률 문구는 신뢰와 책임 문제가 된다 |
 | 자격 없는 기사가 관광지 안을 안내하는 것처럼 쓰지 않는다. "driver is not a guide" 원칙을 지킨다 | 관광진흥법 위반 소지 |
 | 가짜 후기, 숨은 문구, AI에게만 보이는 텍스트를 만들지 않는다 | 검색과 AI 노출에서 퇴출된다 |
-| 고객용 문구는 영어로 쓴다(다른 언어는 나중에 추가). 문서와 커밋 메시지는 한국어로 쓴다 | 사이트는 외국인용, 운영은 한국어 |
+| 고객용 문구는 영어 원문으로 쓰고, 7개 언어(중·일·스페인·인니·태국·따갈로그·베트남) 사전을 같이 채운다. 화면 문장은 `t("…")`·`msg("…")`로 감싸고 값은 `{자리 표시}`로 넣는다(`docs/11_languages.md`). 문서와 커밋 메시지는 한국어로 쓴다 | 사이트는 외국인용, 운영은 한국어. 사전이 빠지면 그 문장만 영어로 나오고 시험이 실패한다 |
 
 ## 3. 작업 순서
 
@@ -48,7 +48,8 @@ Claude(데스크톱 앱, Claude Code)와 넥서스 코딩 탭(Codex, Qwen, GLM, 
 |---|---|
 | `src/content/` | **사이트의 모든 데이터**: 회사 정보·메뉴·소유 확인 코드(`site.ts`), 서비스와 차량(`services.ts` — `listed: true`인 두 상품만 판다), **가격과 네 칸 표(`pricing.ts`)**, 10시간 하루 예시(`dayPlans.ts`), 기사 소개(`crew.ts`), 실제 사진 목록(`photos.ts` — 손님 사진은 확인 전까지 꺼 두고 `public/`에 넣지 않는다), 약관에 들어갈 값(`legal.ts`), 쪽별 제목·설명·공유 그림 문구(`pages.ts`), FAQ(`faqs.ts`), 안내 글(`articles.ts`), 숨긴 가이드 투어의 예시(`plans.ts`). 나중에 관리자 화면(CMS)이나 DB로 옮길 때 `types.ts`의 타입이 그대로 테이블이 된다 |
 | `src/lib/` | 가격 계산과 표 문구(`pricing.ts`), 값 FAQ 만들기(`productFaqs.ts`), 구조화 데이터(`schema.ts`), 쪽별 메타데이터(`meta.ts`), AI 로봇 이름(`crawlers.ts`), 여행 요청 검증과 문구(`inquiry.ts`), 요청 알림(`notify.ts`), 공개·숨김 페이지 목록(`routes.ts`), `llms.txt` 생성(`llms.ts`) |
-| `src/app/` | 페이지. 새 공개 페이지를 만들면 `src/lib/routes.ts`와 `src/content/pages.ts`에도 넣는다(시험이 확인한다). `og/[file]/route.tsx`가 쪽별 공유 그림을 굽는다 |
+| `src/app/` | 페이지. **쪽 파일은 `src/app/[lang]/` 아래**에 있다(주소 첫 칸이 언어, 영어는 `src/proxy.ts`가 앞머리 없는 주소를 넘겨 준다). 새 공개 페이지를 만들면 `src/lib/routes.ts`와 `src/content/pages.ts`에도 넣는다(시험이 확인한다). `og/[file]/route.tsx`가 쪽별 공유 그림을 굽는다 |
+| `src/i18n/` | 다국어: 언어 목록·주소 규칙(`config.ts`), 번역 함수(`translate.ts`, 서버 조각은 `server.ts`의 `getT()`), 7개 언어 사전(`messages/*.json`), 번역할 문장 목록(`source.json`, 자동 생성). `docs/11_languages.md` |
 | `src/components/` | 공통 화면 조각. `ProductMatrix.tsx`가 네 칸 표, `ServicePage.tsx`가 서비스 페이지의 틀, `SiteChrome.tsx`·`MobileMenu.tsx`가 머리글·바닥글, `LegalPage.tsx`가 약관 3종의 틀이다 |
 | `tests/` | Vitest 단위 시험 |
 | `scripts/` | `check-structured-data.mjs`(빌드 결과 검사, `npm run check:pages`), `indexnow-submit.mjs`(배포 뒤 Bing 등에 알림), `capture-screens.mjs`(화면 캡처), `fetch-hero-assets.mjs`(메인 사진·영상 내려받기, 목록은 `hero-assets.json`) |

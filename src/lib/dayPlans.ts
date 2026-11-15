@@ -1,5 +1,6 @@
 import { dayProduct } from "@/content/pricing";
 import type { DayPlan, DayStop } from "@/content/types";
+import { en, type Translator } from "@/i18n/translate";
 
 // 10시간 하루 예시의 시각 계산. 출발 시각에 구간 시간을 더해 "about 09:20" 같은 어림 시각을 만든다.
 
@@ -37,11 +38,11 @@ export function planHighlights(plan: DayPlan): string[] {
   return plan.stops.filter((s) => s.kind === "visit" || s.kind === "meal").map((s) => s.title);
 }
 
-export function durationText(minutes: number): string {
-  if (minutes < 60) return `${minutes} min`;
+export function durationText(minutes: number, t: Translator = en): string {
+  if (minutes < 60) return t("{m} min", { m: minutes });
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
-  return m === 0 ? `${h} h` : `${h} h ${m} min`;
+  return m === 0 ? t("{h} h", { h }) : t("{h} h {m} min", { h, m });
 }
 
 export const planHours = dayProduct.hours;

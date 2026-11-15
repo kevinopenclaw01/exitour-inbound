@@ -1,18 +1,21 @@
 import { site } from "@/content/site";
+import { getT } from "@/i18n/server";
+import { en, type Translator } from "@/i18n/translate";
 
 /** 연락 채널 목록. 값이 있는 채널만 보인다(site.ts). */
-export function contactChannels(): { label: string; value: string; href?: string }[] {
+export function contactChannels(t: Translator = en): { label: string; value: string; href?: string }[] {
   const out: { label: string; value: string; href?: string }[] = [];
   if (site.whatsapp)
     out.push({ label: "WhatsApp", value: site.phone ?? site.whatsapp, href: `https://wa.me/${site.whatsapp.replace(/\D/g, "")}` });
   if (site.line) out.push({ label: "LINE", value: site.line });
-  if (site.kakaoId) out.push({ label: "KakaoTalk ID", value: site.kakaoId });
-  if (site.email) out.push({ label: "Email", value: site.email });
+  if (site.kakaoId) out.push({ label: t("KakaoTalk ID"), value: site.kakaoId });
+  if (site.email) out.push({ label: t("Email"), value: site.email });
   return out;
 }
 
-export function ContactList({ compact = false }: { compact?: boolean }) {
-  const channels = contactChannels();
+export async function ContactList({ compact = false }: { compact?: boolean }) {
+  const t = await getT();
+  const channels = contactChannels(t);
   if (channels.length === 0) return null;
   return (
     <div className={compact ? "grid gap-1 text-sm" : "grid gap-2"}>
@@ -32,7 +35,7 @@ export function ContactList({ compact = false }: { compact?: boolean }) {
           </div>
         ))}
       </dl>
-      <p className={compact ? "text-muted" : "text-sm text-muted"}>{site.officeHours}</p>
+      <p className={compact ? "text-muted" : "text-sm text-muted"}>{t(site.officeHours)}</p>
     </div>
   );
 }

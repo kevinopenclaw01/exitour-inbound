@@ -5,6 +5,8 @@ import { crewLanguageLine } from "@/content/crew";
 import { dayProduct } from "@/content/pricing";
 import { vehicles } from "@/content/services";
 import type { ProductId, Service } from "@/content/types";
+import { crumbs as makeCrumbs } from "@/i18n/crumbs";
+import { getT } from "@/i18n/server";
 import { ratesFor } from "@/lib/pricing";
 import { productFaqs } from "@/lib/productFaqs";
 import { breadcrumbLd, faqLd, serviceLd } from "@/lib/schema";
@@ -21,45 +23,48 @@ import { AnswerBox, Breadcrumbs, BulletList, Container, CtaBand, FaqList, JsonLd
 const isProduct = (service: Service): service is Service & { id: ProductId } =>
   service.id === "private-driver" || service.id === "driver-guide";
 
-export function ServicePage({ service, children }: { service: Service; children?: ReactNode }) {
-  const crumbs = [
-    { name: "Home", path: "/" },
-    { name: service.name, path: service.path },
-  ];
+/** service는 영어 원문을 넘긴다(여기서 번역한다). */
+export async function ServicePage({ service, children }: { service: Service; children?: ReactNode }) {
+  const t = await getT();
+  const s = t.obj(service);
+  const crumbs = makeCrumbs(t, [
+    ["Home", "/"],
+    [service.name, service.path],
+  ]);
   const related = articles.filter((a) => a.related.includes(service.id));
   const product = isProduct(service);
-  const faqs = product ? [...productFaqs(service.id), ...service.faqs] : service.faqs;
+  const faqs = product ? [...productFaqs(service.id, t), ...s.faqs] : s.faqs;
   const languageLine = service.id === "driver-guide" ? crewLanguageLine() : null;
 
   return (
     <Container className="grid gap-12 py-8 sm:py-12">
-      <JsonLd data={[serviceLd(service), faqLd(faqs), breadcrumbLd(crumbs)]} />
+      <JsonLd data={[serviceLd(service, {}, t), faqLd(faqs), breadcrumbLd(crumbs)]} />
 
       <header className="grid gap-4">
         <Breadcrumbs items={crumbs} />
-        <h1 className="font-display text-3xl leading-tight sm:text-4xl">{service.name}</h1>
-        <p className="text-lg text-muted">{service.tagline}</p>
-        <AnswerBox updated={service.updated}>{service.answer}</AnswerBox>
+        <h1 className="font-display text-3xl leading-tight sm:text-4xl">{s.name}</h1>
+        <p className="text-lg text-muted">{s.tagline}</p>
+        <AnswerBox updated={service.updated}>{s.answer}</AnswerBox>
       </header>
 
       <section className="grid gap-6 sm:grid-cols-2">
         <div className="grid content-start gap-2">
-          <h2 className="text-xl font-bold">Best for</h2>
-          <BulletList items={service.bestFor} />
+          <h2 className="text-xl font-bold">{t("Best for")}</h2>
+          <BulletList items={s.bestFor} />
         </div>
         <div className="grid content-start gap-2">
-          <h2 className="text-xl font-bold">Who comes with you</h2>
-          <p>{service.crew}</p>
-          {languageLine ? <p>{languageLine}</p> : null}
+          <h2 className="text-xl font-bold">{t("Who comes with you")}</h2>
+          <p>{s.crew}</p>
+          {languageLine ? <p>{t(languageLine)}</p> : null}
         </div>
         <div className="grid content-start gap-2">
-          <h2 className="text-xl font-bold">Included</h2>
-          <BulletList items={service.includes} tone="check" />
+          <h2 className="text-xl font-bold">{t("Included")}</h2>
+          <BulletList items={s.includes} tone="check" />
         </div>
-        {service.excludes.length > 0 ? (
+        {s.excludes.length > 0 ? (
           <div className="grid content-start gap-2">
-            <h2 className="text-xl font-bold">Not included</h2>
-            <BulletList items={service.excludes} tone="cross" />
+            <h2 className="text-xl font-bold">{t("Not included")}</h2>
+            <BulletList items={s.excludes} tone="cross" />
           </div>
         ) : null}
       </section>
@@ -67,20 +72,22 @@ export function ServicePage({ service, children }: { service: Service; children?
       {product ? (
         <>
           <section className="grid gap-3">
-            <h2 className="text-2xl font-bold">Price and what it covers, by area</h2>
+            <h2 className="text-2xl font-bold">{t("Price and what it covers, by area")}</h2>
             <ProductMatrix products={[service.id]} linkProducts={false} />
             <p className="text-sm">
-              <Link href="/prices" className="text-sign underline">
-                Compare driver only and driver-guide
+              <Link href={t.href("/prices")} className="text-sign underline">
+                {t("Compare driver only and driver-guide")}
               </Link>
             </p>
           </section>
 
           <section className="grid gap-3">
-            <h2 className="text-2xl font-bold">Your van</h2>
+            <h2 className="text-2xl font-bold">{t("Your van")}</h2>
             <p>
-              One {dayProduct.vehicle} van, for your group only, with seats for up to {dayProduct.maxPassengers} passengers. Tell
-              us how many suitcases or strollers you are bringing so we can check the space for your day.
+              {t(
+                "One {vehicle} van, for your group only, with seats for up to {max} passengers. Tell us how many suitcases or strollers you are bringing so we can check the space for your day.",
+                { vehicle: dayProduct.vehicle, max: dayProduct.maxPassengers },
+              )}
             </p>
             <VanGallery />
           </section>
@@ -89,11 +96,11 @@ export function ServicePage({ service, children }: { service: Service; children?
 
           <section className="grid gap-4">
             <div>
-              <h2 className="text-2xl font-bold">What fits in {dayProduct.hours} hours</h2>
+              <h2 className="text-2xl font-bold">{t("What fits in {hours} hours", { hours: dayProduct.hours })}</h2>
               <p className="mt-1 text-muted">
                 {service.id === "driver-guide"
-                  ? "Four example days. Your driver-guide comes into each place with you."
-                  : "Four example days. The driver takes you to each entrance and waits while you visit on your own."}
+                  ? t("Four example days. Your driver-guide comes into each place with you.")
+                  : t("Four example days. The driver takes you to each entrance and waits while you visit on your own.")}
               </p>
             </div>
             <DayPlanCards />
@@ -103,12 +110,12 @@ export function ServicePage({ service, children }: { service: Service; children?
       ) : (
         <>
           <section className="grid gap-3">
-            <h2 className="text-2xl font-bold">Prices</h2>
-            <PriceTable rules={ratesFor(service.id)} caption={`${service.name} prices`} />
+            <h2 className="text-2xl font-bold">{t("Prices")}</h2>
+            <PriceTable rules={ratesFor(service.id)} caption={`${s.name} prices`} />
           </section>
 
           <section className="grid gap-3">
-            <h2 className="text-2xl font-bold">{service.vehicle === "optional" ? "Add a van if you need one" : "Choose your van"}</h2>
+            <h2 className="text-2xl font-bold">{service.vehicle === "optional" ? t("Add a van if you need one") : t("Choose your van")}</h2>
             <div className="grid gap-3 sm:grid-cols-3">
               {vehicles.map((v) => (
                 <div key={v.id} className="grid content-start gap-1 rounded-md border border-line bg-surface p-4">
@@ -130,12 +137,12 @@ export function ServicePage({ service, children }: { service: Service; children?
 
       {related.length > 0 ? (
         <section className="grid gap-2">
-          <h2 className="text-xl font-bold">Read before you book</h2>
+          <h2 className="text-xl font-bold">{t("Read before you book")}</h2>
           <ul className="grid gap-1">
             {related.map((a) => (
               <li key={a.slug}>
-                <Link href={`/travel-guide/${a.slug}`} className="text-sign underline">
-                  {a.title}
+                <Link href={t.href(`/travel-guide/${a.slug}`)} className="text-sign underline">
+                  {t(a.title)}
                 </Link>
               </li>
             ))}

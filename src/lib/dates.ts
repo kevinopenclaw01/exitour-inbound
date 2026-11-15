@@ -41,6 +41,29 @@ export function calendarDays(month: string): (string | null)[] {
   return cells;
 }
 
+// ── 언어별 표기(날짜 고르기용). 시간대 영향이 없게 UTC로 계산한다.
+
+/** 그 언어의 "2026년 12월" 같은 달 이름 */
+export function monthLabelIn(month: string, locale: string): string {
+  const [y, m] = parts(`${month}-01`);
+  return new Intl.DateTimeFormat(locale, { year: "numeric", month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, 1)));
+}
+
+/** 그 언어의 짧은 요일 이름 7개(일요일부터) */
+export function weekdaysIn(locale: string): string[] {
+  const f = new Intl.DateTimeFormat(locale, { weekday: "narrow", timeZone: "UTC" });
+  // 2026-11-01은 일요일
+  return Array.from({ length: 7 }, (_, i) => f.format(new Date(Date.UTC(2026, 10, 1 + i))));
+}
+
+/** 그 언어의 긴 날짜 */
+export function formatLongDateIn(date: string, locale: string): string {
+  const [y, m, d] = parts(date);
+  return new Intl.DateTimeFormat(locale, { weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }).format(
+    new Date(Date.UTC(y, m - 1, d)),
+  );
+}
+
 /** "Saturday, 5 December 2026" */
 export function formatLongDate(date: string): string {
   const [y, m, d] = parts(date);

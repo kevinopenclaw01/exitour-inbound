@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { addMonths, calendarDays, formatLongDate, monthLabel, WEEKDAYS } from "@/lib/dates";
+import { addMonths, calendarDays, formatLongDate, formatLongDateIn, monthLabel, monthLabelIn, WEEKDAYS, weekdaysIn } from "@/lib/dates";
 
-// 영어로 고정된 날짜 선택기. 브라우저 기본 <input type="date">는 손님 컴퓨터 언어(예: 한국어)로 보이기 때문에 직접 그린다.
+// 사이트 언어로 그리는 날짜 선택기. 브라우저 기본 <input type="date">는 손님 컴퓨터 언어(예: 한국어)로 보이기 때문에 직접 그린다.
+// 영어 쪽은 예전과 같은 영어 표기, 다른 언어는 Intl로 그 언어 표기(locale)를 쓴다.
 // 값은 "YYYY-MM-DD" 문자열. min보다 이른 날짜는 고를 수 없다.
 
 export function DatePicker({
@@ -12,13 +13,27 @@ export function DatePicker({
   min,
   onChange,
   describedBy,
+  locale = "en-GB",
+  labels = {
+    choose: "Choose a date",
+    dialog: "Choose your first tour date",
+    prev: "Previous month",
+    next: "Next month",
+    koreaTime: "Dates are in Korea time.",
+  },
 }: {
   id: string;
   value: string;
   min: string;
   onChange: (value: string) => void;
   describedBy?: string;
+  locale?: string;
+  labels?: { choose: string; dialog: string; prev: string; next: string; koreaTime: string };
 }) {
+  const english = locale.startsWith("en");
+  const longDate = (d: string) => (english ? formatLongDate(d) : formatLongDateIn(d, locale));
+  const monthName = (m: string) => (english ? monthLabel(m) : monthLabelIn(m, locale));
+  const weekdays = english ? [...WEEKDAYS] : weekdaysIn(locale);
   const [open, setOpen] = useState(false);
   const [month, setMonth] = useState(() => (value || min).slice(0, 7));
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -58,7 +73,7 @@ export function DatePicker({
         }}
         className="flex w-full items-center justify-between rounded-md border border-line bg-surface px-3 py-2 text-left text-base"
       >
-        <span className={value ? "" : "text-muted"}>{value ? formatLongDate(value) : "Choose a date"}</span>
+        <span className={value ? "" : "text-muted"}>{value ? longDate(value) : labels.choose}</span>
         <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="5" width="18" height="16" rx="2" />
           <path d="M3 10h18M8 3v4M16 3v4" />
@@ -69,7 +84,7 @@ export function DatePicker({
         <div
           id={dialogId}
           role="dialog"
-          aria-label="Choose your first tour date"
+          aria-label={labels.dialog}
           className="absolute top-full left-0 z-20 mt-1 w-[19rem] max-w-[calc(100vw-2rem)] rounded-md border border-line bg-surface p-3 shadow-lg"
         >
           <div className="mb-2 flex items-center justify-between">
@@ -77,26 +92,26 @@ export function DatePicker({
               type="button"
               onClick={() => setMonth((m) => addMonths(m, -1))}
               disabled={!canGoBack}
-              aria-label="Previous month"
+              aria-label={labels.prev}
               className="rounded px-2 py-1 text-lg hover:bg-sign-soft disabled:opacity-30"
             >
               ‹
             </button>
             <p className="font-semibold" aria-live="polite">
-              {monthLabel(month)}
+              {monthName(month)}
             </p>
             <button
               type="button"
               onClick={() => setMonth((m) => addMonths(m, 1))}
-              aria-label="Next month"
+              aria-label={labels.next}
               className="rounded px-2 py-1 text-lg hover:bg-sign-soft"
             >
               ›
             </button>
           </div>
           <div className="grid grid-cols-7 gap-0.5 text-center text-xs text-muted" aria-hidden="true">
-            {WEEKDAYS.map((d) => (
-              <span key={d} className="py-1">
+            {weekdays.map((d, i) => (
+              <span key={`${d}-${i}`} className="py-1">
                 {d}
               </span>
             ))}
@@ -110,7 +125,7 @@ export function DatePicker({
                   key={d}
                   type="button"
                   disabled={d < min}
-                  aria-label={formatLongDate(d)}
+                  aria-label={longDate(d)}
                   aria-pressed={d === value}
                   onClick={() => {
                     onChange(d);
@@ -125,7 +140,7 @@ export function DatePicker({
               ),
             )}
           </div>
-          <p className="mt-2 text-xs text-muted">Dates are in Korea time.</p>
+          <p className="mt-2 text-xs text-muted">{labels.koreaTime}</p>
         </div>
       ) : null}
     </div>

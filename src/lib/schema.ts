@@ -1,6 +1,8 @@
 import { dayProduct, regionLabels } from "@/content/pricing";
 import { site } from "@/content/site";
 import type { Article, DayPlan, DayRate, Faq, PriceRule, ProductId, Service } from "@/content/types";
+import { defaultLang, localeInfo, localizePath, type Lang } from "@/i18n/config";
+import { en, translator, type Translator } from "@/i18n/translate";
 import { publishableDayRates, publishableRates } from "./pricing";
 
 // schema.org 구조화 데이터(JSON-LD). 비어 있는 회사 정보(null)와 확정되지 않은 가격은 넣지 않는다.
@@ -14,15 +16,16 @@ const orgId = () => `${site.url}/#organization`;
 
 const productIds: readonly string[] = ["private-driver", "driver-guide"] satisfies ProductId[];
 
-export function organizationLd(): Json {
+export function organizationLd(lang: Lang = defaultLang): Json {
+  const t = translator(lang);
   const ld: Json = {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
     "@id": orgId(),
     name: site.brand,
-    url: site.url,
-    description: site.description,
-    slogan: site.tagline,
+    url: abs(localizePath("/", lang)),
+    description: t(site.description),
+    slogan: t(site.tagline),
     areaServed: site.areaServed.map((name) => ({ "@type": "Place", name })),
     knowsLanguage: site.guideLanguages,
     parentOrganization: { "@type": "TravelAgency", name: site.operator },
@@ -48,15 +51,15 @@ export function organizationLd(): Json {
   return ld;
 }
 
-export function websiteLd(): Json {
+export function websiteLd(lang: Lang = defaultLang): Json {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${site.url}/#website`,
     name: site.brand,
-    url: site.url,
+    url: abs(localizePath("/", lang)),
     publisher: { "@id": orgId() },
-    inLanguage: "en",
+    inLanguage: localeInfo[lang].tag,
   };
 }
 
@@ -64,33 +67,37 @@ export function websiteLd(): Json {
  * 서비스 한 쪽의 Service. Offer(가격)는 사장님이 확정한 값만 넣는다.
  * 두 상품은 네 칸 표(dayRates)에서, 그 밖의 서비스는 priceRules에서 가져온다. data는 시험용.
  */
-export function serviceLd(service: Service, data: { dayRates?: DayRate[]; rules?: PriceRule[] } = {}): Json {
+export function serviceLd(service: Service, data: { dayRates?: DayRate[]; rules?: PriceRule[] } = {}, t: Translator = en): Json {
   const isProduct = productIds.includes(service.id);
   const offers = isProduct
     ? publishableDayRates(service.id as ProductId, data.dayRates).map((r) => ({
         "@type": "Offer",
-        name: `${service.name}: ${regionLabels[r.region].name}, ${dayProduct.hours} hours`,
+        name: t("{service}: {region}, {hours} hours", {
+          service: t(service.name),
+          region: t(regionLabels[r.region].name),
+          hours: dayProduct.hours,
+        }),
         price: r.priceKrw,
         priceCurrency: "KRW",
         availability: "https://schema.org/InStock",
-        url: abs(service.path),
+        url: abs(t.href(service.path)),
       }))
     : publishableRates(service.id, data.rules).map((r) => ({
         "@type": "Offer",
-        name: r.label,
+        name: t(r.label),
         price: r.priceKrw,
         priceCurrency: "KRW",
         availability: "https://schema.org/InStock",
-        url: abs(service.path),
+        url: abs(t.href(service.path)),
       }));
   const areas = isProduct ? ["Seoul", "Gyeonggi-do"] : site.areaServed;
   const ld: Json = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: service.name,
-    serviceType: service.name,
-    description: service.answer,
-    url: abs(service.path),
+    name: t(service.name),
+    serviceType: t(service.name),
+    description: t(service.answer),
+    url: abs(t.href(service.path)),
     provider: { "@id": orgId() },
     areaServed: areas.map((name) => ({ "@type": "Place", name })),
   };
@@ -125,32 +132,32 @@ export function breadcrumbLd(items: { name: string; path: string }[]): Json {
 }
 
 /** /day-plans의 예시 목록. */
-export function dayPlanListLd(plans: DayPlan[], path: string): Json {
+export function dayPlanListLd(plans: DayPlan[], path: string, t: Translator = en): Json {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `${dayProduct.hours}-hour day plans by private van`,
+    name: t("{hours}-hour day plans by private van", { hours: dayProduct.hours }),
     itemListElement: plans.map((p, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      name: p.name,
-      url: `${abs(path)}#${p.slug}`,
+      name: t(p.name),
+      url: `${abs(t.href(path))}#${p.slug}`,
     })),
   };
 }
 
-export function articleLd(article: Article, imagePath?: string): Json {
+export function articleLd(article: Article, imagePath?: string, t: Translator = en): Json {
   const ld: Json = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: article.title,
-    description: article.description,
+    headline: t(article.title),
+    description: t(article.description),
     dateModified: article.updated,
     datePublished: article.updated,
-    mainEntityOfPage: abs(`/travel-guide/${article.slug}`),
+    mainEntityOfPage: abs(t.href(`/travel-guide/${article.slug}`)),
     author: { "@id": orgId() },
     publisher: { "@id": orgId() },
-    inLanguage: "en",
+    inLanguage: localeInfo[t.lang].tag,
   };
   if (imagePath) ld.image = abs(imagePath);
   return ld;

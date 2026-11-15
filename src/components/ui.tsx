@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { serializeLd } from "@/lib/schema";
 import type { Faq } from "@/content/types";
+import { getT } from "@/i18n/server";
 
 export function JsonLd({ data }: { data: Record<string, unknown> | null | (Record<string, unknown> | null)[] }) {
   const items = (Array.isArray(data) ? data : [data]).filter((d): d is Record<string, unknown> => d !== null);
@@ -23,12 +24,13 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 }
 
 /** 페이지 맨 위 "바로 답" 상자. AI·사람 모두 이 문단만 읽어도 답을 얻게 한다. */
-export function AnswerBox({ children, updated }: { children: ReactNode; updated?: string }) {
+export async function AnswerBox({ children, updated }: { children: ReactNode; updated?: string }) {
+  const t = await getT();
   return (
     <div className="rounded-md border border-sign/30 bg-sign-soft p-4 sm:p-5">
-      <p className="text-xs font-semibold tracking-[0.12em] text-sign-deep uppercase">Short answer</p>
+      <p className="text-xs font-semibold tracking-[0.12em] text-sign-deep uppercase">{t("Short answer")}</p>
       <p className="mt-1 text-[1.05rem] leading-relaxed">{children}</p>
-      {updated ? <p className="mt-2 text-xs text-muted">Last updated {updated}</p> : null}
+      {updated ? <p className="mt-2 text-xs text-muted">{t("Last updated {date}", { date: updated })}</p> : null}
     </div>
   );
 }
@@ -54,10 +56,12 @@ export function Breadcrumbs({ items }: { items: { name: string; path: string }[]
   );
 }
 
-export function FaqList({ faqs, title = "Questions travellers ask" }: { faqs: Faq[]; title?: string }) {
+/** faqs·title은 이미 번역된 값을 넘긴다(title을 빼면 기본 제목을 번역해 쓴다). */
+export async function FaqList({ faqs, title }: { faqs: Faq[]; title?: string }) {
+  const t = await getT();
   return (
     <section className="grid gap-4">
-      <h2 className="text-2xl font-bold">{title}</h2>
+      <h2 className="text-2xl font-bold">{title ?? t("Questions travellers ask")}</h2>
       <div className="divide-y divide-line rounded-md border border-line bg-surface">
         {faqs.map((f) => (
           <div key={f.q} className="p-4 sm:p-5">
@@ -87,19 +91,21 @@ export function BulletList({ items, tone = "plain" }: { items: string[]; tone?: 
 }
 
 /** 쪽 끝의 요청 버튼 띠. 큰 색 면 대신 흰 바탕에 테두리와 녹색 버튼만 쓴다. */
-export function CtaBand({ title, text }: { title: string; text: string }) {
+/** title·text는 영어 원문을 넘긴다(여기서 번역한다). */
+export async function CtaBand({ title, text }: { title: string; text: string }) {
+  const t = await getT();
   return (
     <section className="rounded-lg border border-line bg-surface px-5 py-7 sm:px-8">
       <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center">
         <div>
-          <h2 className="text-2xl font-bold">{title}</h2>
-          <p className="mt-1 text-muted">{text}</p>
+          <h2 className="text-2xl font-bold">{t(title)}</h2>
+          <p className="mt-1 text-muted">{t(text)}</p>
         </div>
         <Link
-          href="/plan"
+          href={t.href("/plan")}
           className="inline-flex justify-center rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep"
         >
-          Send a trip request
+          {t("Send a trip request")}
         </Link>
       </div>
     </section>

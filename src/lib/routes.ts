@@ -37,6 +37,11 @@ export function publicRoutes(): PublicRoute[] {
   ];
 }
 
+/** 영어판만 있는 공개 쪽(약관·개인정보·환불). 다른 언어 주소는 404다(src/lib/meta.ts의 englishOnlyPages). */
+export function englishOnlyRoutes(): string[] {
+  return legalDocs.map((d) => d.path);
+}
+
 /** 코드는 있지만 숨긴 쪽: 메뉴·바닥글·사이트맵·llms.txt에 없고 noindex다. */
 export function hiddenRoutes(): string[] {
   return [

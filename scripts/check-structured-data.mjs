@@ -8,6 +8,8 @@
 //  4) 쪽마다 <title>·description·canonical·og:image가 있고, 제목과 설명이 다른 쪽과 겹치지 않으며, 설명이 160자 이하
 //  5) 숨긴 쪽은 noindex, 공개 쪽은 noindex가 아니다
 //  6) 화면·JSON-LD 어디에도 초안 값(₩ 숫자)이나 "draft"가 없다(확정값이 생기면 그 값만 허용)
+//  7) 언어판(2026-11-16): <html lang>이 주소의 언어와 맞고, 번역된 공개 쪽에는 8개 언어 hreflang과 x-default가 있다
+// 빌드 결과의 쪽 이름은 "<언어>/<주소>"다(영어 홈은 "en", 중국어 가격은 "zh/prices").
 // 온라인 검증기(구글 리치 결과 테스트, validator.schema.org)는 공개 주소가 필요해서 배포 뒤에 돌린다.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -51,15 +53,35 @@ const typeCount = {};
 let offerCount = 0;
 let pageCount = 0;
 
-// 숨긴 쪽(주소로는 열리지만 noindex). src/lib/routes.ts의 hiddenRoutes와 같아야 한다.
+// 숨긴 쪽(주소로는 열리지만 noindex). src/lib/routes.ts의 hiddenRoutes와 같아야 한다. 이 쪽들은 영어판만 있다.
 const hidden = new Set(["guide-tour", "join-as-guide", "terms", "privacy", "cancellation-policy"]);
 const skip = new Set(["_not-found", "_global-error", "404", "500"]);
+const langTags = { en: "en", zh: "zh-Hans", ja: "ja", es: "es", id: "id", th: "th", tl: "tl", vi: "vi" };
+const langs = Object.keys(langTags);
 
 for (const file of htmlFiles(appDir)) {
   const page = relative(appDir, file).replace(/\\/g, "/").replace(/\.html$/, "");
   if (skip.has(page)) continue;
+  const [lang, ...rest] = page.split("/");
+  if (!langs.includes(lang)) continue;
+  const base = rest.join("/") || "index";
   const html = readFileSync(file, "utf8");
+  // 영어판만 있는 쪽을 다른 언어 주소로 미리 그린 결과는 404 쪽이다(englishOnly). 따로 확인할 것이 없다.
+  if (hidden.has(base) && lang !== "en") {
+    if (!/noindex/.test(meta(html, "name", "robots") ?? "")) fail(page, "English-only page in another language must be a noindex 404");
+    continue;
+  }
   pageCount += 1;
+
+  // ── 언어
+  const htmlLang = html.match(/<html[^>]*\slang="([^"]+)"/)?.[1];
+  if (htmlLang !== langTags[lang]) fail(page, `<html lang="${htmlLang}"> should be "${langTags[lang]}"`);
+  if (!hidden.has(base)) {
+    const alternates = [...html.matchAll(/<link[^>]*rel="alternate"[^>]*hrefLang="([^"]+)"/gi)].map((m) => m[1]);
+    for (const tag of [...Object.values(langTags), "x-default"]) {
+      if (!alternates.includes(tag)) fail(page, `no hreflang alternate for ${tag}`);
+    }
+  }
 
   // ── 제목·설명·canonical·공유 그림
   const title = decode(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "");
@@ -79,8 +101,8 @@ for (const file of htmlFiles(appDir)) {
     descriptions.set(description, page);
   }
   const noindex = /noindex/.test(robots);
-  if (hidden.has(page) && !noindex) fail(page, "hidden page must be noindex");
-  if (!hidden.has(page) && noindex) fail(page, "public page is noindex");
+  if (hidden.has(base) && !noindex) fail(page, "hidden page must be noindex");
+  if (!hidden.has(base) && noindex) fail(page, "public page is noindex");
 
   // ── 초안 값이 새어 나가지 않았는지(스크립트·스타일을 뺀 본문과 JSON-LD)
   const visible = html.replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>/g, "").replace(/<style[\s\S]*?<\/style>/g, "");

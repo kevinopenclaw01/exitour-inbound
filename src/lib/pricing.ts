@@ -1,6 +1,9 @@
 import { costItemLabels, costItemOrder, dayProduct, dayRates, priceRules, regionLabels } from "@/content/pricing";
 import { site } from "@/content/site";
 import type { CostItemId, DayRate, PriceRule, ProductId, RegionId, ServiceId, VehicleId } from "@/content/types";
+import { en, type Translator } from "@/i18n/translate";
+
+// 화면에 나가는 문장을 만드는 함수는 마지막 인자로 번역기(t)를 받는다. 넘기지 않으면 영어.
 
 // ── 네 칸 표(상품 × 지역) ─────────────────────────────────────────────
 
@@ -22,52 +25,54 @@ export function isConfirmed<T extends { status: string; priceKrw: number | null 
 }
 
 /** 값이 확정되지 않은 칸에 나오는 문구. site.quoteReplyWithin을 넣으면 약속 시간이 붙는다. */
-export function quoteText(replyWithin: string | null = site.quoteReplyWithin): string {
-  return replyWithin ? `Written quote within ${replyWithin}` : "Written quote for your date";
+export function quoteText(replyWithin: string | null = site.quoteReplyWithin, t: Translator = en): string {
+  return replyWithin ? t("Written quote within {time}", { time: t(replyWithin) }) : t("Written quote for your date");
 }
 
 /** 칸의 값 문구. 확정값만 숫자로, 초안(draft)·미정은 견적 문구로. */
-export function dayPriceText(rate: DayRate, replyWithin: string | null = site.quoteReplyWithin): string {
-  return isConfirmed(rate) ? formatKrw(rate.priceKrw) : quoteText(replyWithin);
+export function dayPriceText(rate: DayRate, replyWithin: string | null = site.quoteReplyWithin, t: Translator = en): string {
+  return isConfirmed(rate) ? formatKrw(rate.priceKrw) : quoteText(replyWithin, t);
 }
 
-export function costItemLabel(item: CostItemId, service: ProductId): string {
-  if (item === "crew-meal") return service === "driver-guide" ? "Driver-guide's meal" : "Driver's meal";
-  return costItemLabels[item];
+export function costItemLabel(item: CostItemId, service: ProductId, t: Translator = en): string {
+  if (item === "crew-meal") return service === "driver-guide" ? t("Driver-guide's meal") : t("Driver's meal");
+  return t(costItemLabels[item]);
 }
 
 /** 칸의 포함·불포함·확인 전 항목 이름. 확인 전(null)인 항목은 "견적서에 적는다"로만 보여 준다. */
-export function dayTerms(rate: DayRate): { included: string[]; notIncluded: string[]; inQuote: string[] } {
+export function dayTerms(rate: DayRate, t: Translator = en): { included: string[]; notIncluded: string[]; inQuote: string[] } {
   const included: string[] = [];
   const notIncluded: string[] = [];
   const inQuote: string[] = [];
   for (const item of costItemOrder) {
     const value = rate.items[item];
-    const label = costItemLabel(item, rate.service);
+    const label = costItemLabel(item, rate.service, t);
     if (value === true) included.push(label);
     else if (value === false) notIncluded.push(label);
     else inQuote.push(label);
   }
-  if (rate.extraHourKrw === null) inQuote.push(`Extra hours beyond ${dayProduct.hours}`);
+  if (rate.extraHourKrw === null) inQuote.push(t("Extra hours beyond {hours}", { hours: dayProduct.hours }));
   return { included, notIncluded, inQuote };
 }
 
 /** 초과 시간 문구. 값이 정해진 칸만. */
-export function extraHourText(rate: DayRate): string | null {
-  return rate.extraHourKrw === null ? null : `Extra hours: ${formatKrw(rate.extraHourKrw)} per hour`;
+export function extraHourText(rate: DayRate, t: Translator = en): string | null {
+  return rate.extraHourKrw === null ? null : t("{price} per hour", { price: formatKrw(rate.extraHourKrw) });
 }
 
 /** 칸을 한 문장으로(FAQ·llms.txt용). 예: "Seoul: Written quote for your date. Included: Fuel, …" */
-export function dayRateSentence(rate: DayRate): string {
-  const terms = dayTerms(rate);
-  const price = isConfirmed(rate) ? `${dayPriceText(rate)} per group` : lowerFirst(dayPriceText(rate));
-  const parts = [`${regionLabels[rate.region].name}: ${price}.`];
-  if (terms.included.length > 0) parts.push(`Included: ${lowerFirst(joinList(terms.included))}.`);
-  if (terms.notIncluded.length > 0) parts.push(`Not included: ${lowerFirst(joinList(terms.notIncluded))}.`);
-  const extra = extraHourText(rate);
-  if (extra) parts.push(`${extra}.`);
-  if (terms.inQuote.length > 0) parts.push(`Stated in your written quote: ${lowerFirst(joinList(terms.inQuote))}.`);
-  if (rate.noLateFinishLimit === true) parts.push("No limit on how late the day can finish.");
+export function dayRateSentence(rate: DayRate, t: Translator = en): string {
+  const terms = dayTerms(rate, t);
+  const price = isConfirmed(rate)
+    ? t("{price} per group", { price: dayPriceText(rate, undefined, t) })
+    : t.lowerFirst(dayPriceText(rate, undefined, t));
+  const parts = [t("{region}: {price}.", { region: t(regionLabels[rate.region].name), price })];
+  if (terms.included.length > 0) parts.push(t("Included: {items}.", { items: t.lowerFirst(t.list(terms.included)) }));
+  if (terms.notIncluded.length > 0) parts.push(t("Not included: {items}.", { items: t.lowerFirst(t.list(terms.notIncluded)) }));
+  const extra = extraHourText(rate, t);
+  if (extra) parts.push(t("Extra hours: {text}.", { text: extra }));
+  if (terms.inQuote.length > 0) parts.push(t("Stated in your written quote: {items}.", { items: t.lowerFirst(t.list(terms.inQuote)) }));
+  if (rate.noLateFinishLimit === true) parts.push(t("No limit on how late the day can finish."));
   return parts.join(" ");
 }
 
@@ -76,12 +81,9 @@ export function publishableDayRates(service: ProductId, rates: DayRate[] = dayRa
   return dayRatesFor(service, rates).filter(isConfirmed);
 }
 
-const lowerFirst = (text: string) => text.charAt(0).toLowerCase() + text.slice(1);
-
-export function joinList(items: string[]): string {
-  const lower = items.map((item, i) => (i === 0 ? item : lowerFirst(item)));
-  if (lower.length <= 1) return lower.join("");
-  return `${lower.slice(0, -1).join(", ")} and ${lower[lower.length - 1]}`;
+/** 목록을 문장으로 잇는다. 영어: "Fuel, expressway tolls and parking". 다른 언어는 그 언어 방식(Intl.ListFormat). */
+export function joinList(items: string[], t: Translator = en): string {
+  return t.list(items);
 }
 
 // ── 그 밖의 값 규칙(지금은 숨긴 /guide-tour에서만 쓴다) ──────────────────
@@ -137,8 +139,8 @@ export function formatKrw(value: number): string {
 }
 
 /** 화면 표시용 가격 문구. 확정가만 숫자로, 초안(draft)과 미정은 견적 문의. */
-export function priceText(rule: PriceRule): string {
-  return isConfirmed(rule) ? formatKrw(rule.priceKrw) : "Quote on request";
+export function priceText(rule: PriceRule, t: Translator = en): string {
+  return isConfirmed(rule) ? formatKrw(rule.priceKrw) : t("Quote on request");
 }
 
 /** 구조화 데이터에 넣어도 되는 확정 요금만. */
