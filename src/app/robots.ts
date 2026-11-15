@@ -1,26 +1,17 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/content/site";
+import { aiCrawlers } from "@/lib/crawlers";
 
-// AI 검색·학습 크롤러를 모두 허용한다(작은 브랜드는 AI가 이름을 아는 것 자체가 이득). docs/04_ai-search-strategy.md
-const aiCrawlers = [
-  "OAI-SearchBot",
-  "ChatGPT-User",
-  "GPTBot",
-  "Claude-SearchBot",
-  "Claude-User",
-  "ClaudeBot",
-  "PerplexityBot",
-  "Perplexity-User",
-  "Google-Extended",
-  "Applebot-Extended",
-  "Bingbot",
-  "Googlebot",
-];
+// 로봇 이름 목록은 src/lib/crawlers.ts에 있다.
+// 여행 요청 저장 API는 공개 페이지가 아니라서 뺀다.
+const access = { allow: "/", disallow: ["/api/"] };
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/" }, ...aiCrawlers.map((userAgent) => ({ userAgent, allow: "/" }))],
+    rules: [
+      { userAgent: "*", ...access },
+      { userAgent: aiCrawlers, ...access },
+    ],
     sitemap: `${site.url}/sitemap.xml`,
-    host: site.url,
   };
 }

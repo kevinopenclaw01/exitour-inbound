@@ -12,6 +12,7 @@ import {
   type ServiceChoice,
 } from "@/lib/inquiry";
 import { todayKst } from "@/lib/dates";
+import Link from "next/link";
 import { ContactList } from "./ContactList";
 import { DatePicker } from "./DatePicker";
 import { site } from "@/content/site";
@@ -33,7 +34,8 @@ type Result = { kind: "saved"; reference: string | null } | { kind: "not-saved";
 
 const field = "w-full rounded-md border border-line bg-surface px-3 py-2 text-base";
 
-export function InquiryForm({ initialService }: { initialService?: ServiceChoice }) {
+/** privacyHref: 개인정보처리방침이 공개된 뒤에만 넘긴다(값이 다 채워지기 전에는 링크를 걸지 않는다). */
+export function InquiryForm({ initialService, privacyHref }: { initialService?: ServiceChoice; privacyHref?: string }) {
   const [form, setForm] = useState<Inquiry>({ ...empty, service: initialService ?? empty.service });
   const [website, setWebsite] = useState("");
   const [errors, setErrors] = useState<InquiryErrors>({});
@@ -172,7 +174,7 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
             id="interests"
             rows={4}
             className={field}
-            placeholder="For example: Nami Island with grandparents, a Han River evening, sunset by the sea, K-drama spots"
+            placeholder="For example: a first day in Seoul with grandparents, Nami Island with kids, or another region you want to visit"
             value={form.interests}
             onChange={(e) => set("interests", e.target.value)}
           />
@@ -224,6 +226,17 @@ export function InquiryForm({ initialService }: { initialService?: ServiceChoice
         >
           {sending ? "Sending…" : "Send my request"}
         </button>
+        <p className="text-sm text-muted">
+          We use these details only to reply to your request and prepare your quote.
+          {privacyHref ? (
+            <>
+              {" "}
+              <Link href={privacyHref} className="underline">
+                Privacy policy
+              </Link>
+            </>
+          ) : null}
+        </p>
       </form>
 
       {result ? (

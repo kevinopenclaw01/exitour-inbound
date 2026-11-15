@@ -1,11 +1,12 @@
-// 여행 요청 폼 → 상담 메시지. v0는 서버 저장 없이 메시지를 만들어 손님이 메신저·이메일로 보낸다.
-// MVP에서 DB 저장(Supabase)으로 바꿀 때도 이 검증·문구 함수를 그대로 쓴다.
+// 여행 요청 폼의 검증·문구. 폼(브라우저)과 /api/inquiry(서버)가 같은 함수를 쓴다.
+// 저장은 Supabase(src/lib/supabase.ts), 사장님 알림은 src/lib/notify.ts.
 
+// 2026-11-16: 지금 파는 두 상품만 고르게 한다. 다른 지역·큰 단체는 "not-sure"로 받아 상담한다.
+// (DB의 service 칸은 예전 값 'guide-tour'도 받는다 — supabase/migrations. 다시 열 때 여기에 한 줄을 더하면 된다.)
 export const serviceOptions = [
   { value: "private-driver", label: "Private car & driver" },
   { value: "driver-guide", label: "Private car & licensed guide" },
-  { value: "guide-tour", label: "Licensed guide tour & trip planning" },
-  { value: "not-sure", label: "Not sure yet, help me choose" },
+  { value: "not-sure", label: "Not sure yet / another region" },
 ] as const;
 
 export type ServiceChoice = (typeof serviceOptions)[number]["value"];

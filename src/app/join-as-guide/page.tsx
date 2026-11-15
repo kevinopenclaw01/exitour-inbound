@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Breadcrumbs, BulletList, Container, JsonLd } from "@/components/ui";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/meta";
 import { breadcrumbLd } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: "Work with us as a licensed guide",
-  description: "Licensed tourist guides (관광통역안내사) and driver-guides: join the Entour Korea guide team for private tours in Seoul and Gyeonggi.",
-  alternates: { canonical: "/join-as-guide" },
-};
+// 2026-11-16: 코드는 두되 숨긴 쪽. 메뉴·바닥글·사이트맵·llms.txt에 없고 noindex다(src/content/pages.ts의 index: false).
+export const metadata: Metadata = pageMetadata("join-as-guide");
 
 const crumbs = [
   { name: "Home", path: "/" },

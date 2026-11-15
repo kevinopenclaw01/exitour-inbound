@@ -200,7 +200,7 @@ export const articles: Article[] = [
     slug: "incheon-airport-to-seoul",
     title: "What is the best way to get from Incheon Airport to Seoul?",
     description:
-      "AREX train, airport limousine bus, taxi and private van from Incheon Airport to Seoul compared by time, luggage and group size, plus Terminal 1 versus Terminal 2.",
+      "AREX train, airport limousine bus, taxi and private van from Incheon Airport to Seoul compared by time, luggage and group size, plus Terminal 1 versus 2.",
     answer:
       "From Incheon Airport you can reach central Seoul by the AREX express train (about 43 minutes from Terminal 1 to Seoul Station, 51 from Terminal 2), the all-stop AREX train (about an hour), airport limousine buses (60–90 minutes to most hotel areas), a taxi (about an hour, more in rush hour) or a private van that meets you at the arrivals gate (60–80 minutes, door to door). For 4 or more people with suitcases, a late arrival or a hotel outside the centre, a private van is the easiest choice.",
     sections: [
@@ -343,7 +343,7 @@ export const articles: Article[] = [
     slug: "seoul-with-elderly-parents",
     title: "How do you plan Seoul for elderly parents?",
     description:
-      "A practical plan for visiting Seoul with older parents: which sights are flat, where the stairs are, how to pace the day and why a private van and licensed guide help.",
+      "A practical plan for Seoul with older parents: which sights are flat, where the stairs are, how to pace the day and why a private van and licensed guide help.",
     answer:
       "Seoul works well for older travellers if you cut the walking, avoid subway stairs at rush hour and plan one main sight per half day with a proper sit-down lunch. A private van with a licensed driver-guide removes most of the strain: hotel door pick-up, a seat to rest in between places, and a guide who handles tickets, queues and ordering. Choose flat sights such as the main courtyards of Gyeongbokgung, Insadong, Nami Island and the Han River parks, and keep hilly Bukchon and the climb to N Seoul Tower short or skip them.",
     sections: [
@@ -406,7 +406,7 @@ export const articles: Article[] = [
     slug: "muslim-friendly-korea-tour",
     title: "Is Korea easy for Muslim travellers? Halal food and prayer rooms",
     description:
-      "Where to find halal food in Seoul, how Korea classifies Muslim-friendly restaurants, where the prayer rooms are, and how a licensed guide plans a Muslim-friendly day.",
+      "Where to find halal food in Seoul, how Korea classifies Muslim-friendly restaurants, where the prayer rooms are, and how a licensed guide plans the day.",
     answer:
       "Korea is workable for Muslim travellers with some planning. Seoul Central Mosque in Itaewon has a street of halal restaurants around it, the Korea Tourism Organization classifies restaurants as halal-certified, self-certified, Muslim-friendly or pork-free, and prayer rooms exist at Incheon Airport, at major attractions such as Nami Island and Everland, and at some malls and tourist centres. Outside Itaewon, pork and alcohol-based sauces are common in everyday Korean food, so a guide who reads menus and calls ahead makes a real difference.",
     sections: [
@@ -467,7 +467,7 @@ export const articles: Article[] = [
     slug: "sunset-near-incheon-airport",
     title: "Where can you watch the sunset near Incheon Airport?",
     description:
-      "The best west-coast sunset spots within an hour of Incheon Airport: Eurwangni, Wangsan and Muuido beaches, the seagull ferry at Wolmido and the tide road at Jebudo.",
+      "West-coast sunset spots within an hour of Incheon Airport: Eurwangni, Wangsan and Muuido beaches, the seagull ferry at Wolmido and the tide road at Jebudo.",
     answer:
       "Eurwangni Beach on Yeongjong Island is about 20 minutes by car from Incheon Airport and faces west, so it is the easiest airport-side sunset in Korea. Wangsan Beach is next to it, and Hanagae Beach on Muuido is reachable by road over the Muui bridge. The classic seagull photo is on the short car ferry between Wolmido and Yeongjong, where gulls follow the boat for shrimp crackers. For a longer evening, Jebudo in Hwaseong has a road that appears across the sea at low tide.",
     sections: [
@@ -527,7 +527,7 @@ export const articles: Article[] = [
     slug: "han-river-ramen",
     title: "How do you cook ramen at the Han River, and what else is there to do?",
     description:
-      "Step-by-step guide to the convenience-store ramen cookers at Han River parks, plus bikes, the evening cruise and the Banpo Bridge fountain for a Seoul evening by the water.",
+      "Step-by-step guide to the convenience-store ramen cookers at Han River parks, plus bikes, the evening cruise and the Banpo Bridge fountain.",
     answer:
       "At Han River parks such as Yeouido, Ttukseom and Banpo, the riverside convenience stores have self-service instant ramen cookers: you buy a packet of ramen, pay a small cooking fee, put the noodles and water into the machine, and it boils in about three minutes. You carry the pot out and eat on the steps or the lawn by the water. Around it you can rent a bike for the riverside path, take an evening cruise from Yeouido, and in the warmer months watch the Banpo Bridge Moonlight Rainbow Fountain.",
     sections: [
@@ -557,9 +557,10 @@ export const articles: Article[] = [
         ],
       },
       {
-        heading: "Do it with a guide",
+        heading: "Put the evening in the right order",
         body: [
-          "Our Han River Evening plan puts the pieces in the right order: bikes while it is light, ramen at sunset, then the cruise or the fountain. No van is needed; it works on foot and by subway.",
+          "The pieces work best in this order: bikes while it is light, ramen at sunset, then the cruise or the fountain. No van is needed; it works on foot and by subway.",
+          "On a private van day in Seoul, the river also makes an easy last stop before the hotel.",
         ],
       },
     ],
@@ -577,8 +578,8 @@ export const articles: Article[] = [
         a: "No. Yeouido and Ttukseom are on the subway. A van helps only if you combine the evening with a day trip elsewhere.",
       },
     ],
-    related: ["guide-tour"],
-    updated: "2026-10-28",
+    related: ["private-driver", "guide-tour"],
+    updated: "2026-11-16",
   },
   {
     slug: "incheon-layover-tour",

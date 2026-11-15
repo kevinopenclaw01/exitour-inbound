@@ -1,14 +1,18 @@
+import { dayProduct, regionLabels } from "@/content/pricing";
 import { site } from "@/content/site";
-import type { Article, Faq, PriceRule, Service } from "@/content/types";
-import { publishableRates } from "./pricing";
+import type { Article, DayPlan, DayRate, Faq, PriceRule, ProductId, Service } from "@/content/types";
+import { publishableDayRates, publishableRates } from "./pricing";
 
 // schema.org 구조화 데이터(JSON-LD). 비어 있는 회사 정보(null)와 확정되지 않은 가격은 넣지 않는다.
+// 빌드 뒤 `node scripts/check-structured-data.mjs`가 모든 쪽의 JSON-LD를 읽어 규칙을 확인한다.
 
 type Json = Record<string, unknown>;
 
 export const abs = (path: string) => `${site.url}${path === "/" ? "" : path}`;
 
 const orgId = () => `${site.url}/#organization`;
+
+const productIds: readonly string[] = ["private-driver", "driver-guide"] satisfies ProductId[];
 
 export function organizationLd(): Json {
   const ld: Json = {
@@ -56,14 +60,30 @@ export function websiteLd(): Json {
   };
 }
 
-export function serviceLd(service: Service, rules?: PriceRule[]): Json {
-  const offers = publishableRates(service.id, rules).map((r) => ({
-    "@type": "Offer",
-    name: r.label,
-    price: r.priceKrw,
-    priceCurrency: "KRW",
-    availability: "https://schema.org/InStock",
-  }));
+/**
+ * 서비스 한 쪽의 Service. Offer(가격)는 사장님이 확정한 값만 넣는다.
+ * 두 상품은 네 칸 표(dayRates)에서, 그 밖의 서비스는 priceRules에서 가져온다. data는 시험용.
+ */
+export function serviceLd(service: Service, data: { dayRates?: DayRate[]; rules?: PriceRule[] } = {}): Json {
+  const isProduct = productIds.includes(service.id);
+  const offers = isProduct
+    ? publishableDayRates(service.id as ProductId, data.dayRates).map((r) => ({
+        "@type": "Offer",
+        name: `${service.name}: ${regionLabels[r.region].name}, ${dayProduct.hours} hours`,
+        price: r.priceKrw,
+        priceCurrency: "KRW",
+        availability: "https://schema.org/InStock",
+        url: abs(service.path),
+      }))
+    : publishableRates(service.id, data.rules).map((r) => ({
+        "@type": "Offer",
+        name: r.label,
+        price: r.priceKrw,
+        priceCurrency: "KRW",
+        availability: "https://schema.org/InStock",
+        url: abs(service.path),
+      }));
+  const areas = isProduct ? ["Seoul", "Gyeonggi-do"] : site.areaServed;
   const ld: Json = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -72,7 +92,7 @@ export function serviceLd(service: Service, rules?: PriceRule[]): Json {
     description: service.answer,
     url: abs(service.path),
     provider: { "@id": orgId() },
-    areaServed: site.areaServed.map((name) => ({ "@type": "Place", name })),
+    areaServed: areas.map((name) => ({ "@type": "Place", name })),
   };
   if (offers.length > 0) ld.offers = offers;
   return ld;
@@ -104,8 +124,23 @@ export function breadcrumbLd(items: { name: string; path: string }[]): Json {
   };
 }
 
-export function articleLd(article: Article): Json {
+/** /day-plans의 예시 목록. */
+export function dayPlanListLd(plans: DayPlan[], path: string): Json {
   return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `${dayProduct.hours}-hour day plans by private van`,
+    itemListElement: plans.map((p, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: p.name,
+      url: `${abs(path)}#${p.slug}`,
+    })),
+  };
+}
+
+export function articleLd(article: Article, imagePath?: string): Json {
+  const ld: Json = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
@@ -117,6 +152,8 @@ export function articleLd(article: Article): Json {
     publisher: { "@id": orgId() },
     inLanguage: "en",
   };
+  if (imagePath) ld.image = abs(imagePath);
+  return ld;
 }
 
 /** <script type="application/ld+json"> 안에 넣을 문자열. `<`를 이스케이프해 스크립트 주입을 막는다. */

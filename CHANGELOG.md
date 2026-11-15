@@ -1,5 +1,22 @@
 # 변경 기록
 
+## 2026-11-16 — Claude (Claude Code, 사장님 PC, Fable 5.2) — 좁혀서 열기: 드라이빙 가이드 두 상품 중심으로, 배포 직전까지 (사장님 "새로 만들지 않고 이 사이트를 좁혀서 연다 — 그렇게 해 줘")
+
+- **문을 좁힘**: 메뉴·바닥글에 Private Driver·Driver-Guide·Prices·Plan·FAQ·About·Contact만. `/guide-tour`·`/join-as-guide`는 코드만 두고 noindex, 사이트맵·`llms.txt`·메뉴에서 뺌. 안내 글·`/airport-transfer`·`/safety`는 그대로(한강 글의 숨긴 상품 문단만 정리)
+- **네 칸 표**(`ProductMatrix.tsx`, 자료는 `pricing.ts`의 `dayRates`): Driver only / Driver-guide × Seoul / Gyeonggi. 칸마다 10시간·스타리아·최대 7인·값·포함 항목. 홈·`/prices`·두 상품 쪽이 같은 자료에서 그림. **`confirmed`인 칸만 숫자가 나가고**, 나머지는 "Written quote for your date". 예전 초안 숫자(48만·54만·23만)는 화면·`llms.txt`·구조화 데이터 어디에도 안 나감("draft rate" 표시도 없앰)
+- 포함 항목은 사장님이 말씀하신 것만: 서울 상품 기름·통행료·주차 포함, 밤 종료 시간 제한 없음. 나머지(경기의 기름·통행료·주차, 기사 식사, 입장료, 초과 시간)는 "Stated in your written quote"
+- 두 상품 문구를 10시간·스타리아 한 대·최대 7인·영어 기준으로 다시 씀. 솔라티·9/11인승·"당신의 언어로" 같은 문구를 상품 쪽·FAQ·회사 설명에서 뺌. "선금을 내면 확정" 문장도 뺌(선금 미정)
+- **기사 소개 자리**(`crew.ts`, `CrewSection.tsx`): 자료가 없으면 구역이 안 나옴. "영어와 따갈로그" 문구는 초안으로만 두고 꺼 둠
+- **10시간 하루 예시 4개**(`dayPlans.ts`, 새 쪽 `/day-plans`): 서울 2(궁·북촌·남산 / 아이 동반 잠실·한강 밤), 경기 2(남이섬·아침고요수목원 / 수원화성·민속촌). 구간 시간 합이 600분인지 시험이 확인. 입장료·운영 시간은 적지 않음
+- **`docs/09` 고칠 것**: 약관·개인정보·환불 틀(`/terms`·`/privacy`·`/cancellation-policy`, 값이 찰 때까지 noindex·메뉴 밖), 쪽별 공유 그림 27장(`/og/<쪽>.png`, 빌드 때 생성), 문의 알림(`notify.ts` — 텔레그램·이메일·웹훅, 환경변수만 넣으면 켜짐), 휴대폰 머리글 한 줄(접는 메뉴), 아이콘, 404 제목, 쪽별 160자 이하 설명
+- **검색·AI 노출**: robots의 AI 로봇 21개(공식 문서 철자), `/api/` 차단, 쪽마다 다른 제목·설명·canonical(`pages.ts`+`meta.ts`), 사이트맵 수정일, 소유 확인 코드 자리(`site.verification`), IndexNow 키 파일과 `scripts/indexnow-submit.mjs`, 빌드 결과 검사 `npm run check:pages`(CI에도 추가). 확정값이 없어 `Offer`는 0개
+- 디자인: 틀은 그대로, 첫 화면과 요청 띠의 큰 녹색 면을 흰 바탕으로. 홈 사진은 차가 보이지 않게 왼쪽만 잘라 쓰고 설명글에서 지명을 뺌
+- **Next.js 16.2.4 → 16.4.6**(`npm audit --omit=dev` 치명 1·높음 2 → 0. 공유 그림 생성 기능의 취약점 포함)
+- 도메인 RDAP 조회(2026-11-16): `entourkorea.com`·`entour-korea.com`·`entourkorea.net`·`entour.kr`·`entourkorea.kr`·`entourkorea.co.kr` 미등록, `entour.com` 등록됨. 사지 않음
+- 문서: `docs/10_narrow-launch.md`(지금 상태·받을 것과 넣는 곳·알림·배포 순서) 새로 씀. `AGENTS.md` 규칙·코드 지도, `decisions.md`, `08`·`09`·`03`, `README` 갱신
+- **하지 않은 것**: Vercel 프로젝트·배포, 도메인 구매, 계정 만들기, 방문 측정, 스팸 방지, 결제. `.env.example`은 이 PC의 권한 설정이 막아 고치지 못함(알림 변수 이름은 `docs/10` 7장)
+- 검사: lint·typecheck 통과, test 87개 통과, build 통과(61개 경로), `check:pages` 27쪽 문제 없음. 운영 빌드를 로컬에서 켜 홈·두 상품·Prices·Plan·Day plans를 1440px과 390px으로 확인(가로 넘침·콘솔 오류 없음, 휴대폰 메뉴 열림 확인). 요청 API는 검증 오류·스팸 칸만 시험(실제 저장·알림 전송은 하지 않음)
+
 ## 2026-10-28 — Claude (Claude Code, 클라우드) — 소개서 `docs/00_introduction.md` (사용자 "기획 배경과 만든 취지, 주요 상품을 다른 세션에 소개할 소개서 만들어줘")
 
 - 배경(회사·시장·파트너 상담), 사업·사이트 취지(AI 검색 노출, 합법·신뢰), 브랜드, 주요 상품(서비스 3종 + 공항 픽업·샌딩 + 설계 예시), 운영 원칙, 사이트 현황, 미결정 사항(첫 상품: 넥서스 회의의 서울 도보 4시간과의 차이 포함), 이어 작업하는 법, 문서 지도

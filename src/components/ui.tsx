@@ -86,17 +86,18 @@ export function BulletList({ items, tone = "plain" }: { items: string[]; tone?: 
   );
 }
 
+/** 쪽 끝의 요청 버튼 띠. 큰 색 면 대신 흰 바탕에 테두리와 녹색 버튼만 쓴다. */
 export function CtaBand({ title, text }: { title: string; text: string }) {
   return (
-    <section className="rounded-lg bg-sign px-5 py-8 text-white sm:px-8">
+    <section className="rounded-lg border border-line bg-surface px-5 py-7 sm:px-8">
       <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center">
         <div>
           <h2 className="text-2xl font-bold">{title}</h2>
-          <p className="mt-1 text-white/85">{text}</p>
+          <p className="mt-1 text-muted">{text}</p>
         </div>
         <Link
           href="/plan"
-          className="inline-flex justify-center rounded-md bg-white px-5 py-3 font-semibold text-sign-deep hover:bg-sign-soft"
+          className="inline-flex justify-center rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep"
         >
           Send a trip request
         </Link>

@@ -2,14 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ServicePage } from "@/components/ServicePage";
 import { getService } from "@/content/services";
+import { pageMetadata } from "@/lib/meta";
 
 const service = getService("private-driver");
 
-export const metadata: Metadata = {
-  title: "Private van with driver in Seoul and Gyeonggi",
-  description: service.answer,
-  alternates: { canonical: service.path },
-};
+export const metadata: Metadata = pageMetadata("private-driver");
 
 export default function Page() {
   return (
@@ -19,7 +16,7 @@ export default function Page() {
         <div className="grid gap-2">
           <p className="text-muted">
             For a pick-up or drop-off at Incheon or Gimpo without a full day, see the airport transfer page: meeting at the gate,
-            flight tracking and a fixed price per van.
+            flight tracking and a price per van, quoted for your flight.
           </p>
           <Link href="/airport-transfer" className="font-semibold text-sign underline">
             Airport pick-up and drop-off

@@ -3,13 +3,10 @@ import Link from "next/link";
 import { ContactList } from "@/components/ContactList";
 import { AnswerBox, Breadcrumbs, Container, JsonLd } from "@/components/ui";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/meta";
 import { breadcrumbLd } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: "Contact us",
-  description: `Contact ${site.brand} on WhatsApp, LINE or KakaoTalk to plan a private driver or licensed guide tour in Korea.`,
-  alternates: { canonical: "/contact" },
-};
+export const metadata: Metadata = pageMetadata("contact");
 
 const crumbs = [
   { name: "Home", path: "/" },

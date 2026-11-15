@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import { Breadcrumbs, BulletList, Container, CtaBand, JsonLd } from "@/components/ui";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/meta";
 import { breadcrumbLd } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: "About us",
-  description: `${site.brand} is the inbound travel brand of ${site.operator}, a registered general travel agency in Korea.`,
-  alternates: { canonical: "/about" },
-};
+export const metadata: Metadata = pageMetadata("about");
 
 const crumbs = [
   { name: "Home", path: "/" },
@@ -23,7 +20,7 @@ export default function Page() {
         <h1 className="font-display text-3xl sm:text-4xl">About {site.brand}</h1>
         <p className="text-lg">
           {site.brand} is the inbound brand of {site.operator}, a Korean travel agency that has run private and small-group trips
-          abroad for Korean travellers. We now bring the same way of working home: your own van, the right guide, and a plan built
+          abroad for Korean travellers. We now bring the same way of working home: your own van, the right crew, and a day built
           around you.
         </p>
       </header>
@@ -31,7 +28,7 @@ export default function Page() {
         <h2 className="text-2xl font-bold">Why the name</h2>
         <p>
           {site.operator} helps Koreans exit for the world. {site.brand} is the other direction: you enter Korea with your own small
-          entourage, a driver, a guide or both, who take care of the road so you can enjoy the day.
+          entourage, a driver or a driver-guide, who takes care of the road so you can enjoy the day.
         </p>
       </section>
       <section className="grid gap-3">
@@ -39,9 +36,9 @@ export default function Page() {
         <BulletList
           tone="check"
           items={[
-            "We match a licensed guide to your language before you pay",
+            "Guiding is done only by holders of the Korean tourist guide licence",
             "We use registered rental vans with drivers provided by the rental company",
-            "We plan with you on chat and put the final price in writing",
+            "We plan with you on chat and put the price and what it includes in writing",
             "No forced shopping",
           ]}
         />

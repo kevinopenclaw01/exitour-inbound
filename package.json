@@ -8,10 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:pages": "node scripts/check-structured-data.mjs"
   },
   "dependencies": {
-    "next": "16.2.4",
+    "next": "16.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "server-only": "0.0.1"
@@ -22,7 +23,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.1",
-    "eslint-config-next": "16.2.4",
+    "eslint-config-next": "16.4.6",
     "sharp": "0.34.5",
     "tailwindcss": "4.1.17",
     "typescript": "5.9.3",

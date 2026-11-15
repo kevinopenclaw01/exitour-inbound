@@ -1,7 +1,10 @@
 # 로컬 인수인계 (2026-10-28)
 
 클라우드 세션(Claude Code on the web)에서 하던 작업을 **사장님 PC의 Claude Code·Claude 데스크톱 앱·넥서스 코딩 탭**에서 이어 가기 위한 문서다.
-처음 이어받는 AI는 `AGENTS.md` → `CHANGELOG.md` 맨 위 → `MAINTAINER.md` → 이 문서 순서로 읽는다.
+처음 이어받는 AI는 `AGENTS.md` → `CHANGELOG.md` 맨 위 → `MAINTAINER.md` → `docs/10_narrow-launch.md` → 이 문서 순서로 읽는다.
+
+> **2026-11-16 갱신**: 사이트를 드라이빙 가이드 두 상품 중심으로 좁혔다. 지금 상태·사장님께 받을 것·배포 순서는 **`docs/10_narrow-launch.md`** 가 기준이다.
+> 아래 "3. 남은 일" 가운데 B(Vercel)·C 영상·D(도메인)·E(검색엔진 등록)의 절차는 그대로 쓰고, F(확정 가격)·H(회사 정보)·I의 알림은 `docs/10` 3장·7장을 따른다. E의 "다음 개발 거리: IndexNow"는 만들었다(`scripts/indexnow-submit.mjs`).
 
 ## 1. 지금 상태 (2026-10-28)
 

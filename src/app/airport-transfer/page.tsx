@@ -4,13 +4,10 @@ import { AnswerBox, Breadcrumbs, BulletList, Container, CtaBand, FaqList, JsonLd
 import { airportTransfer as page } from "@/content/airportTransfer";
 import { vehicles } from "@/content/services";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/meta";
 import { abs, breadcrumbLd, faqLd } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: page.title,
-  description: page.answer,
-  alternates: { canonical: page.path },
-};
+export const metadata: Metadata = pageMetadata("airport-transfer");
 
 const crumbs = [
   { name: "Home", path: "/" },

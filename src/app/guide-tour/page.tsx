@@ -3,14 +3,13 @@ import { ServicePage } from "@/components/ServicePage";
 import { BulletList } from "@/components/ui";
 import { planIdeas } from "@/content/plans";
 import { getService } from "@/content/services";
+import { pageMetadata } from "@/lib/meta";
 
 const service = getService("guide-tour");
 
-export const metadata: Metadata = {
-  title: "Licensed guide tours and custom trip planning in Seoul",
-  description: service.answer,
-  alternates: { canonical: service.path },
-};
+// 2026-11-16: 코드는 두되 숨긴 쪽. 메뉴·바닥글·사이트맵·llms.txt에 없고 noindex다(src/content/pages.ts의 index: false).
+// 다시 열 때: services.ts의 listed를 true로, pages.ts의 index: false를 지우고, site.ts의 nav에 넣는다.
+export const metadata: Metadata = pageMetadata("guide-tour");
 
 export default function Page() {
   return (

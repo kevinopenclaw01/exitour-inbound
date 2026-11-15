@@ -2,13 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, Container, JsonLd } from "@/components/ui";
 import { articles } from "@/content/articles";
+import { pageMetadata } from "@/lib/meta";
 import { breadcrumbLd } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: "Travel guide",
-  description: "Straight answers about private drivers, licensed guides and day trips in Korea.",
-  alternates: { canonical: "/travel-guide" },
-};
+export const metadata: Metadata = pageMetadata("travel-guide");
 
 const crumbs = [
   { name: "Home", path: "/" },

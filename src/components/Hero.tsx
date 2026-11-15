@@ -1,17 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { services } from "@/content/services";
+import { dayProduct, productLabels, productOrder } from "@/content/pricing";
+import { getService } from "@/content/services";
 import { site } from "@/content/site";
 import { Container } from "./ui";
 
-// 홈 첫 화면. 영상(site.heroVideo)이 있으면 소리 없이 반복 재생하고(사진은 영상이 뜨기 전·움직임 줄이기 설정용 정지 화면),
-// 사진(site.heroImage)만 있으면 사진을 깔고, 둘 다 없으면 한국 도로 안내표지 그림을 보여 준다.
-
-const shortNames: Record<string, { label: string; hint: string }> = {
-  "private-driver": { label: "Private driver", hint: "Van + driver" },
-  "driver-guide": { label: "Driver-guide", hint: "Van + licensed guide" },
-  "guide-tour": { label: "Guide tour", hint: "Guide + trip planning" },
-};
+// 홈 첫 화면. 흰 바탕에 글과 버튼을 왼쪽에, 사진을 오른쪽 틀 안에 둔다(큰 색 면을 쓰지 않는다).
+// 영상(site.heroVideo)이 있으면 사진 틀 안에서 소리 없이 반복 재생하고(사진은 영상이 뜨기 전·움직임 줄이기 설정용 정지 화면),
+// 사진도 영상도 없으면 한국 도로 안내표지 그림을 보여 준다.
+// 사진은 4:3 틀에 왼쪽 기준으로 잘라 넣는다: 지금 사진 오른쪽 멀리 차가 한 대 있어서 우리 차량처럼 보이지 않게 풍경만 쓴다.
 
 const trust = [
   "Registered travel agency",
@@ -92,96 +89,95 @@ export function Hero() {
   const video = site.heroVideo;
   const hasMedia = Boolean(photo || video);
   return (
-    <section className="relative overflow-hidden bg-sign-deep text-white">
-      {hasMedia ? (
-        <>
-          {photo ? <Image src={photo.src} alt={photo.alt} fill priority sizes="100vw" className="object-cover" /> : null}
-          {video ? (
-            <video
-              className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={photo?.src}
-              aria-hidden="true"
-            >
-              <source src={video} type="video/mp4" />
-            </video>
-          ) : null}
-          <div className="absolute inset-0 bg-gradient-to-r from-sign-deep via-sign-deep/85 to-sign-deep/30" aria-hidden="true" />
-        </>
-      ) : (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-[0.07] [background-image:repeating-linear-gradient(135deg,#fff_0_2px,transparent_2px_26px)]"
-        />
-      )}
-
-      <Container className="relative grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1.1fr_1fr] lg:py-20">
-        <div className="grid gap-6">
-          <p className="inline-flex w-fit items-center rounded border-2 border-white/80 px-2.5 py-1 text-xs font-bold tracking-[0.12em] uppercase">
-            Seoul · Gyeonggi · Incheon
-          </p>
-          <h1 className="font-display text-4xl leading-[1.06] sm:text-5xl lg:text-[3.4rem]">
-            Korea in your own van, with a licensed guide who speaks your language.
+    <section className="border-b border-line bg-surface">
+      <Container className="grid items-center gap-8 py-10 sm:py-14 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:py-16">
+        <div className="grid gap-5">
+          <p className="text-xs font-bold tracking-[0.14em] text-sign uppercase">Seoul · Gyeonggi · private van days</p>
+          <h1 className="font-display text-4xl leading-[1.08] text-ink sm:text-5xl">
+            Your own van and driver in Korea, for a {dayProduct.hours}-hour day.
           </h1>
-          <p className="max-w-xl text-lg text-white/85">
-            Pick a driver, a driver-guide or a guide. We set it up legally, match the language, and plan the day with you.
+          <p className="max-w-xl text-lg text-muted">
+            A private {dayProduct.vehicle} for up to {dayProduct.maxPassengers} passengers, in Seoul or on a Gyeonggi day trip.
+            Choose a driver only, or a licensed guide who drives. Priced per group.
           </p>
 
-          <div className="grid gap-2 sm:grid-cols-3">
-            {services.map((s) => {
-              const n = shortNames[s.id] ?? { label: s.name, hint: "" };
+          <div className="grid gap-2 sm:grid-cols-2">
+            {productOrder.map((id) => {
+              const service = getService(id);
               return (
                 <Link
-                  key={s.id}
-                  href={s.path}
-                  className="grid gap-0.5 rounded-md border border-white/30 bg-white/10 px-4 py-3 transition-colors hover:border-white hover:bg-white/20"
+                  key={id}
+                  href={service.path}
+                  className="grid gap-0.5 rounded-md border border-line px-4 py-3 transition-colors hover:border-sign hover:bg-sign-soft"
                 >
-                  <span className="font-semibold">{n.label} →</span>
-                  <span className="text-sm text-white/75">{n.hint}</span>
+                  <span className="font-semibold text-sign-deep">{productLabels[id].name} →</span>
+                  <span className="text-sm text-muted">{productLabels[id].hint}</span>
                 </Link>
               );
             })}
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Link href="/plan" className="rounded-md bg-white px-5 py-3 font-semibold text-sign-deep hover:bg-sign-soft">
+            <Link href="/plan" className="rounded-md bg-sign px-5 py-3 font-semibold text-white hover:bg-sign-deep">
               Plan my trip
             </Link>
-            <Link href="/prices" className="rounded-md border border-white/70 px-5 py-3 font-semibold hover:bg-white/10">
+            <Link href="/prices" className="rounded-md border border-sign px-5 py-3 font-semibold text-sign-deep hover:bg-sign-soft">
               See prices
             </Link>
           </div>
         </div>
 
-        {hasMedia ? null : (
+        {hasMedia ? (
+          <figure className="grid gap-1.5">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-paper">
+              {photo ? (
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 460px, 100vw"
+                  className="object-cover object-left"
+                />
+              ) : null}
+              {video ? (
+                <video
+                  className="absolute inset-0 h-full w-full object-cover object-left motion-reduce:hidden"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={photo?.src}
+                  aria-hidden="true"
+                >
+                  <source src={video} type="video/mp4" />
+                </video>
+              ) : null}
+            </div>
+            {photo?.credit ? <figcaption className="text-right text-xs text-muted">Photo: {photo.credit}</figcaption> : null}
+          </figure>
+        ) : (
           <div className="flex justify-center lg:justify-end">
             <RouteSign />
           </div>
         )}
       </Container>
 
-      <div className="relative border-t border-white/15 bg-black/15">
+      <div className="border-t border-line">
         <Container>
-          <ul className="flex flex-wrap justify-center gap-x-5 gap-y-1.5 py-3 text-sm text-white/90">
-            {trust.map((t) => (
-              <li key={t} className="flex items-center gap-1.5">
-                <span aria-hidden="true" className="text-brown-soft">
+          <ul className="flex flex-wrap justify-center gap-x-5 gap-y-1.5 py-3 text-sm text-muted">
+            {trust.map((item) => (
+              <li key={item} className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="text-sign">
                   ✓
                 </span>
-                {t}
+                {item}
               </li>
             ))}
           </ul>
         </Container>
       </div>
-
-      {photo?.credit ? (
-        <p className="absolute right-2 bottom-12 text-[10px] text-white/60">Photo: {photo.credit}</p>
-      ) : null}
     </section>
   );
 }

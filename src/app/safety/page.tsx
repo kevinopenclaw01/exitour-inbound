@@ -2,14 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AnswerBox, Breadcrumbs, BulletList, Container, CtaBand, JsonLd } from "@/components/ui";
 import { site } from "@/content/site";
+import { pageMetadata } from "@/lib/meta";
 import { breadcrumbLd } from "@/lib/schema";
 
-export const metadata: Metadata = {
-  title: "Licensed & safe: how our drivers and guides are set up",
-  description:
-    "How Entour Korea keeps private van tours legal in Korea: a registered travel agency, registered rental vans with drivers, licensed tourist guides and no forced shopping.",
-  alternates: { canonical: "/safety" },
-};
+export const metadata: Metadata = pageMetadata("safety");
 
 const crumbs = [
   { name: "Home", path: "/" },

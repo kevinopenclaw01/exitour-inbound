@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AnswerBox, Breadcrumbs, Container, CtaBand, FaqList, JsonLd } from "@/components/ui";
 import { articles, getArticle } from "@/content/articles";
 import { getService } from "@/content/services";
+import { articleMetadata, articleOgKey, ogImagePath } from "@/lib/meta";
 import { articleLd, breadcrumbLd, faqLd } from "@/lib/schema";
 
 export const dynamicParams = false;
@@ -16,18 +17,16 @@ export async function generateMetadata({ params }: PageProps<"/travel-guide/[slu
   const { slug } = await params;
   const article = getArticle(slug);
   if (!article) return {};
-  return {
-    title: article.title,
-    description: article.description,
-    alternates: { canonical: `/travel-guide/${article.slug}` },
-    openGraph: { type: "article", modifiedTime: article.updated },
-  };
+  return articleMetadata(article);
 }
 
 export default async function Page({ params }: PageProps<"/travel-guide/[slug]">) {
   const { slug } = await params;
   const article = getArticle(slug);
   if (!article) notFound();
+
+  // 숨긴 서비스(/guide-tour)로는 링크를 걸지 않는다.
+  const relatedServices = article.related.map((id) => getService(id)).filter((s) => s.listed);
 
   const crumbs = [
     { name: "Home", path: "/" },
@@ -37,7 +36,7 @@ export default async function Page({ params }: PageProps<"/travel-guide/[slug]">
 
   return (
     <Container className="grid max-w-3xl gap-10 py-8 sm:py-12">
-      <JsonLd data={[articleLd(article), faqLd(article.faqs), breadcrumbLd(crumbs)]} />
+      <JsonLd data={[articleLd(article, ogImagePath(articleOgKey(article.slug))), faqLd(article.faqs), breadcrumbLd(crumbs)]} />
       <header className="grid gap-4">
         <Breadcrumbs items={crumbs} />
         <h1 className="font-display text-3xl leading-tight sm:text-4xl">{article.title}</h1>
@@ -87,21 +86,20 @@ export default async function Page({ params }: PageProps<"/travel-guide/[slug]">
 
       <FaqList faqs={article.faqs} />
 
-      <section className="grid gap-2">
-        <h2 className="text-xl font-bold">Related services</h2>
-        <ul className="grid gap-1">
-          {article.related.map((id) => {
-            const s = getService(id);
-            return (
-              <li key={id}>
+      {relatedServices.length > 0 ? (
+        <section className="grid gap-2">
+          <h2 className="text-xl font-bold">Related services</h2>
+          <ul className="grid gap-1">
+            {relatedServices.map((s) => (
+              <li key={s.id}>
                 <Link href={s.path} className="text-sign underline">
                   {s.name}
                 </Link>
               </li>
-            );
-          })}
-        </ul>
-      </section>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <CtaBand title="Plan it with us" text="Send your dates and group size. We reply with a plan and a written price." />
     </Container>

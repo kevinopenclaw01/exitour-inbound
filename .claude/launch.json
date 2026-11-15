@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "entour-built",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["run", "start", "--", "-p", "3210"],
+      "port": 3210
+    },
+    {
+      "name": "entour-dev",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    }
+  ]
+}
