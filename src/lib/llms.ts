@@ -7,7 +7,7 @@ import { dayProduct } from "@/content/pricing";
 import { listedServices } from "@/content/services";
 import { site } from "@/content/site";
 import type { ProductId } from "@/content/types";
-import { localeInfo, localizePath, translatedLangs } from "@/i18n/config";
+import { defaultLang, localeInfo, localizePath, publicLocales } from "@/i18n/config";
 import { dayRateSentence, dayRatesFor } from "./pricing";
 import { productFaqs } from "./productFaqs";
 import { abs } from "./schema";
@@ -62,7 +62,7 @@ export function buildLlmsTxt(): string {
     "",
     "The same pages are published in these languages (same facts, translated):",
     "",
-    ...translatedLangs.map((l) => `- [${localeInfo[l].english}](${abs(localizePath("/", l))})`),
+    ...publicLocales.filter((l) => l !== defaultLang).map((l) => `- [${localeInfo[l].english}](${abs(localizePath("/", l))})`),
     "",
   );
   return out.join("\n");

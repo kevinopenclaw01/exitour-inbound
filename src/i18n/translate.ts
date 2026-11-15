@@ -7,6 +7,7 @@ import ja from "./messages/ja.json";
 import th from "./messages/th.json";
 import tl from "./messages/tl.json";
 import vi from "./messages/vi.json";
+import ko from "./messages/ko.json";
 import zh from "./messages/zh.json";
 
 // 번역 함수. 사전의 열쇠는 영어 원문 그대로다(src/i18n/source.json이 열쇠 목록, tests/i18n.test.ts가 빠진 번역을 찾는다).
@@ -20,7 +21,7 @@ import zh from "./messages/zh.json";
 export type Dictionary = Record<string, string>;
 export { interpolate, type Vars };
 
-const dictionaries: Record<Exclude<Lang, "en">, Dictionary> = { zh, ja, es, id, th, tl, vi };
+const dictionaries: Record<Exclude<Lang, "en">, Dictionary> = { zh, ja, es, id, th, tl, vi, ko };
 
 export function dictionaryFor(lang: Lang): Dictionary {
   return lang === defaultLang ? {} : dictionaries[lang as Exclude<Lang, "en">];

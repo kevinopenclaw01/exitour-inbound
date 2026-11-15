@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { localeInfo, localizePath, locales } from "@/i18n/config";
+import { localeInfo, localizePath, publicLocales } from "@/i18n/config";
 import { englishOnlyRoutes, publicRoutes } from "@/lib/routes";
 import { abs } from "@/lib/schema";
 
@@ -12,10 +12,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const lastModified = new Date(`${r.updated}T00:00:00+09:00`);
     if (englishOnly.has(r.path)) return [{ url: abs(r.path), lastModified, priority: r.priority }];
     const languages = Object.fromEntries([
-      ...locales.map((l) => [localeInfo[l].tag, abs(localizePath(r.path, l))]),
+      ...publicLocales.map((l) => [localeInfo[l].tag, abs(localizePath(r.path, l))]),
       ["x-default", abs(r.path)],
     ]);
-    return locales.map((l) => ({
+    // 검토용 한국어판은 싣지 않는다.
+    return publicLocales.map((l) => ({
       url: abs(localizePath(r.path, l)),
       lastModified,
       priority: r.priority,

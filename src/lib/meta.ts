@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { articles } from "@/content/articles";
 import { pages, type PageKey, type PageMeta } from "@/content/pages";
 import { site } from "@/content/site";
-import { defaultLang, isLang, localeInfo, localizePath, locales, type Lang } from "@/i18n/config";
+import { defaultLang, isLang, isReviewLang, localeInfo, localizePath, publicLocales, type Lang } from "@/i18n/config";
 import { translator } from "@/i18n/translate";
 
 // 쪽별 메타데이터(제목·설명·canonical·공유 그림)를 한 모양으로 만든다.
@@ -53,7 +53,8 @@ export function ogEntries(): { key: string; title: string; sub: string }[] {
 /** 언어별 주소 묶음(hreflang). 영어만 있는 쪽은 넣지 않는다. x-default는 영어 쪽. */
 export function languageAlternates(path: string): Record<string, string> {
   const out: Record<string, string> = {};
-  for (const l of locales) out[localeInfo[l].tag] = localizePath(path, l);
+  // 검토용 언어(한국어)는 넣지 않는다(src/i18n/config.ts의 reviewLangs).
+  for (const l of publicLocales) out[localeInfo[l].tag] = localizePath(path, l);
   out["x-default"] = path;
   return out;
 }
@@ -75,7 +76,7 @@ function social(
       type,
       siteName: site.brand,
       locale: localeInfo[lang].ogLocale,
-      ...(translated ? { alternateLocale: locales.filter((l) => l !== lang).map((l) => localeInfo[l].ogLocale) } : {}),
+      ...(translated ? { alternateLocale: publicLocales.filter((l) => l !== lang).map((l) => localeInfo[l].ogLocale) } : {}),
       title,
       description,
       url: localizePath(path, lang),
@@ -94,7 +95,8 @@ export function pageMetadata(key: PageKey, options: { published?: boolean; lang?
   const lang = options.lang ?? defaultLang;
   const t = translator(lang);
   const page: PageMeta = pages[key];
-  const index = page.index !== false && options.published !== false;
+  // 검토용 언어 쪽은 검색엔진에 내보내지 않는다.
+  const index = page.index !== false && options.published !== false && !isReviewLang(lang);
   const translated = !englishOnlyPages.has(key);
   const title = t(page.title);
   const description = t(page.description);
@@ -130,8 +132,11 @@ export function articleMetadata(
   return {
     title,
     description,
-    alternates: { canonical: localizePath(path, lang), languages: languageAlternates(path) },
-    robots: indexRobots,
+    alternates: {
+      canonical: localizePath(path, lang),
+      ...(isReviewLang(lang) ? {} : { languages: languageAlternates(path) }),
+    },
+    robots: isReviewLang(lang) ? noindexRobots : indexRobots,
     ...social(lang, title, description, path, articleOgKey(article.slug), "article", article.updated),
   };
 }

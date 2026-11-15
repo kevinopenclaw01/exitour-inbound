@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { publishedLegalDocs } from "@/content/legal";
 import { nav, site } from "@/content/site";
-import { localeInfo, localizePath, locales } from "@/i18n/config";
+import { isReviewLang, localeInfo, localizePath, publicLocales } from "@/i18n/config";
 import { getT } from "@/i18n/server";
 import type { Translator } from "@/i18n/translate";
 import { ContactList } from "./ContactList";
@@ -19,6 +19,11 @@ export async function SiteHeader() {
   const plan = { href: t.href("/plan"), label: t("Plan my trip") };
   return (
     <header className="relative border-b border-line bg-surface">
+      {isReviewLang(t.lang) ? (
+        <p className="bg-brown-soft px-4 py-1.5 text-center text-xs text-brown">
+          사장님 검토용 한국어판입니다. 손님에게는 보이지 않고 검색에도 나오지 않습니다(noindex).
+        </p>
+      ) : null}
       <Container className="flex items-center justify-between gap-3 py-3">
         <Link href={t.href("/")} className="flex shrink-0 items-baseline gap-2">
           <span className="font-display text-lg tracking-tight text-sign-deep">{site.brand}</span>
@@ -35,7 +40,8 @@ export async function SiteHeader() {
           <LanguageMenu lang={t.lang} label={t("Language")} />
           <Link
             href={plan.href}
-            className="rounded-md bg-sign px-3 py-2 text-sm font-semibold whitespace-nowrap text-white hover:bg-sign-deep"
+            // 휴대폰에서는 숨긴다(언어마다 글자 길이가 달라 머리글이 넘친다). 접는 메뉴 맨 아래와 첫 화면 버튼에 같은 링크가 있다.
+            className="hidden rounded-md bg-sign px-3 py-2 text-sm font-semibold whitespace-nowrap text-white hover:bg-sign-deep sm:inline-block"
           >
             {plan.label}
           </Link>
@@ -115,7 +121,7 @@ export async function SiteFooter() {
       <nav aria-label={t("Language")} className="border-t border-line">
         <Container>
           <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1 py-3 text-sm">
-            {locales.map((l) => (
+            {publicLocales.map((l) => (
               <li key={l}>
                 <Link
                   href={localizePath("/", l)}
