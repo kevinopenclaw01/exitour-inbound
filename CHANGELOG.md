@@ -1,5 +1,10 @@
 # 변경 기록
 
+## 2026-11-16 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 연락 방법 고르기, 새 요청 카톡 알림 (사장님 "email, whatsapp, line, kakaotalk 중 고르게, 리퀘스트가 카톡으로 오게, 네이버·부럽·마리트와 같은 방으로")
+
+- `/plan` 폼: 「How should we contact you?」에서 WhatsApp·Email·LINE·KakaoTalk 중 하나를 고르면 그 방법의 칸(번호·주소·ID)이 열린다. 방법별 검사(이메일 모양, WhatsApp 숫자 7개 이상, ID 2자 이상). DB `contact_method` 칸, 요청 메시지 `Reply by: LINE …`. 새 문장 11개 × 8개 언어 번역
+- 카톡 알림: 사장님 PC의 `semi ochestra\자동화\entour\Relay-EntourInquiries.mjs`가 2분마다(작업 스케줄러 「Entour Korea Inquiry Kakao」, 창 없음) 아직 안 알린 요청을 가져와 예약 알림과 같은 방(업무방·저장소, `자동화\reservation\pipeline.json` rooms)에 보낸다. 23~7시는 쉬고 아침에 보낸다. DB 함수 `inquiry_relay_pending`·`inquiry_relay_mark`는 PC 열쇠(`C:\AI\entour-relay\relay.env`)의 해시가 맞을 때만 동작(`supabase/migrations/20261116150000_…`). 2분마다 DB를 읽어 무료 Supabase가 7일 무접속으로 멈추는 것도 막는다
+
 ## 2026-11-16 — Claude (Claude Code, 사장님 PC, Opus 5.5) — entour.kr 운영 배포 (사장님 "entour.kr 샀어, 실제 도메인 주소로 배포하자")
 
 - Vercel 프로젝트 `entour-korea` 만들고 운영 배포, 도메인 `entour.kr`·`www.entour.kr` 연결(가비아 DNS A 2개·CNAME 1개). `www`는 `entour.kr`로 308 이동(`next.config.ts`)
