@@ -1,5 +1,15 @@
 # 변경 기록
 
+## 2026-11-16 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 판매가 확정, 구매 화면(/book) (사장님 "판매가는 넷가 +8만 원, 달러는 자동으로 맞춰서. 판매가와 구매하는 거 만들어 줘")
+
+- 네 칸 판매가 확정(`src/content/pricing.ts`): 기사만 서울 ₩327,700·경기 ₩385,600, 기사 겸 가이드 서울 ₩430,000·경기 ₩480,000. 넷가·계산 근거는 저장소 밖 보고서에만 둔다
+- 달러 참고값: `krwPerUsd = 1340`(한 숫자), 5달러 단위 반올림, 화면에 "≈ US$…". 결제는 원화
+- 가격표 칸마다 「Book this day」 → `/book?product=…&region=…`
+- `/book`: 상품·지역·날짜·일수(1~14)·인원(1~7)·호텔 → 합계가 바로 나오고 「Book now」. 서버(`/api/booking`)가 금액을 다시 계산해 `inquiries`에 `kind='booking'`·`region`·`price_krw`·`price_usd`로 저장(`supabase/migrations/20261116190000_bookings.sql`, 적용함). 카톡에는 「[Entour Korea 예약(구매)] … 금액 … 결제 링크 보내야 함」으로 간다
+- 결제: 지금은 사장님이 기사·차를 확인한 뒤 결제 링크를 보내는 방식(화면 문구 그대로). PayPal·토스 중 정하면 링크를 붙인다
+- `check:pages` 6번 규칙: 화면의 ₩ 숫자는 pricing.ts 확정값(또는 그 배수)만 허용으로 바꿈
+- 검사: lint·typecheck·test 136·build·check:pages(212쪽) 통과. 로컬에서 예약 1건 보내 DB·카톡 문구(발송 없이) 확인 뒤 지움
+
 ## 2026-11-16 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 연락 방법 고르기, 새 요청 카톡 알림 (사장님 "email, whatsapp, line, kakaotalk 중 고르게, 리퀘스트가 카톡으로 오게, 네이버·부럽·마리트와 같은 방으로")
 
 - `/plan` 폼: 「How should we contact you?」에서 WhatsApp·Email·LINE·KakaoTalk 중 하나를 고르면 그 방법의 칸(번호·주소·ID)이 열린다. 방법별 검사(이메일 모양, WhatsApp 숫자 7개 이상, ID 2자 이상). DB `contact_method` 칸, 요청 메시지 `Reply by: LINE …`. 새 문장 11개 × 8개 언어 번역

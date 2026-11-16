@@ -101,6 +101,8 @@
 
 ## 6. 배포 순서 (사장님 승인 뒤)
 
+> **2026-11-16 판매가·구매**: 네 칸 판매가 확정(`pricing.ts`), 달러는 `krwPerUsd` 한 숫자로 환산. 구매 화면 `/book` → 예약은 `inquiries`(`kind='booking'`, 금액 포함) → 카톡 「예약(구매)」. 사장님이 기사·차 확인 뒤 결제 링크를 보낸다(결제 방식 PayPal/토스는 결정 대기).
+
 > **2026-11-16 카톡 알림**: 새 요청은 사장님 PC가 2분마다 DB에서 가져와 업무방·저장소 카톡으로 보낸다(`C:\Users\kevin\Desktop\바탕화면\AI\semi ochestra\자동화\entour\Relay-EntourInquiries.mjs`, 작업 「Entour Korea Inquiry Kakao」, 로그 `C:\AI\entour-relay\relay.log`). PC가 꺼져 있으면 요청은 DB에 남았다가 켜진 뒤 간다. 7장의 텔레그램·이메일은 여전히 선택.
 
 > **2026-11-16: 2·3번 완료**(Vercel `entour-korea`, 도메인 `https://entour.kr`, `docs/08` 1장). 4번은 운영 주소로 시험 요청 1건 저장 확인 후 행 삭제(알림 변수 없음). 5·6·7번과 3장의 값은 남았다.

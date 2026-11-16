@@ -75,8 +75,10 @@ describe("llms.txt prices", () => {
   it("does not expose draft rates", () => {
     const txt = buildLlmsTxt();
     expect(txt).not.toContain("draft");
-    expect(txt).not.toMatch(/₩\s?\d/);
-    expect(txt).not.toMatch(/480,?000|540,?000|230,?000/);
+    // 확정값(2026-11-16 네 칸)만 나온다. 숨긴 가이드 투어 초안(230,000)은 나오지 않는다.
+    expect(txt).not.toMatch(/230,?000/);
+    const amounts = [...txt.matchAll(/₩([\d,]+)/g)].map((m) => Number(m[1]!.replace(/,/g, "")));
+    for (const a of amounts) expect([327700, 385600, 430000, 480000]).toContain(a);
   });
 });
 

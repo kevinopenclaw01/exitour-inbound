@@ -46,7 +46,8 @@ describe("the two products", () => {
       expect(faqs).toHaveLength(2);
       const text = faqs.map((f) => f.a).join(" ");
       expect(text).toContain(`${dayProduct.hours} hours`);
-      expect(text).not.toMatch(/₩\s?\d|480|540/);
+      // 2026-11-16부터 네 칸 모두 확정값이라 확정값만 나온다(초안 숫자 230,000은 나오지 않는다).
+      expect(text).not.toMatch(/230,?000/);
     }
   });
 });

@@ -14,20 +14,28 @@ describe("structured data", () => {
   });
 
   it("puts no Offer on the two products while no cell is confirmed", () => {
-    expect(serviceLd(getService("private-driver"))).not.toHaveProperty("offers");
-    expect(serviceLd(getService("driver-guide"))).not.toHaveProperty("offers");
-    expect(JSON.stringify(serviceLd(getService("driver-guide")))).not.toMatch(/480000|540000/);
+    const unconfirmed = dayRates.map((r) => ({ ...r, status: "draft" as const }));
+    expect(serviceLd(getService("private-driver"), { dayRates: unconfirmed })).not.toHaveProperty("offers");
+    expect(serviceLd(getService("driver-guide"), { dayRates: unconfirmed })).not.toHaveProperty("offers");
+    expect(JSON.stringify(serviceLd(getService("driver-guide"), { dayRates: unconfirmed }))).not.toMatch(/430000|480000/);
   });
 
   it("adds an Offer only for a confirmed cell", () => {
     const rates = dayRates.map((r) =>
-      r.service === "driver-guide" && r.region === "gyeonggi" ? { ...r, priceKrw: 111000, status: "confirmed" as const } : r,
+      r.service === "driver-guide" && r.region === "gyeonggi"
+        ? { ...r, priceKrw: 111000, status: "confirmed" as const }
+        : { ...r, status: "draft" as const },
     );
     const ld = serviceLd(getService("driver-guide"), { dayRates: rates }) as { offers?: { name: string; price: number; priceCurrency: string }[] };
     expect(ld.offers).toHaveLength(1);
     expect(ld.offers?.[0]?.price).toBe(111000);
     expect(ld.offers?.[0]?.priceCurrency).toBe("KRW");
     expect(ld.offers?.[0]?.name).toContain("Gyeonggi");
+  });
+
+  it("puts the owner's confirmed prices on both products (2026-11-16)", () => {
+    const ld = serviceLd(getService("driver-guide")) as { offers?: { price: number }[] };
+    expect(ld.offers?.map((o) => o.price)).toEqual([430000, 480000]);
   });
 
   it("never puts draft or on-request prices into offers for other services", () => {

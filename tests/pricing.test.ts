@@ -3,13 +3,16 @@ import { dayRates } from "@/content/pricing";
 import type { DayRate, PriceRule } from "@/content/types";
 import {
   dayPriceText,
+  dayQuote,
   dayRate,
   dayRateSentence,
   dayTerms,
   estimate,
   findRule,
   formatKrw,
+  formatUsdApprox,
   joinList,
+  usdFromKrw,
   priceText,
   publishableDayRates,
   publishableRates,
@@ -143,6 +146,18 @@ describe("the live table today", () => {
       expect(seoul.items.parking).toBe(true);
       expect(seoul.noLateFinishLimit).toBe(true);
     }
+  });
+  it("shows the owner's selling prices with a dollar estimate (2026-11-16)", () => {
+    expect(dayPriceText(dayRate("private-driver", "seoul"))).toBe("₩327,700");
+    expect(dayPriceText(dayRate("driver-guide", "gyeonggi"))).toBe("₩480,000");
+    expect(formatUsdApprox(430000, 1340)).toBe("≈ US$320");
+    expect(usdFromKrw(327700, 1340)).toBe(245);
+  });
+  it("quotes a booking from confirmed cells only", () => {
+    expect(dayQuote("driver-guide", "seoul", 2)).toMatchObject({ dayKrw: 430000, totalKrw: 860000 });
+    expect(dayQuote("driver-guide", "seoul", 0)).toBeNull();
+    const draft = dayRates.map((r) => ({ ...r, status: "draft" as const }));
+    expect(dayQuote("driver-guide", "seoul", 1, draft)).toBeNull();
   });
   it("does not show any price while no cell is confirmed", () => {
     for (const rate of dayRates) {

@@ -1,4 +1,6 @@
 import { contactMethods, heardFromLabels, inquiryErrorText, serviceOptions } from "@/lib/inquiry";
+import { productLabels, productOrder, regionLabels, regionOrder } from "@/content/pricing";
+import { bookingErrorText } from "@/lib/booking";
 import { msg } from "./msg";
 
 // 여행 요청 폼(브라우저에서 도는 조각)에 나오는 영어 문장 전부. 서버(plan 쪽)가 이 목록만 번역해 폼에 넘긴다.
@@ -43,6 +45,44 @@ export const formUi = {
   nextMonth: msg("Next month"),
   koreaTime: msg("Dates are in Korea time."),
 } as const;
+
+/** 구매 화면(/book, BookingForm)에만 나오는 문장. 나머지는 formUi와 같은 문장을 쓴다. */
+export const bookingUi = {
+  product: msg("What do you need?"),
+  region: msg("Where?"),
+  passengers: msg("Passengers"),
+  language: msg("Language for your driver or guide"),
+  pickup: msg("Hotel or pick-up address"),
+  notes: msg("Anything we should know?"),
+  notesPlaceholder: msg("For example: places you want to visit, start time, children's ages, luggage"),
+  summary: msg("Your price"),
+  perDay: msg("{price} a day × {days} days"),
+  total: msg("Total"),
+  perGroup: msg("per group, not per person"),
+  usdNote: msg("The US dollar amount is an estimate. The price is charged in Korean won."),
+  howTitle: msg("How booking works"),
+  how1: msg("Send this booking. Nothing is charged now."),
+  how2: msg("We check a driver and van for your date and reply on the contact you chose."),
+  how3: msg("We send you a secure payment link. Your booking is confirmed when the payment is received."),
+  book: msg("Book now"),
+  booking: msg("Booking…"),
+  savedTitle: msg("Booking received ({reference})"),
+  savedText: msg("Total {total} ({usd}). We will reply on {method} to confirm your driver and send the payment link. Nothing has been charged yet."),
+  notOpen: msg("Online booking is not open for this choice yet. Send a trip request and we reply with a written price."),
+  bigger: msg("More than 7 passengers, more than 14 days or another region?"),
+  sendRequest: msg("Send a trip request"),
+} as const;
+
+/** 구매 화면이 쓰는 영어 문장(번역해서 넘길 열쇠). 상품·지역 이름은 src/content/pricing.ts의 것을 쓴다. */
+export function bookingStrings(): string[] {
+  return [
+    ...formStrings(),
+    ...Object.values(bookingUi),
+    ...Object.values(bookingErrorText),
+    ...productOrder.flatMap((p) => [productLabels[p].name, productLabels[p].hint]),
+    ...regionOrder.flatMap((r) => [regionLabels[r].name, regionLabels[r].hint]),
+  ];
+}
 
 /** 폼이 쓰는 모든 영어 문장(번역해서 넘길 열쇠). */
 export function formStrings(): string[] {

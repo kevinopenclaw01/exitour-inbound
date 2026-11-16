@@ -22,6 +22,7 @@ export function publicRoutes(): PublicRoute[] {
     ...services.filter((s) => s.listed).map((s) => ({ path: s.path, title: s.name, updated: s.updated, priority: 0.9 })),
     { path: "/prices", title: "Prices", updated, priority: 0.9 },
     { path: "/day-plans", title: "10-hour day plans", updated, priority: 0.8 },
+    { path: "/book", title: "Book", updated: "2026-11-16", priority: 0.7 },
     { path: "/plan", title: "Plan my trip", updated, priority: 0.7 },
     { path: "/faq", title: "FAQ", updated, priority: 0.7 },
     { path: "/about", title: "About us", updated, priority: 0.5 },

@@ -12,8 +12,16 @@ import type { CostItemId, DayRate, PriceRule, ProductId, RegionId } from "./type
 //   - 하루 10시간, 스타리아 한 대, 최대 7인 탑승, 팀당 값
 //   - 서울 상품: 기름·통행료·주차 포함, 밤 종료 시간 제한 없음
 //   - 서울 시내와 경기권은 정해진 상품, 그 밖의 지역은 상담
-// ■ 아직 받지 못한 것(null): 네 칸의 값, 경기 상품의 기름·통행료·주차, 기사 식사, 입장료, 초과 시간 값, 취소 규정
+// ■ 네 칸의 값: 2026-11-16 사장님 「판매가는 넷가 +8만 원, 달러는 자동으로 맞춰서」 → 네 칸 모두 confirmed.
+//   넷가와 계산 근거는 저장소에 적지 않는다(보고서: 미디어팀\밀우전\보고서\클로드6-11-16_EntourKorea_판매가_구매.md).
+// ■ 아직 받지 못한 것(null): 경기 상품의 기름·통행료·주차, 기사 식사, 입장료, 초과 시간 값, 취소 규정
 //   (docs/10_narrow-launch.md "사장님께 받을 것")
+
+/**
+ * 달러 표시용 환율(원 → 달러). 달러 값은 화면에 "≈ US$…"로만 나오고, 손님이 실제로 내는 값은 원화다.
+ * 2026-11-16 클룩 표시값(₩236,000 = US$176.69)에서 거꾸로 계산한 값. 환율이 크게 바뀌면 이 숫자 하나만 고친다.
+ */
+export const krwPerUsd = 1340;
 
 /** 네 칸에 공통인 조건. 사장님 확정(2026-11-15~16). */
 export const dayProduct = {
@@ -54,8 +62,8 @@ export const dayRates: DayRate[] = [
   {
     service: "private-driver",
     region: "seoul",
-    priceKrw: null,
-    status: "on-request",
+    priceKrw: 327700,
+    status: "confirmed",
     items: { ...seoulItems },
     extraHourKrw: null,
     noLateFinishLimit: true,
@@ -63,8 +71,8 @@ export const dayRates: DayRate[] = [
   {
     service: "private-driver",
     region: "gyeonggi",
-    priceKrw: null,
-    status: "on-request",
+    priceKrw: 385600,
+    status: "confirmed",
     items: { ...gyeonggiItems },
     extraHourKrw: null,
     noLateFinishLimit: null,
@@ -72,9 +80,8 @@ export const dayRates: DayRate[] = [
   {
     service: "driver-guide",
     region: "seoul",
-    // 2026-10-24 초안(파트너 원가 + 제안 마진, docs/06). 10시간·통행료·주차 포함 조건이 정해지기 전의 값이라 다시 정해야 한다. 화면에 나가지 않는다.
-    priceKrw: 480000,
-    status: "draft",
+    priceKrw: 430000,
+    status: "confirmed",
     items: { ...seoulItems },
     extraHourKrw: null,
     noLateFinishLimit: true,
@@ -82,9 +89,8 @@ export const dayRates: DayRate[] = [
   {
     service: "driver-guide",
     region: "gyeonggi",
-    // 위와 같은 초안. 화면에 나가지 않는다.
-    priceKrw: 540000,
-    status: "draft",
+    priceKrw: 480000,
+    status: "confirmed",
     items: { ...gyeonggiItems },
     extraHourKrw: null,
     noLateFinishLimit: null,

@@ -7,7 +7,7 @@
 //  3) FAQPage·BreadcrumbList·Article·Service·ItemList·TravelAgency·WebSite의 필수 칸
 //  4) 쪽마다 <title>·description·canonical·og:image가 있고, 제목과 설명이 다른 쪽과 겹치지 않으며, 설명이 160자 이하
 //  5) 숨긴 쪽은 noindex, 공개 쪽은 noindex가 아니다
-//  6) 화면·JSON-LD 어디에도 초안 값(₩ 숫자)이나 "draft"가 없다(확정값이 생기면 그 값만 허용)
+//  6) 화면·JSON-LD 어디에도 초안 값(₩ 숫자)이나 "draft"가 없다(화면의 ₩ 숫자는 pricing.ts의 확정값만 허용)
 //  7) 언어판(2026-11-16): <html lang>이 주소의 언어와 맞고, 번역된 공개 쪽에는 8개 언어 hreflang과 x-default가 있다
 // 빌드 결과의 쪽 이름은 "<언어>/<주소>"다(영어 홈은 "en", 중국어 가격은 "zh/prices").
 // 온라인 검증기(구글 리치 결과 테스트, validator.schema.org)는 공개 주소가 필요해서 배포 뒤에 돌린다.
@@ -46,6 +46,10 @@ function walk(node, visit, path = "$") {
 const need = (page, node, path, keys) => {
   for (const key of keys) if (node[key] === undefined) fail(page, `${node["@type"]} at ${path} is missing "${key}"`);
 };
+
+// 확정된 판매가(src/content/pricing.ts에서 status: "confirmed"인 priceKrw).
+const pricingSource = readFileSync(fileURLToPath(new URL("../src/content/pricing.ts", import.meta.url)), "utf8");
+const confirmedKrw = [...pricingSource.matchAll(/priceKrw:\s*(\d+),\s*status:\s*"confirmed"/g)].map((m) => Number(m[1]));
 
 const titles = new Map();
 const descriptions = new Map();
@@ -116,7 +120,11 @@ for (const file of htmlFiles(appDir)) {
   // ── 초안 값이 새어 나가지 않았는지(스크립트·스타일을 뺀 본문과 JSON-LD)
   const visible = html.replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>/g, "").replace(/<style[\s\S]*?<\/style>/g, "");
   if (/draft rate/i.test(visible)) fail(page, 'the words "draft rate" are on the page');
-  if (/₩\s?\d/.test(visible) && !/"@type":"Offer"/.test(html)) fail(page, "a won amount is shown but there is no confirmed Offer");
+  // 2026-11-16부터 네 칸이 확정값이다. 화면의 원화 숫자는 pricing.ts의 확정값(또는 그 배수: 구매 화면의 합계)만 허용한다.
+  for (const m of visible.matchAll(/₩\s?([\d,]+)/g)) {
+    const amount = Number(m[1].replace(/,/g, ""));
+    if (!confirmedKrw.some((c) => amount % c === 0 && amount / c <= 14)) fail(page, `a won amount (₩${m[1]}) is not a confirmed price`);
+  }
 
   // ── JSON-LD
   const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);

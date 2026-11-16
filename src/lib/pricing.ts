@@ -1,4 +1,4 @@
-import { costItemLabels, costItemOrder, dayProduct, dayRates, priceRules, regionLabels } from "@/content/pricing";
+import { costItemLabels, costItemOrder, dayProduct, dayRates, krwPerUsd, priceRules, regionLabels } from "@/content/pricing";
 import { site } from "@/content/site";
 import type { CostItemId, DayRate, PriceRule, ProductId, RegionId, ServiceId, VehicleId } from "@/content/types";
 import { en, type Translator } from "@/i18n/translate";
@@ -64,7 +64,7 @@ export function extraHourText(rate: DayRate, t: Translator = en): string | null 
 export function dayRateSentence(rate: DayRate, t: Translator = en): string {
   const terms = dayTerms(rate, t);
   const price = isConfirmed(rate)
-    ? t("{price} per group", { price: dayPriceText(rate, undefined, t) })
+    ? t("{price} per group", { price: `${formatKrw(rate.priceKrw)} (${formatUsdApprox(rate.priceKrw)})` })
     : t.lowerFirst(dayPriceText(rate, undefined, t));
   const parts = [t("{region}: {price}.", { region: t(regionLabels[rate.region].name), price })];
   if (terms.included.length > 0) parts.push(t("Included: {items}.", { items: t.lowerFirst(t.list(terms.included)) }));
@@ -136,6 +136,36 @@ export function estimate(input: {
 
 export function formatKrw(value: number): string {
   return `₩${value.toLocaleString("en-US")}`;
+}
+
+/** 원화를 달러로(표시용, 5달러 단위 반올림). 환율은 src/content/pricing.ts의 krwPerUsd 하나. */
+export function usdFromKrw(krw: number, rate: number = krwPerUsd): number {
+  return Math.round(krw / rate / 5) * 5;
+}
+
+/** "≈ US$245" — 달러는 참고값이다(실제 결제 통화는 원화). */
+export function formatUsdApprox(krw: number, rate: number = krwPerUsd): string {
+  return `≈ US$${usdFromKrw(krw, rate).toLocaleString("en-US")}`;
+}
+
+// ── 구매(/book) ─────────────────────────────────────────────────────
+
+export interface DayQuote {
+  service: ProductId;
+  region: RegionId;
+  days: number;
+  dayKrw: number;
+  totalKrw: number;
+  totalUsd: number;
+}
+
+/** 확정된 칸만 값을 낸다(확정 전이면 null → 구매 화면은 견적 요청으로 안내). 서버가 이 값으로 저장한다. */
+export function dayQuote(service: ProductId, region: RegionId, days: number, rates: DayRate[] = dayRates): DayQuote | null {
+  if (!Number.isInteger(days) || days < 1) return null;
+  const rate = rates.find((r) => r.service === service && r.region === region);
+  if (!rate || !isConfirmed(rate)) return null;
+  const totalKrw = rate.priceKrw * days;
+  return { service, region, days, dayKrw: rate.priceKrw, totalKrw, totalUsd: usdFromKrw(totalKrw) };
 }
 
 /** 화면 표시용 가격 문구. 확정가만 숫자로, 초안(draft)과 미정은 견적 문의. */

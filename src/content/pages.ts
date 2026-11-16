@@ -42,6 +42,13 @@ export const pages = {
       "Per-group prices for a 10-hour private van day with a driver or a licensed driver-guide in Seoul and Gyeonggi, and what each price includes.",
     og: { title: "Prices per group, not per person", sub: "Driver only or driver-guide. Seoul or Gyeonggi. 10 hours." },
   },
+  book: {
+    path: "/book",
+    title: "Book a private van day in Seoul or Gyeonggi",
+    description:
+      "Choose driver only or a licensed driver-guide, Seoul or Gyeonggi, and your dates. See the price per group straight away and book online.",
+    og: { title: "Book a private van day", sub: "See the price per group and book online" },
+  },
   plan: {
     path: "/plan",
     title: "Plan my trip: send a trip request",

@@ -4,7 +4,7 @@ import { getService } from "@/content/services";
 import type { DayRate, ProductId } from "@/content/types";
 import { getT } from "@/i18n/server";
 import type { Translator } from "@/i18n/translate";
-import { dayPriceText, dayRate, dayTerms, extraHourText, isConfirmed } from "@/lib/pricing";
+import { dayPriceText, dayRate, dayTerms, extraHourText, formatUsdApprox, isConfirmed } from "@/lib/pricing";
 
 // 네 칸 표: 세로는 상품(Driver only / Driver-guide), 가로는 지역(Seoul / Gyeonggi).
 // 홈·/prices·서비스 쪽이 모두 이 조각을 쓰고, 자료는 src/content/pricing.ts 한 곳이다.
@@ -18,8 +18,17 @@ function Cell({ rate, t }: { rate: DayRate; t: Translator }) {
     <div role="cell" className="grid content-start gap-3 bg-surface p-3 sm:p-4">
       <div>
         <p className={`font-bold text-sign-deep ${confirmed ? "text-xl tabular-nums" : "text-base"}`}>{dayPriceText(rate, undefined, t)}</p>
+        {isConfirmed(rate) ? <p className="text-sm text-muted tabular-nums">{formatUsdApprox(rate.priceKrw)}</p> : null}
         <p className="text-xs text-muted">{confirmed ? t("per group, not per person") : t("Per group. Sent before you pay.")}</p>
       </div>
+      {confirmed ? (
+        <Link
+          href={`${t.href("/book")}?product=${rate.service}&region=${rate.region}`}
+          className="justify-self-start rounded-md bg-sign px-4 py-2 text-sm font-semibold text-white hover:bg-sign-deep"
+        >
+          {t("Book this day")}
+        </Link>
+      ) : null}
       <p className="text-sm">
         {t("{hours} hours · {vehicle} · up to {max} passengers", {
           hours: dayProduct.hours,
