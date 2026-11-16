@@ -1,5 +1,12 @@
 # 변경 기록
 
+## 2026-11-16 — Claude (Claude Code, 사장님 PC, Opus 5.5) — entour.kr 운영 배포 (사장님 "entour.kr 샀어, 실제 도메인 주소로 배포하자")
+
+- Vercel 프로젝트 `entour-korea` 만들고 운영 배포, 도메인 `entour.kr`·`www.entour.kr` 연결(가비아 DNS A 2개·CNAME 1개). `www`는 `entour.kr`로 308 이동(`next.config.ts`)
+- `vercel.json`: 함수 지역 `icn1`(Supabase 서울과 가깝게). `.vercelignore`: `.env*`·`.claude` 등 올리지 않음
+- Supabase `exitour-inbound`가 멈춰 있어 다시 켬. 운영 주소에서 시험 요청 저장 확인 후 삭제
+- 확인: 9개 언어 첫 화면·`/prices`·`/plan`·사이트맵·robots·`llms.txt`·공유 그림 200, canonical·hreflang·사이트맵이 `https://entour.kr`, `/ko` noindex, `/zh/terms` 404
+
 ## 2026-11-16 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 한국어 검토판 추가, 다국어 마무리 검사 (사장님 "한국어 버전도 만들어줘, 내가 체크하기 위해 필요해")
 
 - `/ko/…` 한국어판(882문장, 영어 뜻 그대로 옮김). 사장님 검토용이라 noindex, hreflang·사이트맵·`llms.txt`·바닥글 언어 목록에서 뺐고 머리글 언어 단추에만 「한국어 (검토용)」으로 있다. 화면 맨 위에 검토용 띠. 손님용으로 열려면 `src/i18n/config.ts`의 `reviewLangs`에서 뺀다

@@ -101,6 +101,8 @@
 
 ## 6. 배포 순서 (사장님 승인 뒤)
 
+> **2026-11-16: 2·3번 완료**(Vercel `entour-korea`, 도메인 `https://entour.kr`, `docs/08` 1장). 4번은 운영 주소로 시험 요청 1건 저장 확인 후 행 삭제(알림 변수 없음). 5·6·7번과 3장의 값은 남았다.
+
 1. 3장의 값을 넣고 검사 통과 → `git push`
 2. Vercel: `docs/08_handoff.md` B(프로젝트 Import, 환경변수 `EXITOUR_SUPABASE_URL`·`EXITOUR_SUPABASE_PUBLISHABLE_KEY` + 7장의 알림 변수)
 3. 도메인 구매·연결 → Vercel 환경변수 `NEXT_PUBLIC_SITE_URL=https://도메인` → 다시 배포

@@ -16,8 +16,8 @@
 | Supabase | 프로젝트 `exitour-inbound`(ref `imzbtkzmbkblvtdmkxnk`) + `inquiries` 테이블·RLS 적용. **2026-10-28 PC에서 실제 저장 확인 완료**(API·화면 두 경로, 시험 행은 spam 표시). 앱 변수 이름은 `EXITOUR_SUPABASE_*` |
 | GitHub | 비공개 `kevinopenclaw01/exitour-inbound`, CI(lint·typecheck·test·build) 통과 |
 | 메인 사진·영상 | 사진 3장 `public/images/`에 저장, 1번 단풍길을 `site.heroImage`로 연결(2026-10-28). 영상은 아직(크레딧 승인 대기) |
-| 배포 | 아직. Vercel 연결 전 |
-| 도메인 | 아직. 추천 `entourkorea.com` (구매 가능 여부 미확인) |
+| 배포 | **2026-11-16 운영 배포.** Vercel 프로젝트 `entour-korea`(계정 kevinopenclaw01, 함수 지역 `icn1`), GitHub `main` 연결(push하면 자동 배포). 환경변수 `EXITOUR_SUPABASE_URL`·`EXITOUR_SUPABASE_PUBLISHABLE_KEY`(Production·Preview), `NEXT_PUBLIC_SITE_URL=https://entour.kr`(Production). 알림 변수는 아직 없음 |
+| 도메인 | **`entour.kr`**(2026-11-16 사장님이 가비아에서 구매). 가비아 DNS: A `@` 216.198.79.1 · A `@` 64.29.17.1 · CNAME `www` → `a51c35ee01776997.vercel-dns-017.com.` `www.entour.kr`은 `next.config.ts`에서 `entour.kr`로 308 이동 |
 
 ## 2. PC 처음 준비 (한 번만)
 
