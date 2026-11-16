@@ -6,7 +6,7 @@ export const site = {
   operator: "Exitour",
   tagline: "Private van days in Seoul and Gyeonggi with a driver or a licensed driver-guide",
   description:
-    "Entour Korea arranges 10-hour private van days in Seoul and Gyeonggi for families and small groups: a Hyundai Staria for up to 7 passengers with a driver only, or with a licensed tourist guide who drives. Operated by Exitour, a registered general travel agency in Korea.",
+    "Entour Korea arranges 10-hour private van days in Seoul and Gyeonggi for families and small groups: a Hyundai Staria for up to 7 passengers with a driver only, or with a licensed tourist guide in your language. Operated by Exitour, a registered general travel agency in Korea.",
   // 도메인을 정하면 NEXT_PUBLIC_SITE_URL로 지정한다. 없으면 Vercel 운영 주소, 그것도 없으면(내 PC) localhost.
   url: (
     process.env.NEXT_PUBLIC_SITE_URL ??

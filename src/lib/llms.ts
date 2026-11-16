@@ -3,12 +3,12 @@ import { articles } from "@/content/articles";
 import { crew } from "@/content/crew";
 import { dayPlans } from "@/content/dayPlans";
 import { generalFaqs } from "@/content/faqs";
-import { dayProduct } from "@/content/pricing";
+import { airportRates, dayProduct } from "@/content/pricing";
 import { listedServices } from "@/content/services";
 import { site } from "@/content/site";
 import type { ProductId } from "@/content/types";
 import { defaultLang, localeInfo, localizePath, publicLocales } from "@/i18n/config";
-import { dayRateSentence, dayRatesFor } from "./pricing";
+import { dayRateSentence, dayRatesFor, formatKrw, formatUsdApprox, isConfirmed } from "./pricing";
 import { productFaqs } from "./productFaqs";
 import { abs } from "./schema";
 
@@ -42,7 +42,12 @@ export function buildLlmsTxt(): string {
   out.push("", `## ${dayProduct.hours}-hour day examples`, "", "Examples only; every plan can be changed.", "");
   for (const p of dayPlans) out.push(`- [${p.name}](${abs(`/day-plans#${p.slug}`)}): ${p.summary}`);
   out.push("", "## Other services", "");
-  out.push(`- [${airportTransfer.name}](${abs(airportTransfer.path)}): ${airportTransfer.answer} Quote on request.`);
+  out.push(
+    `- [${airportTransfer.name}](${abs(airportTransfer.path)}): ${airportTransfer.answer} ${airportRates
+      .filter(isConfirmed)
+      .map((r) => `${r.label}: ${formatKrw(r.priceKrw)} (${formatUsdApprox(r.priceKrw)}) per van.`)
+      .join(" ")}`,
+  );
   out.push("", "## Travel guide", "");
   for (const a of articles) out.push(`- [${a.title}](${abs(`/travel-guide/${a.slug}`)}): ${a.answer}`);
   out.push("", "## FAQ", "");

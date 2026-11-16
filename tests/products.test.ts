@@ -63,9 +63,11 @@ describe("crew section", () => {
     if (!crewLanguageClaim.enabled) {
       expect(crewLanguageLine()).toBeNull();
       // 끝의 "Other languages"(사이트 번역판 목록 — 따갈로그판 쪽 포함)는 가이드 언어 주장이 아니라서 빼고 본다.
+      // 2026-11-16 사장님 확정: 「기사」는 요청 시 따갈로그 가능(가이드 자격 언어와는 다른 주장이라 빼고 본다).
+      const strip = (s: string) => s.replace(/Tagalog-speaking driver/g, "");
       const [facts] = buildLlmsTxt().split("## Other languages");
-      expect(facts).not.toContain("Tagalog");
-      expect(JSON.stringify([listedServices, generalFaqs, site.guideLanguages])).not.toContain("Tagalog");
+      expect(strip(facts!)).not.toContain("Tagalog");
+      expect(strip(JSON.stringify([listedServices, generalFaqs, site.guideLanguages]))).not.toContain("Tagalog");
     }
   });
 

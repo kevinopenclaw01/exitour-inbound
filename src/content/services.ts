@@ -51,14 +51,14 @@ export const services: Service[] = [
       "Day trips where you only need the ride",
       "Travellers who do not need a guide",
     ],
-    crew: "A professional driver. Some drivers speak basic English; otherwise you talk through a translation app, and we tell you which before you pay. The driver waits in the parking area while you visit.",
-    includes: ["Hyundai Staria van and driver for 10 hours", "Hotel pick-up and drop-off"],
+    crew: "A professional driver who speaks English. A Tagalog-speaking driver can be arranged on request. The driver waits in the parking area while you visit.",
+    includes: ["Hyundai Staria van and driver for 10 hours", "Hotel pick-up and drop-off", "Luggage can stay in the van at no extra charge"],
     excludes: ["Guiding inside attractions: a driver is not a tour guide"],
     vehicle: "included",
     faqs: [
       {
         q: "Does the driver speak English?",
-        a: "Some drivers speak basic English. We tell you before you pay whether your driver speaks basic English or will use a translation app. If you need explanations at the sights, choose a Driver-Guide instead.",
+        a: "Yes. Our drivers speak English, and a Tagalog-speaking driver can be arranged on request. The driver does not guide inside attractions; if you want explanations at the sights, choose Private Car & Licensed Guide.",
       },
       {
         q: "Can the driver come into Nami Island or a palace with us?",
@@ -70,7 +70,7 @@ export const services: Service[] = [
       },
       {
         q: "Can I book just an airport transfer?",
-        a: "Yes. Airport pick-up and drop-off is quoted separately from the 10-hour day. Tell us your flight, the airport (Incheon or Gimpo), your hotel and how many suitcases you have.",
+        a: "Yes. A one-way transfer between Incheon or Gimpo Airport and your hotel in Seoul has a fixed price per van, for up to 5 passengers with luggage. See the airport pick-up and drop-off page.",
       },
     ],
     updated: "2026-11-16",
@@ -81,18 +81,18 @@ export const services: Service[] = [
     name: "Private Car & Licensed Guide",
     listed: true,
     answer:
-      "A licensed tourist guide who also drives your private Hyundai Staria van for a 10-hour day in Seoul or on a Gyeonggi day trip, for up to 7 passengers and priced per group, not per person. One person takes you between places and comes inside the sights to explain them in English. Other regions are arranged by consultation.",
-    tagline: "One person drives, guides and helps with tickets for you.",
+      "A private Hyundai Staria van with a licensed tourist guide in your language for a 10-hour day in Seoul or on a Gyeonggi day trip, for up to 7 passengers and priced per group, not per person. The guide comes inside the sights with you to explain them and help with tickets. Other regions are arranged by consultation.",
+    tagline: "Your own van and a licensed guide who explains each place and helps with tickets.",
     bestFor: [
       "First-time visitors who want the stories behind each place",
       "Day trips such as Nami Island or Suwon Hwaseong Fortress",
       "Travelling with parents or small children",
       "Groups that want tickets and queues handled",
     ],
-    crew: "A tourist guide licensed by the Korean government (관광통역안내사) who drives the van and goes into each attraction with you. For a group larger than 7, ask us before you book.",
+    crew: "A tourist guide licensed by the Korean government (관광통역안내사) in your language, who goes into each attraction with you. For a group larger than 7, ask us before you book.",
     includes: [
-      "Hyundai Staria van and licensed driver-guide for 10 hours",
-      "Guiding inside attractions in English",
+      "Hyundai Staria van and licensed guide for 10 hours",
+      "Guiding inside attractions in your language",
       "Help with tickets, queues and restaurant ordering",
       "Hotel pick-up and drop-off",
     ],
@@ -101,7 +101,7 @@ export const services: Service[] = [
     faqs: [
       {
         q: "What is the difference between a driver and a driver-guide?",
-        a: "A driver only drives and waits at the car park. A driver-guide is a licensed tourist guide who drives and also goes inside with you to explain the place, buy tickets and help with food.",
+        a: "A driver only drives and waits at the car park. On a driver-guide day, a licensed tourist guide in your language goes inside with you to explain the place, buy tickets and help with food.",
       },
       {
         q: "Which languages are available?",

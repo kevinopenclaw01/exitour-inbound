@@ -49,10 +49,11 @@ describe("real photos", () => {
 });
 
 describe("guest photos (back views)", () => {
-  it("stay off until the owner confirms with the guests", () => {
-    // 사장님이 손님께 확인을 받으면 src/content/photos.ts의 guestPhotos.enabled를 켜고 이 기대값을 바꾼다.
-    expect(guestPhotos.enabled).toBe(false);
-    expect(visibleGuestPhotos()).toEqual([]);
+  it("are on with faces blurred (2026-11-16 owner decision)", () => {
+    expect(guestPhotos.enabled).toBe(true);
+    expect(visibleGuestPhotos().length).toBeGreaterThan(0);
+    // 얼굴이 보이는 사진은 가린 편집본만 쓴다(alt에 "faces blurred" 또는 뒷모습 "seen from behind").
+    for (const p of visibleGuestPhotos()) expect(p.alt, p.src).toMatch(/faces blurred|seen from behind|looking through/);
   });
 
   it("are not placed in public/ while they are off, and all exist once on", () => {

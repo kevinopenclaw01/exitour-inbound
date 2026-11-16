@@ -101,7 +101,7 @@ export async function Hero() {
           </h1>
           <p className="max-w-xl text-lg text-muted">
             {t(
-              "A private {vehicle} for up to {max} passengers, in Seoul or on a Gyeonggi day trip. Choose a driver only, or a licensed guide who drives. Priced per group.",
+              "A private {vehicle} for up to {max} passengers, in Seoul or on a Gyeonggi day trip. Choose a driver only, or a licensed guide in your language. Priced per group.",
               { vehicle: dayProduct.vehicle, max: dayProduct.maxPassengers },
             )}
           </p>

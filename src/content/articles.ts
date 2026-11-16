@@ -30,7 +30,7 @@ export const articles: Article[] = [
           head: ["Option", "Who comes", "Inside attractions", "Good for"],
           rows: [
             ["Car & driver", "Driver only", "Driver waits at the car park", "Transfers, shopping, travellers who plan their own day"],
-            ["Car & licensed guide", "Licensed guide who drives", "Guide comes in and explains", "First visits, day trips, families"],
+            ["Car & licensed guide", "Licensed guide in your language", "Guide comes in and explains", "First visits, day trips, families"],
             ["Guide only", "Licensed guide, no van", "Guide comes in and explains", "Seoul walking days, subway trips"],
           ],
         },

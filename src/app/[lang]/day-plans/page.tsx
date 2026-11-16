@@ -103,7 +103,7 @@ export default async function Page() {
         <h2 className="text-2xl font-bold">{t("Driver only or driver-guide?")}</h2>
         <p>
           {t.rich(
-            "The same day works both ways. With a <driver>driver only</driver>, the driver takes you to each entrance and waits while you visit on your own. With a <guide>driver-guide</guide>, a licensed tourist guide drives and comes into each place with you.",
+            "The same day works both ways. With a <driver>driver only</driver>, the driver takes you to each entrance and waits while you visit on your own. With a <guide>driver-guide</guide>, a licensed tourist guide in your language comes into each place with you.",
             {
               driver: (chunk) => (
                 <Link href={t.href("/private-driver")} className="text-sign underline">

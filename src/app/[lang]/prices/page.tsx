@@ -42,7 +42,7 @@ export default async function Page() {
         <h2 className="text-2xl font-bold">{t("What changes the price")}</h2>
         <BulletList
           items={[
-            t("Who comes with you: a driver only, or a licensed tourist guide who drives"),
+            t("Who comes with you: a driver only, or a licensed tourist guide in your language"),
             t("Area: a day inside Seoul, or a day trip into Gyeonggi"),
             t("Hours: one day is {hours} hours; your written quote states how extra time is charged", { hours: dayProduct.hours }),
             t("Other regions: priced by consultation for your route"),

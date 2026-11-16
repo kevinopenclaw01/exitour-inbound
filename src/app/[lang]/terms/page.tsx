@@ -28,7 +28,7 @@ export default async function Page() {
       <LegalSection title="2. What we arrange">
         <BulletList
           items={[
-            `A private van day of ${dayProduct.hours} hours in a ${dayProduct.vehicle} for up to ${dayProduct.maxPassengers} passengers, in Seoul or on a Gyeonggi day trip, with a driver only or with a licensed tourist guide who drives`,
+            `A private van day of ${dayProduct.hours} hours in a ${dayProduct.vehicle} for up to ${dayProduct.maxPassengers} passengers, in Seoul or on a Gyeonggi day trip, with a driver only or with a licensed tourist guide`,
             "Other regions and other arrangements, by consultation",
             "The van is a registered rental vehicle. The rental is made in the traveller's name and the rental company provides the driver, as Korean law allows for foreign renters",
             "Guiding inside attractions is done only by a holder of the Korean tourist guide licence. A driver who is not a licensed guide does not guide",

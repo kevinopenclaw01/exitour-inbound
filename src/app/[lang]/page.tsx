@@ -49,7 +49,7 @@ export default async function Home() {
       <Container className="grid gap-14 py-10 sm:py-14">
         <AnswerBox updated={site.contentUpdated}>
           {t(
-            "{brand} offers two private van days in Seoul and Gyeonggi: a van with a driver only, or a van with a licensed tourist guide who drives. Each day is {hours} hours in a {vehicle} for up to {max} passengers, priced per group and confirmed in writing before you pay. Other regions are arranged by consultation. It is operated by {operator}, a registered general travel agency in Korea.",
+            "{brand} offers two private van days in Seoul and Gyeonggi: a van with a driver only, or a van with a licensed tourist guide in your language. Each day is {hours} hours in a {vehicle} for up to {max} passengers, priced per group and confirmed in writing before you pay. Other regions are arranged by consultation. It is operated by {operator}, a registered general travel agency in Korea.",
             {
               brand: site.brand,
               hours: dayProduct.hours,

@@ -18,7 +18,7 @@ export const pages = {
     path: "/",
     title: "Entour Korea: private van & driver-guide days in Seoul",
     description:
-      "10-hour private van days in Seoul and Gyeonggi for up to 7 passengers: a Hyundai Staria with a driver only or a licensed guide who drives. Priced per group.",
+      "10-hour private van days in Seoul and Gyeonggi for up to 7 people: a Hyundai Staria with a driver only or a licensed guide in your language. Priced per group.",
     og: { title: "Your own van and driver in Korea", sub: "10-hour private days in Seoul and Gyeonggi, for up to 7" },
   },
   "private-driver": {
@@ -32,8 +32,8 @@ export const pages = {
     path: "/driver-guide",
     title: "Licensed driver-guide with a private van in Seoul, 10 hours",
     description:
-      "A licensed tourist guide who drives your private Hyundai Staria for a 10-hour day in Seoul or Gyeonggi, up to 7 passengers, and explains the sights in English.",
-    og: { title: "Licensed driver-guide with a private van", sub: "One person drives and guides. 10 hours in Seoul or Gyeonggi." },
+      "A private Hyundai Staria with a licensed tourist guide in your language for a 10-hour day in Seoul or Gyeonggi, up to 7 people. The guide explains each sight.",
+    og: { title: "Licensed driver-guide with a private van", sub: "A licensed guide in your language. 10 hours in Seoul or Gyeonggi." },
   },
   prices: {
     path: "/prices",

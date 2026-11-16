@@ -68,7 +68,7 @@ export async function HomePlaceStrip() {
   );
 }
 
-/** 손님 뒷모습 사진 구역. src/content/photos.ts의 guestPhotos.enabled가 꺼져 있으면 아무것도 나오지 않는다. */
+/** 실제 손님 사진 구역(얼굴은 가림). src/content/photos.ts의 guestPhotos.enabled가 꺼져 있으면 아무것도 나오지 않는다. */
 export async function GuestMoments() {
   const photos = visibleGuestPhotos();
   if (photos.length === 0) return null;
@@ -77,7 +77,7 @@ export async function GuestMoments() {
     <section className="grid gap-4">
       <div>
         <h2 className="text-2xl font-bold">{t("Days out with our guests")}</h2>
-        <p className="mt-1 text-muted">{t("Shared with our guests' permission.")}</p>
+        <p className="mt-1 text-muted">{t("Real photos from our guests' days. Faces are blurred to protect their privacy.")}</p>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {t.obj(photos).map((photo) => (

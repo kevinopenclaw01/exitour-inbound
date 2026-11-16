@@ -84,15 +84,50 @@ export type PlacePhotoKey = keyof typeof placePhotos;
 /** 홈 "What fits in 10 hours" 위에 나오는 사진 줄. 첫 화면 사진(site.heroImage)과 겹치지 않게 고른다. */
 export const homePlaceStrip: PlacePhotoKey[] = ["nSeoulTower", "dumulmeori", "namiIsland"];
 
-// ── 손님 뒷모습(얼굴이 보이지 않는 실제 손님 사진) — **꺼 둠**
-// 사장님이 손님께 사용 확인을 받기 전에는 켜지 않는다. 그 전에는 파일도 public/에 넣지 않는다
-// (public/에 넣으면 화면에 걸지 않아도 주소로 열린다. tests/assets.test.ts가 확인한다).
-// 켜는 법: ① 확인받은 사진만 편집본 폴더의 `손님_뒷모습\`에서 public/images/guests/로 복사
-//          ② 아래 photos에서 확인받지 못한 사진을 지우고 ③ enabled를 true로.
-// 켜면 홈에 "Days out with our guests" 구역이 생긴다(src/components/GuestMoments.tsx).
+// ── 실제 손님 사진 — 2026-11-16 사장님 「손님 사진은 블러나 모자이크로 가려서 후기에 내보내 줘」로 켬.
+// 얼굴이 보이는 사진은 얼굴(지나가는 사람 포함)을 모자이크+흐림으로 가린 편집본만 쓴다:
+//   편집본 폴더 `손님_얼굴가림\`(원본 번호·가린 자리: `_작업\boxes.json`). 얼굴이 안 보이는 뒷모습은 `손님_뒷모습\`.
+// 홈에 "Days out with our guests" 구역으로 나온다(src/components/Photos.tsx의 GuestMoments).
+// 후기 글은 지어내지 않는다. 실제 후기를 받으면 따로 넣는다.
 export const guestPhotos: { enabled: boolean; photos: Photo[] } = {
-  enabled: false,
+  enabled: true,
   photos: [
+    {
+      src: "/images/guests/guests-nami-island.webp",
+      alt: "A family of four under the Nami Island sign among autumn trees, faces blurred",
+      width: 1600,
+      height: 1200,
+    },
+    {
+      src: "/images/guests/guests-hanbok-gyeonghoeru.webp",
+      alt: "Three guests in hanbok in front of Gyeonghoeru Pavilion and its pond, faces blurred",
+      width: 1200,
+      height: 1600,
+    },
+    {
+      src: "/images/guests/guests-ginkgo-family.webp",
+      alt: "A family of five on a path in front of a bright yellow ginkgo tree, faces blurred",
+      width: 1200,
+      height: 1600,
+    },
+    {
+      src: "/images/guests/guests-bukchon-family.webp",
+      alt: "A family of five in a hanok alley in Bukchon with N Seoul Tower far behind, faces blurred",
+      width: 1600,
+      height: 1200,
+    },
+    {
+      src: "/images/guests/guests-hanbok-gyotaejeon.webp",
+      alt: "Five guests in hanbok on the steps of a palace hall at Gyeongbokgung, faces blurred",
+      width: 1200,
+      height: 1600,
+    },
+    {
+      src: "/images/guests/guests-pink-muhly.webp",
+      alt: "Two guests in front of a field of pink muhly grass, faces blurred",
+      width: 1600,
+      height: 1200,
+    },
     {
       src: "/images/guests/guests-garden-chairs.webp",
       alt: "Five guests seen from behind, sitting on colourful chairs and looking out over a garden pond",

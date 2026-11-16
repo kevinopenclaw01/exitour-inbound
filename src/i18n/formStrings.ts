@@ -60,6 +60,7 @@ export const bookingUi = {
   total: msg("Total"),
   perGroup: msg("per group, not per person"),
   usdNote: msg("The US dollar amount is an estimate. The price is charged in Korean won."),
+  tip: msg("Tip: US${tip} per person per day, paid separately."),
   howTitle: msg("How booking works"),
   how1: msg("Send this booking. Nothing is charged now."),
   how2: msg("We check a driver and van for your date and reply on the contact you chose."),

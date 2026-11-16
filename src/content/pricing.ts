@@ -1,4 +1,4 @@
-import type { CostItemId, DayRate, PriceRule, ProductId, RegionId } from "./types";
+import type { CostItemId, DayRate, PriceRule, PriceStatus, ProductId, RegionId } from "./types";
 
 // 가격은 이 파일 한 곳에서만 바꾼다(AGENTS.md 절대 규칙).
 //
@@ -34,8 +34,8 @@ export const productOrder: ProductId[] = ["private-driver", "driver-guide"];
 export const regionOrder: RegionId[] = ["seoul", "gyeonggi"];
 
 export const productLabels: Record<ProductId, { name: string; hint: string }> = {
-  "private-driver": { name: "Driver only", hint: "Van + driver. The driver drives and waits; no guiding." },
-  "driver-guide": { name: "Driver-guide", hint: "Van + a licensed tourist guide who drives and comes in with you." },
+  "private-driver": { name: "Driver only", hint: "Van + English-speaking driver. The driver drives and waits; no guiding." },
+  "driver-guide": { name: "Driver-guide", hint: "Van + a licensed tourist guide in your language who comes in with you." },
 };
 
 export const regionLabels: Record<RegionId, { name: string; hint: string }> = {
@@ -119,3 +119,26 @@ export const priceRules: PriceRule[] = [
     status: "on-request",
   },
 ];
+
+// ■ 공항 픽업·샌딩(편도, 차 한 대 값). 2026-11-16 사장님 「인천 픽업·샌딩 11만 원, 서울-김포 9만 원, 편도, 5인까지」.
+//   차는 같은 스타리아지만 7명이 타면 캐리어 자리가 없어서 5명까지로 판다.
+//   새벽·밤 비행기 픽업·드롭, 짐 보관은 추가 요금 없음(사장님 확정).
+export interface AirportRate {
+  airport: "incheon" | "gimpo";
+  label: string;
+  priceKrw: number | null;
+  status: PriceStatus;
+}
+
+export const airportRates: AirportRate[] = [
+  { airport: "incheon", label: "Incheon Airport ↔ hotel in Seoul, one way", priceKrw: 110000, status: "confirmed" },
+  { airport: "gimpo", label: "Gimpo Airport ↔ hotel in Seoul, one way", priceKrw: 90000, status: "confirmed" },
+];
+
+/** 공항 픽업·샌딩 한 대에 태우는 인원(짐 포함). */
+export const airportMaxPassengers = 5;
+
+// ■ 팁(2026-11-16 사장님): 기사만(드라이빙 온리)·공항 픽업은 팁 없음. 기사 겸 가이드는 1인 하루 5달러, 값에 들어 있지 않고 따로 낸다.
+//   짐은 차에 두어도 추가 요금 없음(하루 상품·공항 픽업 공통).
+/** 기사 겸 가이드 팁(1인·하루, 달러). */
+export const guideTipUsdPerPersonPerDay = 5;

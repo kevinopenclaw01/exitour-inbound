@@ -78,7 +78,7 @@ describe("llms.txt prices", () => {
     // 확정값(2026-11-16 네 칸)만 나온다. 숨긴 가이드 투어 초안(230,000)은 나오지 않는다.
     expect(txt).not.toMatch(/230,?000/);
     const amounts = [...txt.matchAll(/₩([\d,]+)/g)].map((m) => Number(m[1]!.replace(/,/g, "")));
-    for (const a of amounts) expect([327700, 385600, 430000, 480000]).toContain(a);
+    for (const a of amounts) expect([327700, 385600, 430000, 480000, 110000, 90000]).toContain(a);
   });
 });
 

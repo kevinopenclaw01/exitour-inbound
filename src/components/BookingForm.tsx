@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
-import { productLabels, productOrder, regionLabels, regionOrder } from "@/content/pricing";
+import { guideTipUsdPerPersonPerDay, productLabels, productOrder, regionLabels, regionOrder } from "@/content/pricing";
 import type { ProductId, RegionId } from "@/content/types";
 import { bookingUi as b, formUi as u } from "@/i18n/formStrings";
 import { messageTranslator, type Messages } from "@/i18n/interpolate";
@@ -353,6 +353,9 @@ export function BookingForm({
             <p className="text-xs text-muted">
               {tr(b.perGroup)} · {tr(b.usdNote)}
             </p>
+            {quote.service === "driver-guide" ? (
+              <p className="text-xs text-muted">{tr(b.tip, { tip: guideTipUsdPerPersonPerDay })}</p>
+            ) : null}
           </>
         ) : (
           <p>{tr(b.notOpen)}</p>

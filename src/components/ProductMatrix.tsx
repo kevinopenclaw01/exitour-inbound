@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { dayProduct, productLabels, productOrder, regionLabels, regionOrder } from "@/content/pricing";
+import { dayProduct, guideTipUsdPerPersonPerDay, productLabels, productOrder, regionLabels, regionOrder } from "@/content/pricing";
 import { getService } from "@/content/services";
 import type { DayRate, ProductId } from "@/content/types";
 import { getT } from "@/i18n/server";
@@ -63,6 +63,10 @@ function Cell({ rate, t }: { rate: DayRate; t: Translator }) {
         ) : null}
       </dl>
       {rate.noLateFinishLimit === true ? <p className="text-sm text-muted">{t("No limit on how late the day can finish.")}</p> : null}
+      <p className="text-sm text-muted">{t("Luggage can stay in the van at no extra charge.")}</p>
+      {rate.service === "driver-guide" ? (
+        <p className="text-sm text-muted">{t("Tip: US${tip} per person per day, paid separately.", { tip: guideTipUsdPerPersonPerDay })}</p>
+      ) : null}
     </div>
   );
 }
