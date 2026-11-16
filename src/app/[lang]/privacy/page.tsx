@@ -32,7 +32,7 @@ export default async function Page() {
         <p>When you send a trip request on this site, we receive what you type into the form:</p>
         <BulletList
           items={[
-            "Your name and the contact you give us (email, WhatsApp number or LINE ID)",
+            "Your name and the contact you give us (email address, WhatsApp number, LINE ID or KakaoTalk ID)",
             "Your trip: service, first date, number of days, group size and guide language",
             "Optional details: hotel or pick-up area, what you would like to do, and how you found us",
             "The address of the page you sent the form from",

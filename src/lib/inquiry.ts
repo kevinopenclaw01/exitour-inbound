@@ -15,6 +15,27 @@ export const serviceOptions = [
 
 export type ServiceChoice = (typeof serviceOptions)[number]["value"];
 
+/**
+ * 손님이 답을 받을 연락 방법(2026-11-16 사장님 "email, whatsapp, line, kakaotalk 중에 고르고 연락처는 거기로 받자").
+ * label은 고르기 단추, field는 연락처 칸 이름, example은 칸 안의 보기 글자다.
+ */
+export const contactMethods = [
+  { value: "whatsapp", label: msg("WhatsApp"), field: msg("WhatsApp number (with country code)"), example: "+63 917 123 4567" },
+  { value: "email", label: msg("Email"), field: msg("Email address"), example: "name@example.com" },
+  { value: "line", label: msg("LINE"), field: msg("LINE ID"), example: "" },
+  { value: "kakaotalk", label: msg("KakaoTalk"), field: msg("KakaoTalk ID"), example: "" },
+] as const;
+
+export type ContactMethod = (typeof contactMethods)[number]["value"];
+
+/** 알림·요청 메시지에 쓰는 이름(영어). */
+export const contactMethodName: Record<ContactMethod, string> = {
+  whatsapp: "WhatsApp",
+  email: "Email",
+  line: "LINE",
+  kakaotalk: "KakaoTalk",
+};
+
 /** "어떻게 알게 되셨나요?" — AI 검색 효과를 재는 항목(docs/04_ai-search-strategy.md 측정 3번). */
 export const heardFromOptions = [
   "ChatGPT or another AI assistant",
@@ -52,7 +73,10 @@ export const inquiryErrorText = {
   groupSize: msg("Enter 1 to 40 people."),
   language: msg("Tell us which language you need."),
   name: msg("Enter your name."),
-  contact: msg("Enter an email, WhatsApp number or LINE ID."),
+  contactMethod: msg("Choose how we should contact you."),
+  contactEmail: msg("Enter a valid email address."),
+  contactPhone: msg("Enter your WhatsApp number with the country code."),
+  contactId: msg("Enter your ID."),
   heardFrom: msg("Choose an option from the list."),
   max60: msg("Keep this under 60 characters."),
   max100: msg("Keep this under 100 characters."),
@@ -69,6 +93,7 @@ export interface Inquiry {
   pickup: string;
   interests: string;
   name: string;
+  contactMethod: ContactMethod | "";
   contact: string;
   heardFrom: string;
 }
@@ -76,6 +101,15 @@ export interface Inquiry {
 export type InquiryErrors = Partial<Record<keyof Inquiry, string>>;
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function contactError(method: ContactMethod, contact: string): string | undefined {
+  const e = inquiryErrorText;
+  const v = contact.trim();
+  if (method === "email") return EMAIL_RE.test(v) ? undefined : e.contactEmail;
+  if (method === "whatsapp") return v.replace(/\D/g, "").length >= 7 ? undefined : e.contactPhone;
+  return v.length >= 2 ? undefined : e.contactId;
+}
 
 export function validateInquiry(input: Inquiry, today: string): InquiryErrors {
   const errors: InquiryErrors = {};
@@ -87,7 +121,12 @@ export function validateInquiry(input: Inquiry, today: string): InquiryErrors {
   if (!Number.isInteger(input.groupSize) || input.groupSize < 1 || input.groupSize > 40) errors.groupSize = e.groupSize;
   if (input.language.trim().length < 2) errors.language = e.language;
   if (input.name.trim().length < 1) errors.name = e.name;
-  if (input.contact.trim().length < 5) errors.contact = e.contact;
+  const method = contactMethods.find((m) => m.value === input.contactMethod)?.value;
+  if (!method) errors.contactMethod = e.contactMethod;
+  else {
+    const c = contactError(method, input.contact);
+    if (c) errors.contact = c;
+  }
   if (input.heardFrom && !(heardFromOptions as readonly string[]).includes(input.heardFrom)) errors.heardFrom = e.heardFrom;
   if (input.language.length > 60) errors.language = e.max60;
   if (input.name.length > 100) errors.name = e.max100;
@@ -109,6 +148,7 @@ export function inquiryRow(input: Inquiry, id: string, sourcePage: string) {
     pickup: input.pickup.trim(),
     interests: input.interests.trim(),
     name: input.name.trim(),
+    contact_method: input.contactMethod,
     contact: input.contact.trim(),
     heard_from: input.heardFrom,
     source_page: sourcePage.slice(0, 200),
@@ -134,6 +174,7 @@ export function parseInquiry(body: unknown): Inquiry {
     pickup: str("pickup"),
     interests: str("interests"),
     name: str("name"),
+    contactMethod: str("contactMethod") as Inquiry["contactMethod"],
     contact: str("contact"),
     heardFrom: str("heardFrom"),
   };
@@ -150,7 +191,8 @@ export function inquiryMessage(input: Inquiry, reference?: string): string {
   ];
   if (input.pickup.trim()) lines.push(`Pick-up area / hotel: ${input.pickup.trim()}`);
   if (input.interests.trim()) lines.push(`What we'd like to do: ${input.interests.trim()}`);
-  lines.push(`Name: ${input.name.trim()}`, `Contact: ${input.contact.trim()}`);
+  const via = input.contactMethod ? `${contactMethodName[input.contactMethod]} ` : "";
+  lines.push(`Name: ${input.name.trim()}`, `Reply by: ${via}${input.contact.trim()}`);
   return lines.join("\n");
 }
 

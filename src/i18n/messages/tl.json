@@ -880,5 +880,16 @@
   "{region}: {price}.": "{region}: {price}.",
   "{sentences} We send the price and what it includes in writing before you pay.": "{sentences} Ipinapadala namin nang nakasulat ang presyo at kung ano ang kasama rito bago kayo magbayad.",
   "{service}: {region}, {hours} hours": "{service}: {region}, {hours} oras",
-  "{stops} stops in {hours} hours": "{stops} hinto sa loob ng {hours} oras"
+  "{stops} stops in {hours} hours": "{stops} hinto sa loob ng {hours} oras",
+  "How should we contact you?": "Paano ka namin kokontakin?",
+  "WhatsApp": "WhatsApp",
+  "LINE": "LINE",
+  "KakaoTalk": "KakaoTalk",
+  "WhatsApp number (with country code)": "WhatsApp number (kasama ang country code)",
+  "Email address": "Email address",
+  "LINE ID": "LINE ID",
+  "Choose how we should contact you.": "Piliin kung paano ka namin kokontakin.",
+  "Enter a valid email address.": "Maglagay ng tamang email address.",
+  "Enter your WhatsApp number with the country code.": "Ilagay ang iyong WhatsApp number kasama ang country code.",
+  "Enter your ID.": "Ilagay ang iyong ID."
 }

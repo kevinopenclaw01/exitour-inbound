@@ -880,5 +880,16 @@
   "{region}: {price}.": "{region}：{price}。",
   "{sentences} We send the price and what it includes in writing before you pay.": "{sentences}お支払い前に、料金と含まれる内容を書面でお送りします。",
   "{service}: {region}, {hours} hours": "{service}：{region}、{hours}時間",
-  "{stops} stops in {hours} hours": "{hours}時間で{stops}か所"
+  "{stops} stops in {hours} hours": "{hours}時間で{stops}か所",
+  "How should we contact you?": "ご連絡方法をお選びください",
+  "WhatsApp": "WhatsApp",
+  "LINE": "LINE",
+  "KakaoTalk": "KakaoTalk",
+  "WhatsApp number (with country code)": "WhatsApp番号（国番号から）",
+  "Email address": "メールアドレス",
+  "LINE ID": "LINE ID",
+  "Choose how we should contact you.": "ご連絡方法を選んでください。",
+  "Enter a valid email address.": "正しいメールアドレスを入力してください。",
+  "Enter your WhatsApp number with the country code.": "国番号から WhatsApp 番号を入力してください。",
+  "Enter your ID.": "IDを入力してください。"
 }

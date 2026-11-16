@@ -880,5 +880,16 @@
   "{region}: {price}.": "{region}: {price}.",
   "{sentences} We send the price and what it includes in writing before you pay.": "{sentences} 결제 전에 요금과 포함 내역을 서면으로 보내 드립니다.",
   "{service}: {region}, {hours} hours": "{service}: {region}, {hours}시간",
-  "{stops} stops in {hours} hours": "{hours}시간에 {stops}곳"
+  "{stops} stops in {hours} hours": "{hours}시간에 {stops}곳",
+  "How should we contact you?": "어떻게 연락드릴까요?",
+  "WhatsApp": "WhatsApp",
+  "LINE": "LINE",
+  "KakaoTalk": "카카오톡",
+  "WhatsApp number (with country code)": "WhatsApp 번호(국가번호 포함)",
+  "Email address": "이메일 주소",
+  "LINE ID": "LINE ID",
+  "Choose how we should contact you.": "연락받을 방법을 골라 주세요.",
+  "Enter a valid email address.": "올바른 이메일 주소를 넣어 주세요.",
+  "Enter your WhatsApp number with the country code.": "국가번호를 포함한 WhatsApp 번호를 넣어 주세요.",
+  "Enter your ID.": "ID를 넣어 주세요."
 }

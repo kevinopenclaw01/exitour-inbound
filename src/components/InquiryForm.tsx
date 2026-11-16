@@ -4,12 +4,14 @@ import { useState, type ReactNode } from "react";
 import { formUi as u } from "@/i18n/formStrings";
 import { messageTranslator, type Messages } from "@/i18n/interpolate";
 import {
+  contactMethods,
   heardFromLabels,
   heardFromOptions,
   inquiryMessage,
   serviceOptions,
   validateInquiry,
   whatsappLink,
+  type ContactMethod,
   type Inquiry,
   type InquiryErrors,
   type ServiceChoice,
@@ -31,6 +33,7 @@ const empty: Inquiry = {
   pickup: "",
   interests: "",
   name: "",
+  contactMethod: "",
   contact: "",
   heardFrom: "",
 };
@@ -100,6 +103,8 @@ export function InquiryForm({
       setSending(false);
     }
   }
+
+  const method = contactMethods.find((m) => m.value === form.contactMethod);
 
   const message = result ? inquiryMessage(form, result.kind === "saved" ? result.reference ?? undefined : undefined) : "";
 
@@ -214,22 +219,57 @@ export function InquiryForm({
           {err("interests")}
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="grid gap-1">
-            <label htmlFor="name" className="font-semibold">
-              {tr(u.name)}
-            </label>
-            <input id="name" className={field} value={form.name} onChange={(e) => set("name", e.target.value)} />
-            {err("name")}
-          </div>
-          <div className="grid gap-1">
-            <label htmlFor="contact" className="font-semibold">
-              {tr(u.contact)}
-            </label>
-            <input id="contact" className={field} value={form.contact} onChange={(e) => set("contact", e.target.value)} />
-            {err("contact")}
-          </div>
+        <div className="grid gap-1 sm:max-w-md">
+          <label htmlFor="name" className="font-semibold">
+            {tr(u.name)}
+          </label>
+          <input id="name" autoComplete="name" className={field} value={form.name} onChange={(e) => set("name", e.target.value)} />
+          {err("name")}
         </div>
+
+        {/* 2026-11-16: 연락 방법을 먼저 고르고, 그 방법의 연락처를 받는다. */}
+        <fieldset className="grid gap-2">
+          <legend className="mb-1 font-semibold">{tr(u.contactMethod)}</legend>
+          <div className="flex flex-wrap gap-2">
+            {contactMethods.map((m) => (
+              <label
+                key={m.value}
+                className={`cursor-pointer rounded-md border px-3 py-2 text-sm font-semibold has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-sign ${
+                  form.contactMethod === m.value ? "border-sign bg-sign-soft text-sign-deep" : "border-line bg-surface text-ink/80"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="contactMethod"
+                  value={m.value}
+                  className="sr-only"
+                  checked={form.contactMethod === m.value}
+                  onChange={() => set("contactMethod", m.value as ContactMethod)}
+                />
+                {tr(m.label)}
+              </label>
+            ))}
+          </div>
+          {err("contactMethod")}
+          {method ? (
+            <div className="grid gap-1 sm:max-w-md">
+              <label htmlFor="contact" className="text-sm font-semibold">
+                {tr(method.field)}
+              </label>
+              <input
+                id="contact"
+                type={method.value === "email" ? "email" : method.value === "whatsapp" ? "tel" : "text"}
+                inputMode={method.value === "email" ? "email" : method.value === "whatsapp" ? "tel" : undefined}
+                autoComplete={method.value === "email" ? "email" : method.value === "whatsapp" ? "tel" : "off"}
+                placeholder={method.example || undefined}
+                className={field}
+                value={form.contact}
+                onChange={(e) => set("contact", e.target.value)}
+              />
+              {err("contact")}
+            </div>
+          ) : null}
+        </fieldset>
 
         <div className="grid gap-1">
           <label htmlFor="heardFrom" className="font-semibold">

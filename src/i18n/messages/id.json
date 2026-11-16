@@ -880,5 +880,16 @@
   "{region}: {price}.": "{region}: {price}.",
   "{sentences} We send the price and what it includes in writing before you pay.": "{sentences} Kami mengirimkan harga dan rinciannya secara tertulis sebelum Anda membayar.",
   "{service}: {region}, {hours} hours": "{service}: {region}, {hours} jam",
-  "{stops} stops in {hours} hours": "{stops} perhentian dalam {hours} jam"
+  "{stops} stops in {hours} hours": "{stops} perhentian dalam {hours} jam",
+  "How should we contact you?": "Bagaimana kami menghubungi Anda?",
+  "WhatsApp": "WhatsApp",
+  "LINE": "LINE",
+  "KakaoTalk": "KakaoTalk",
+  "WhatsApp number (with country code)": "Nomor WhatsApp (dengan kode negara)",
+  "Email address": "Alamat email",
+  "LINE ID": "ID LINE",
+  "Choose how we should contact you.": "Pilih cara kami menghubungi Anda.",
+  "Enter a valid email address.": "Masukkan alamat email yang valid.",
+  "Enter your WhatsApp number with the country code.": "Masukkan nomor WhatsApp Anda dengan kode negara.",
+  "Enter your ID.": "Masukkan ID Anda."
 }

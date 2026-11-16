@@ -880,5 +880,16 @@
   "{region}: {price}.": "{region}: {price}.",
   "{sentences} We send the price and what it includes in writing before you pay.": "{sentences} Chúng tôi gửi giá và những gì bao gồm bằng văn bản trước khi bạn thanh toán.",
   "{service}: {region}, {hours} hours": "{service}: {region}, {hours} giờ",
-  "{stops} stops in {hours} hours": "{stops} điểm dừng trong {hours} giờ"
+  "{stops} stops in {hours} hours": "{stops} điểm dừng trong {hours} giờ",
+  "How should we contact you?": "Chúng tôi liên hệ với bạn qua đâu?",
+  "WhatsApp": "WhatsApp",
+  "LINE": "LINE",
+  "KakaoTalk": "KakaoTalk",
+  "WhatsApp number (with country code)": "Số WhatsApp (kèm mã quốc gia)",
+  "Email address": "Địa chỉ email",
+  "LINE ID": "LINE ID",
+  "Choose how we should contact you.": "Hãy chọn cách chúng tôi liên hệ với bạn.",
+  "Enter a valid email address.": "Hãy nhập địa chỉ email hợp lệ.",
+  "Enter your WhatsApp number with the country code.": "Hãy nhập số WhatsApp kèm mã quốc gia.",
+  "Enter your ID.": "Hãy nhập ID của bạn."
 }

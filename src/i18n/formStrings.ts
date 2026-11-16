@@ -1,4 +1,4 @@
-import { heardFromLabels, inquiryErrorText, serviceOptions } from "@/lib/inquiry";
+import { contactMethods, heardFromLabels, inquiryErrorText, serviceOptions } from "@/lib/inquiry";
 import { msg } from "./msg";
 
 // 여행 요청 폼(브라우저에서 도는 조각)에 나오는 영어 문장 전부. 서버(plan 쪽)가 이 목록만 번역해 폼에 넘긴다.
@@ -17,7 +17,7 @@ export const formUi = {
     "For example: a first day in Seoul with grandparents, Nami Island with kids, or another region you want to visit",
   ),
   name: msg("Your name"),
-  contact: msg("Email, WhatsApp or LINE"),
+  contactMethod: msg("How should we contact you?"),
   heardFrom: msg("How did you find us?"),
   chooseOne: msg("Choose one"),
   sending: msg("Sending…"),
@@ -49,6 +49,7 @@ export function formStrings(): string[] {
   return [
     ...Object.values(formUi),
     ...serviceOptions.map((o) => o.label),
+    ...contactMethods.flatMap((m) => [m.label, m.field]),
     ...Object.values(heardFromLabels),
     ...Object.values(inquiryErrorText),
   ];

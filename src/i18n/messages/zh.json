@@ -880,5 +880,16 @@
   "{region}: {price}.": "{region}：{price}。",
   "{sentences} We send the price and what it includes in writing before you pay.": "{sentences}付款前，我们会以书面形式发送价格及包含的项目。",
   "{service}: {region}, {hours} hours": "{service}：{region}，{hours}小时",
-  "{stops} stops in {hours} hours": "{hours}小时{stops}站"
+  "{stops} stops in {hours} hours": "{hours}小时{stops}站",
+  "How should we contact you?": "我们怎么联系您？",
+  "WhatsApp": "WhatsApp",
+  "LINE": "LINE",
+  "KakaoTalk": "KakaoTalk",
+  "WhatsApp number (with country code)": "WhatsApp 号码（含国家区号）",
+  "Email address": "电子邮件地址",
+  "LINE ID": "LINE ID",
+  "Choose how we should contact you.": "请选择我们联系您的方式。",
+  "Enter a valid email address.": "请输入有效的电子邮件地址。",
+  "Enter your WhatsApp number with the country code.": "请输入含国家区号的 WhatsApp 号码。",
+  "Enter your ID.": "请输入您的 ID。"
 }

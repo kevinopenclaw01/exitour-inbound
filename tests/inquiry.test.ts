@@ -10,6 +10,7 @@ const ok: Inquiry = {
   pickup: "Myeongdong",
   interests: "Nami Island",
   name: "Somchai",
+  contactMethod: "whatsapp",
   contact: "+66 81 234 5678",
   heardFrom: "",
 };
@@ -26,6 +27,23 @@ describe("validateInquiry", () => {
     const e = validateInquiry({ ...ok, name: " ", contact: "ab" }, "2026-10-24");
     expect(e.name).toBeDefined();
     expect(e.contact).toBeDefined();
+  });
+});
+
+describe("contact method", () => {
+  it("requires a contact method", () => {
+    expect(validateInquiry({ ...ok, contactMethod: "" }, "2026-10-24").contactMethod).toBeDefined();
+  });
+  it("checks the contact for the chosen method", () => {
+    expect(validateInquiry({ ...ok, contactMethod: "email", contact: "somchai" }, "2026-10-24").contact).toBeDefined();
+    expect(validateInquiry({ ...ok, contactMethod: "email", contact: "s@example.com" }, "2026-10-24")).toEqual({});
+    expect(validateInquiry({ ...ok, contactMethod: "whatsapp", contact: "12-34" }, "2026-10-24").contact).toBeDefined();
+    expect(validateInquiry({ ...ok, contactMethod: "kakaotalk", contact: "kim" }, "2026-10-24")).toEqual({});
+    expect(validateInquiry({ ...ok, contactMethod: "line", contact: " " }, "2026-10-24").contact).toBeDefined();
+  });
+  it("puts the method in the message and the row", () => {
+    expect(inquiryMessage({ ...ok, contactMethod: "line", contact: "somchai88" })).toContain("Reply by: LINE somchai88");
+    expect(inquiryRow({ ...ok, contactMethod: "email", contact: " s@example.com " }, "id", "").contact_method).toBe("email");
   });
 });
 

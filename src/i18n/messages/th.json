@@ -880,5 +880,16 @@
   "{region}: {price}.": "{region}: {price}",
   "{sentences} We send the price and what it includes in writing before you pay.": "{sentences} เราจะส่งราคาและสิ่งที่รวมอยู่เป็นลายลักษณ์อักษรก่อนคุณชำระเงิน",
   "{service}: {region}, {hours} hours": "{service}: {region} {hours} ชั่วโมง",
-  "{stops} stops in {hours} hours": "{stops} จุดแวะใน {hours} ชั่วโมง"
+  "{stops} stops in {hours} hours": "{stops} จุดแวะใน {hours} ชั่วโมง",
+  "How should we contact you?": "ให้เราติดต่อคุณทางไหน",
+  "WhatsApp": "WhatsApp",
+  "LINE": "LINE",
+  "KakaoTalk": "KakaoTalk",
+  "WhatsApp number (with country code)": "หมายเลข WhatsApp (พร้อมรหัสประเทศ)",
+  "Email address": "ที่อยู่อีเมล",
+  "LINE ID": "LINE ID",
+  "Choose how we should contact you.": "เลือกช่องทางที่ให้เราติดต่อคุณ",
+  "Enter a valid email address.": "กรอกอีเมลที่ถูกต้อง",
+  "Enter your WhatsApp number with the country code.": "กรอกหมายเลข WhatsApp พร้อมรหัสประเทศ",
+  "Enter your ID.": "กรอก ID ของคุณ"
 }

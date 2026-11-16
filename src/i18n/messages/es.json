@@ -880,5 +880,16 @@
   "{region}: {price}.": "{region}: {price}.",
   "{sentences} We send the price and what it includes in writing before you pay.": "{sentences} Te enviamos por escrito el precio y lo que incluye antes de que pagues.",
   "{service}: {region}, {hours} hours": "{service}: {region}, {hours} horas",
-  "{stops} stops in {hours} hours": "{stops} paradas en {hours} horas"
+  "{stops} stops in {hours} hours": "{stops} paradas en {hours} horas",
+  "How should we contact you?": "¿Cómo te contactamos?",
+  "WhatsApp": "WhatsApp",
+  "LINE": "LINE",
+  "KakaoTalk": "KakaoTalk",
+  "WhatsApp number (with country code)": "Número de WhatsApp (con código de país)",
+  "Email address": "Dirección de correo electrónico",
+  "LINE ID": "ID de LINE",
+  "Choose how we should contact you.": "Elige cómo quieres que te contactemos.",
+  "Enter a valid email address.": "Escribe un correo electrónico válido.",
+  "Enter your WhatsApp number with the country code.": "Escribe tu número de WhatsApp con el código de país.",
+  "Enter your ID.": "Escribe tu ID."
 }
