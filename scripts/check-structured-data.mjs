@@ -58,7 +58,8 @@ let offerCount = 0;
 let pageCount = 0;
 
 // 숨긴 쪽(주소로는 열리지만 noindex). src/lib/routes.ts의 hiddenRoutes와 같아야 한다. 이 쪽들은 영어판만 있다.
-const hidden = new Set(["guide-tour", "join-as-guide", "terms", "privacy", "cancellation-policy"]);
+// 약관 3종(terms·privacy·cancellation-policy)은 2026-11-17부터 값이 다 차서 공개하고 9개 언어로 낸다.
+const hidden = new Set(["guide-tour", "join-as-guide"]);
 const skip = new Set(["_not-found", "_global-error", "404", "500"]);
 // 손님용 8개 언어. 한국어(ko)는 사장님 검토용이라 noindex이고 hreflang에 없다(src/i18n/config.ts의 reviewLangs).
 const langTags = { en: "en", zh: "zh-Hans", ja: "ja", es: "es", id: "id", th: "th", tl: "tl", vi: "vi" };

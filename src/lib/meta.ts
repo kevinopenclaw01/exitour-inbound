@@ -88,7 +88,7 @@ function social(
 }
 
 /** 영어로만 두는 쪽(약관 초안·숨긴 쪽). 다른 언어 주소에서는 열리지 않는다(notFound). */
-export const englishOnlyPages = new Set<PageKey>(["terms", "privacy", "cancellation", "guide-tour", "join-as-guide"]);
+export const englishOnlyPages = new Set<PageKey>(["guide-tour", "join-as-guide"]);
 
 /** src/content/pages.ts의 쪽 하나에 대한 메타데이터. published가 false면(약관 틀 등) noindex로 내보낸다. */
 export function pageMetadata(key: PageKey, options: { published?: boolean; lang?: Lang } = {}): Metadata {

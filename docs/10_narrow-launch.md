@@ -19,7 +19,7 @@
 | 메뉴(머리글·바닥글) | `/private-driver`, `/driver-guide`, `/prices`, `/plan`, `/faq`, `/about`, `/contact` | 공개 |
 | 메뉴에 없지만 공개(본문 링크·사이트맵) | `/day-plans`(10시간 예시 4개, 새로 만듦), `/airport-transfer`, `/safety`, `/travel-guide`와 글 10편 | 공개 |
 | 코드만 두고 숨김 | `/guide-tour`, `/join-as-guide` | noindex, 메뉴·사이트맵·`llms.txt`에 없음 |
-| 틀만 있고 값 대기 | `/terms`, `/privacy`, `/cancellation-policy` | noindex, 메뉴·사이트맵에 없음. 주소를 치면 "Draft" 표시와 빈칸이 보인다 |
+| 약관 3종(2026-11-17 공개) | `/terms`, `/privacy`, `/cancellation-policy` | 값이 다 차서 공개, 바닥글·사이트맵에 걸림, 9개 언어(번역판은 「영어판 우선」 한 줄). 변호사 검토는 아직 |
 | 로봇용 | `/robots.txt`, `/sitemap.xml`, `/llms.txt`, `/og/<쪽>.png`(공유 그림 27장), `/icon.svg`, IndexNow 키 파일 | 자동 생성 |
 
 **실제 사진**(2026-11-16 사장님 제공, 자료는 `src/content/photos.ts`): 차량 4장은 두 상품 쪽 "Your van"에, 장소 4장(경회루·남산타워·두물머리·남이섬)은 홈 첫 화면·홈 사진 줄·`/day-plans`에 쓴다. 기사님 사진 1장은 연결만 해 두었고(소개 구역은 꺼져 있음), 손님 뒷모습 6장은 자리만 있고 꺼져 있다(파일도 `public/`에 넣지 않았다). 편집본과 원본 번호는 `C:\Users\kevin\Desktop\바탕화면\AI\semi ochestra\.orchestra\out put\2026-11-16\EntourKorea_사진편집\README.md`.
@@ -39,11 +39,11 @@
 | 4 | 10시간을 넘길 때 시간당 값 | `dayRates`의 `extraHourKrw` | "Extra hours beyond 10"이 견적서 항목으로 | "Extra hours: ₩… per hour" |
 | 5 | 경기 상품의 밤 종료 시간 제한 | `dayRates`의 `noLateFinishLimit` | 표시 없음 | `true`면 "No limit on how late the day can finish." |
 | 6 | 견적 답변 약속 시간(예: 24시간) | `src/content/site.ts` `quoteReplyWithin` | "Written quote for your date" | "Written quote within 24 hours" |
-| 7 | 취소 규정(시점별 환불, 노쇼, 날짜 변경, 우리 쪽 취소, 환불 방법) | `src/content/legal.ts` `cancellation` | `/cancellation-policy`가 Draft | 다 채우면 바닥글·사이트맵에 걸린다 |
-| 8 | 결제 방법, 선금 | `src/content/legal.ts` `payment` | `/terms`가 Draft | 약관에 들어간다 |
-| 9 | 회사 정보: 대표자, 사업자등록번호, 관광사업자 등록번호, 통신판매업 신고번호, 주소, 이메일 | `src/content/site.ts` `representative`·`businessNumber`·`operatorLicense.number`·`mailOrderNumber`·`address`·`email` | 바닥글·약관에 안 나옴 | 바닥글·약관·개인정보처리방침·구조화 데이터에 나온다 |
-| 10 | 개인정보 보호책임자·연락처, 보관 기간, 여권 정보 처리 방식 | `src/content/legal.ts` `privacy` | `/privacy`가 Draft | 다 채우면 폼 아래 "Privacy policy" 링크가 생긴다 |
-| 11 | 보험 보장 범위·책임 한도 문구, 관할 법원, 시행일 | `src/content/legal.ts` `liability`·`court`·`effectiveDate` | `/terms`가 Draft | 약관 공개 |
+| 7 | 취소 규정(시점별 환불, 노쇼, 날짜 변경, 우리 쪽 취소, 환불 방법) — **2026-11-17 채움**(사장님 「단품 기준」: 이용일 7일 전 17시 전액·3일 전 30% 공제·2일 전 50% 공제·이후 불가) | `src/content/legal.ts` `cancellation` | `/cancellation-policy`가 Draft | 다 채우면 바닥글·사이트맵에 걸린다 |
+| 8 | 결제 방법, 선금 — **2026-11-17 채움**(결제 링크로 카드, 원화, 선금 없이 전액) | `src/content/legal.ts` `payment` | `/terms`가 Draft | 약관에 들어간다 |
+| 9 | 회사 정보: 대표자, 사업자등록번호, 관광사업자 등록번호, 통신판매업 신고번호, 주소, 이메일 — **2026-11-17 채움**(스마트스토어센터 판매자 정보, 서초구 관광사업등록증 제2018-000019호, 메일은 사장님 지정 exitour0ffice@gmail.com) | `src/content/site.ts` `representative`·`businessNumber`·`operatorLicense.number`·`mailOrderNumber`·`address`·`email` | 바닥글·약관에 안 나옴 | 바닥글·약관·개인정보처리방침·구조화 데이터에 나온다 |
+| 10 | 개인정보 보호책임자·연락처, 보관 기간, 여권 정보 처리 방식 — **2026-11-17 채움**(여권 정보는 예약 뒤 받아 렌터카 회사에만 보내고 이용일 30일 안에 삭제) | `src/content/legal.ts` `privacy` | `/privacy`가 Draft | 다 채우면 폼 아래 "Privacy policy" 링크가 생긴다 |
+| 11 | 보험 보장 범위·책임 한도 문구, 관할 법원, 시행일 — **2026-11-17 채움**(서울중앙지방법원, 시행일 11-17, 책임 문구는 법이 정한 범위만 적음·변호사 검토 대기) | `src/content/legal.ts` `liability`·`court`·`effectiveDate` | `/terms`가 Draft | 약관 공개 |
 | 12 | 기사(가이드) 이름·자격·말할 수 있는 언어·소개 (사진은 받아서 연결해 둠: `public/images/crew/driver-on-boat-square.webp`, 얼굴 사용은 사장님이 허락) | `src/content/crew.ts` `crewEntries`의 빈칸 + `show: true` | "Meet your driver-guide" 구역이 아예 없음 | 홈과 `/driver-guide`에 사진과 함께 구역이 생긴다 |
 | 12-1 | 기사님 사진 세 장(배 위 정사각형·세로형, 공항)이 모두 기사님 본인인지 확인 | 확인만. 아니면 `crew.ts`의 `photo`를 바꾸고 `public/images/crew/`의 파일을 지운다 | — | **배포 전에** 확인한다(사진 파일은 화면에 안 걸려도 주소로 열린다) |
 | 13 | 자격증에 적힌 언어(영어인지), 따갈로그 문구를 켤지 | `src/content/crew.ts` `crewLanguageClaim.enabled` (+ `site.ts` `guideLanguages`) | 사이트 어디에도 따갈로그 없음 | 문구가 `/driver-guide`에 나온다 |

@@ -16,16 +16,18 @@ export const site = {
   contentUpdated: "2026-11-16",
   operatorLicense: {
     type: "General travel agency (종합여행업), registered under the Tourism Promotion Act",
-    number: null as string | null,
+    // 서울 서초구청 관광사업등록증 제2018-000019호(2018-04-26, 등록증 상호는 옛 이름 「케빈투어」).
+    number: "2018-000019 (Seocho-gu Office, Seoul)" as string | null,
   },
   /** 대표자 이름(영문 표기). 바닥글·약관·개인정보처리방침에 나온다. */
-  representative: null as string | null,
+  representative: "Kang Sangwook" as string | null,
   /** 사업자등록번호 */
-  businessNumber: null as string | null,
+  businessNumber: "479-66-00070" as string | null,
   /** 통신판매업 신고번호. 사이트에서 결제를 받기 전에 필요하다. */
-  mailOrderNumber: null as string | null,
-  address: null as string | null,
-  email: null as string | null,
+  mailOrderNumber: "2015-Seoul Seocho-1804" as string | null,
+  address: "5F, 13 Banpo-daero 23-gil, Seocho-gu, Seoul 06657, Republic of Korea" as string | null,
+  /** 2026-11-17 사장님 지정(약관·개인정보 문의에 공개). */
+  email: "exitour0ffice@gmail.com" as string | null,
   /** 국가번호 포함. WhatsApp·LINE·카카오가 모두 이 번호로 가입되어 있다(사장님, 2026-10-25). */
   phone: "+82 10-9988-8846" as string | null,
   whatsapp: "+821099888846" as string | null,

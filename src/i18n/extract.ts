@@ -5,7 +5,7 @@ import { articles } from "@/content/articles";
 import { crewEntries, crewLanguageClaim } from "@/content/crew";
 import { dayPlans } from "@/content/dayPlans";
 import { generalFaqs } from "@/content/faqs";
-import { legalDocs } from "@/content/legal";
+import { legal, legalDocs } from "@/content/legal";
 import { pages } from "@/content/pages";
 import { guestPhotos, placePhotos, vanPhotos } from "@/content/photos";
 import { costItemLabels, productLabels, regionLabels } from "@/content/pricing";
@@ -16,7 +16,7 @@ import { englishOnlyPages } from "@/lib/meta";
 // 번역할 영어 문장(열쇠)을 모은다. 시험(tests/i18n.test.ts)이 이 결과와 src/i18n/source.json을 비교한다.
 // 1) 코드 안의 t('…')·t.rich('…')·msg('…') 문장
 // 2) 콘텐츠 자료(서비스·FAQ·하루 예시·안내 글·쪽 제목 등)의 문장. 주소·id·날짜처럼 번역하지 않는 값은 거른다.
-// 영어로만 두는 쪽(약관류·숨긴 쪽)의 본문은 넣지 않는다.
+// 영어로만 두는 쪽(숨긴 쪽)의 본문은 넣지 않는다. 약관류는 2026-11-17부터 번역한다.
 
 const SRC = join(process.cwd(), "src");
 
@@ -32,7 +32,7 @@ function files(dir: string): string[] {
 function englishOnlyFile(path: string): boolean {
   const norm = path.replace(/\\/g, "/");
   const dirs = [...englishOnlyPages].map((k) => (k === "cancellation" ? "cancellation-policy" : k));
-  return dirs.some((d) => norm.includes(`/app/[lang]/${d}/`)) || norm.endsWith("/components/LegalPage.tsx");
+  return dirs.some((d) => norm.includes(`/app/[lang]/${d}/`));
 }
 
 const unescape = (s: string) => JSON.parse(`"${s.replace(/\n/g, "\\n")}"`) as string;
@@ -90,6 +90,7 @@ export function contentKeys(): string[] {
       articles,
       nav.map((n) => n.label),
       legalDocs.map((d) => d.label),
+      { cancellation: legal.cancellation, payment: legal.payment, privacy: { officer: legal.privacy.officer, retention: legal.privacy.retention, hosting: legal.privacy.hosting, rentalDetails: legal.privacy.rentalDetails }, liability: legal.liability, court: legal.court },
       site.description,
       site.tagline,
       site.officeHours,

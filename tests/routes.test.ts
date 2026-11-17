@@ -58,9 +58,10 @@ describe("narrowed menu (2026-11-16)", () => {
     }
   });
 
-  it("legal pages are English only", () => {
-    for (const path of englishOnlyRoutes()) {
-      expect(readFileSync(join(appDir, path, "page.tsx"), "utf8"), path).toContain("await englishOnly()");
+  it("legal pages are translated (no English-only public pages)", () => {
+    expect(englishOnlyRoutes()).toEqual([]);
+    for (const path of ["/terms", "/privacy", "/cancellation-policy"]) {
+      expect(readFileSync(join(appDir, path, "page.tsx"), "utf8"), path).not.toContain("await englishOnly()");
     }
   });
 

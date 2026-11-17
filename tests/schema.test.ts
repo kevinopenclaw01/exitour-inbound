@@ -1,3 +1,4 @@
+import { site } from "@/content/site";
 import { describe, expect, it } from "vitest";
 import { dayPlans } from "@/content/dayPlans";
 import { dayRates, priceRules } from "@/content/pricing";
@@ -5,12 +6,15 @@ import { getService } from "@/content/services";
 import { dayPlanListLd, faqLd, organizationLd, serializeLd, serviceLd } from "@/lib/schema";
 
 describe("structured data", () => {
-  it("leaves out unknown company fields", () => {
+  it("puts in only the company fields that are known", () => {
+    // 2026-11-17 회사 이메일·주소를 채웠다(src/content/site.ts). 비어 있는 칸(sameAs 등)은 넣지 않는다.
     const org = organizationLd();
     expect(org["@type"]).toBe("TravelAgency");
-    expect(org).not.toHaveProperty("email");
-    expect(org).not.toHaveProperty("address");
-    expect(org).not.toHaveProperty("sameAs");
+    if (site.email) expect(org.email).toBe(site.email);
+    else expect(org).not.toHaveProperty("email");
+    if (site.address) expect(org).toHaveProperty("address");
+    else expect(org).not.toHaveProperty("address");
+    if (site.sameAs.length === 0) expect(org).not.toHaveProperty("sameAs");
   });
 
   it("puts no Offer on the two products while no cell is confirmed", () => {

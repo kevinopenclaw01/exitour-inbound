@@ -22,7 +22,7 @@
 - 빌드 때 8개 언어의 모든 쪽을 미리 만든다(`app/[lang]/layout.tsx`의 `generateStaticParams`).
 - 쪽마다 `<link rel="alternate" hreflang>` 8개 + `x-default`(영어)가 들어간다. 사이트맵도 언어마다 주소를 싣고 서로 묶는다.
 - 머리글 오른쪽의 언어 단추(지구 모양)로 같은 쪽의 다른 언어로 간다. 바닥글에는 언어별 첫 화면 링크가 있다.
-- **영어판만 있는 쪽**: 약관·개인정보·환불(아직 초안, 변호사 검토 전)과 숨긴 쪽(`/guide-tour`, `/join-as-guide`). 다른 언어 주소는 404다(`src/lib/meta.ts`의 `englishOnlyPages`, 쪽 맨 위의 `await englishOnly()`).
+- **영어판만 있는 쪽**: 숨긴 쪽(`/guide-tour`, `/join-as-guide`). 약관·개인정보·환불은 2026-11-17부터 9개 언어로 낸다(번역판 맨 위에 「번역본, 영어판과 다르면 영어판을 따름」 한 줄). 다른 언어 주소는 404다(`src/lib/meta.ts`의 `englishOnlyPages`, 쪽 맨 위의 `await englishOnly()`).
 - 공유 그림(`/og/...png`)은 영어판 하나를 모든 언어가 같이 쓴다. 그림을 굽는 글꼴에 한자·태국 문자가 없어서다.
 - `llms.txt`는 영어로 두고 끝에 언어판 목록만 붙였다.
 

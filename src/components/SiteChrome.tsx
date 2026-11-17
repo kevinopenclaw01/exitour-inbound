@@ -73,7 +73,7 @@ function CompanyLines({ t }: { t: Translator }) {
 
 export async function SiteFooter() {
   const t = await getT();
-  // 약관류는 아직 영어판만 있다(src/lib/meta.ts의 englishOnlyPages).
+  // 약관류는 값이 다 채워진 것만 건다(src/content/legal.ts). 2026-11-17부터 9개 언어.
   const legalLinks = publishedLegalDocs();
   const link = (path: string, label: string) => (
     <Link href={t.href(path)} className="text-muted hover:text-ink">
@@ -111,9 +111,8 @@ export async function SiteFooter() {
           {link("/about", "About")}
           {link("/contact", "Contact")}
           {legalLinks.map((d) => (
-            <Link key={d.path} href={d.path} hrefLang="en" className="text-muted hover:text-ink">
+            <Link key={d.path} href={t.href(d.path)} className="text-muted hover:text-ink">
               {t(d.label)}
-              {t.lang === "en" ? "" : " (English)"}
             </Link>
           ))}
         </nav>

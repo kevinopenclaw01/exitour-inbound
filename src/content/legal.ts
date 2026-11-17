@@ -8,51 +8,57 @@ import { site } from "./site";
 
 export const legal = {
   /** 세 문서의 시행일 "YYYY-MM-DD". 사장님이 공개를 승인한 날. */
-  effectiveDate: null as string | null,
+  effectiveDate: "2026-11-17" as string | null,
 
   cancellation: {
     /**
      * 취소 시점별 환불. 예: { when: "7 days or more before the tour date", refund: "Full refund" }
      * 지킬 수 있는 숫자만 넣는다("24시간 무료 취소" 같은 문구를 근거 없이 쓰지 않는다 — docs/09 2-3).
      */
-    tiers: [] as { when: string; refund: string }[],
+    // 2026-11-17 사장님 확정(엑시투어 「일반 단품」 기준과 같다). 마감은 그날 한국 시간 17시.
+    tiers: [
+      { when: "By 17:00 Korea time, 7 days before your day", refund: "Full refund" },
+      { when: "By 17:00 Korea time, 3 days before your day", refund: "70% refund (30% cancellation fee)" },
+      { when: "By 17:00 Korea time, 2 days before your day", refund: "50% refund (50% cancellation fee)" },
+      { when: "After 17:00 Korea time, 2 days before your day", refund: "No refund" },
+    ] as { when: string; refund: string }[],
     /** 나타나지 않은 경우(노쇼) */
-    noShow: null as string | null,
+    noShow: "If you do not come to the agreed pick-up place and do not tell us, the day counts as used and there is no refund." as string | null,
     /** 날짜 변경 */
-    dateChange: null as string | null,
+    dateChange: "You can move your day to another date at no cost until 17:00 Korea time, 7 days before your day, if a van and crew are free on the new date. After that, a change of date counts as a cancellation under the table above." as string | null,
     /** 날씨·천재지변, 우리 쪽 사정으로 취소할 때 */
-    byUs: null as string | null,
+    byUs: "If we cannot run your day, or a typhoon, a government order or another event outside anyone's control stops it, we offer you another date. If you do not want another date, we refund what you paid in full." as string | null,
     /** 환불 방법과 걸리는 시간 */
-    refundMethod: null as string | null,
+    refundMethod: "Refunds go back to the card or payment method you used. We start the refund within 3 business days after the amount is settled; your card company or payment provider may take a few more days. If you paid in another currency, the amount you get back can differ because of exchange rates." as string | null,
   },
 
   payment: {
     /** 결제 방법. 예: "PayPal invoice in USD" */
-    methods: null as string | null,
+    methods: "Card payment through a secure payment link that we send after we confirm the van and crew for your date. Prices are charged in Korean won (KRW)." as string | null,
     /** 예약 확정에 필요한 선금. 예: "30% deposit, balance on the day" */
-    deposit: null as string | null,
+    deposit: "No deposit. You pay the full amount through the payment link to confirm the booking." as string | null,
   },
 
   privacy: {
     /** 개인정보 보호책임자 이름·직책 */
-    officer: null as string | null,
+    officer: "Kang Sangwook, Representative" as string | null,
     /** 개인정보 문의 연락처(이메일 권장) */
-    officerContact: null as string | null,
+    officerContact: "exitour0ffice@gmail.com" as string | null,
     /** 여행 요청 정보를 보관하는 기간. 예: "12 months after your last message" */
-    retention: null as string | null,
+    retention: "Trip requests that do not become a booking: 12 months after your last message. Booking and payment records: 5 years, and records of complaints or disputes: 3 years, as Korean e-commerce law requires. After that we delete them." as string | null,
     /** 사이트를 올린 곳(배포 뒤에 채운다). 예: "Vercel Inc. (website hosting)" */
-    hosting: null as string | null,
+    hosting: "Vercel Inc. (United States), which runs this website; requests are processed in its Seoul region" as string | null,
     /**
      * 렌트 계약에 쓰는 여권 정보를 어떻게 받고 보관하고 지우는지(영어 문장).
      * docs/05_legal-notes.md: 여권 영문 이름·번호 필요 → 암호화 보관, 사용 후 삭제. 실제 절차가 정해지면 넣는다.
      */
-    rentalDetails: null as string | null,
+    rentalDetails: "For the rental contract we ask, after you book, for the lead traveller's name as in the passport, date of birth and passport number. We send them only to the rental company for the contract and delete them from our chats and records within 30 days after your day." as string | null,
   },
 
   /** 분쟁이 생겼을 때 관할 법원. 예: "Seoul Central District Court" */
-  court: null as string | null,
+  court: "Seoul Central District Court" as string | null,
   /** 승객 보험 보장 범위와 책임 한도 문구(영어). 렌터카 업체 보험 내용을 확인하고 변호사 검토를 받은 뒤 넣는다. */
-  liability: null as string | null,
+  liability: "The van is a registered rental vehicle insured by the rental company, as Korean law requires for rental cars. If you are hurt or your belongings are damaged through our fault or the fault of the driver or guide we arranged, we are responsible under Korean law. We are not responsible for loss caused by events outside our control, or by not following the safety instructions of the driver or guide." as string | null,
 };
 
 export type LegalDoc = "terms" | "privacy" | "cancellation";
