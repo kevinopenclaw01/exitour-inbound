@@ -1085,5 +1085,10 @@
   "Your trip: service, first date, number of days, group size and guide language": "여행 내용: 서비스, 첫날, 일수, 인원, 가이드 언어",
   "{brand} is a brand of {operator}, a travel agency registered in Korea. These terms apply when you send us a trip request and when you book a private van day with us.": "{brand}는 한국에 등록된 여행사 {operator}의 브랜드입니다. 이 약관은 여행 문의를 보내실 때와 전용 밴 하루를 예약하실 때 적용됩니다.",
   "{operator}, which operates {brand}, decides how the information below is used.": "{brand}를 운영하는 {operator}가 아래 정보의 이용 방법을 정합니다.",
-  "…": "…"
+  "…": "…",
+  "Office phone": "사무실 전화",
+  "Office phone {number}": "사무실 전화 {number}",
+  "PortOne (Korea), which connects this website to the payment company below": "포트원(PortOne, 한국): 이 사이트와 아래 결제 회사를 연결합니다",
+  "PayPal, which processes your PayPal or card payment": "페이팔(PayPal): PayPal 또는 카드 결제를 처리합니다",
+  "Card or PayPal payment through a secure PayPal payment link that we send after we confirm the van and crew for your date. Prices are quoted in Korean won (KRW). PayPal does not accept KRW, so you are charged in US dollars (USD); the USD amount is shown before you pay.": "날짜에 맞춰 차량과 인원을 확정한 뒤 보내 드리는 안전한 PayPal 결제 링크로 카드 또는 PayPal로 결제합니다. 가격은 원화(KRW)로 안내합니다. PayPal은 원화를 받지 않아 미국 달러(USD)로 청구되며, 결제 전에 달러 금액이 표시됩니다."
 }

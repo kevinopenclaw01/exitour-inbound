@@ -1085,5 +1085,10 @@
   "Your trip: service, first date, number of days, group size and guide language": "Tu viaje: servicio, primera fecha, número de días, número de personas e idioma del guía",
   "{brand} is a brand of {operator}, a travel agency registered in Korea. These terms apply when you send us a trip request and when you book a private van day with us.": "{brand} es una marca de {operator}, una agencia de viajes registrada en Corea. Estas condiciones se aplican cuando nos envías una solicitud de viaje y cuando reservas con nosotros un día de furgoneta privada.",
   "{operator}, which operates {brand}, decides how the information below is used.": "{operator}, que gestiona {brand}, decide cómo se usan los datos siguientes.",
-  "…": "…"
+  "…": "…",
+  "Office phone": "Teléfono de oficina",
+  "Office phone {number}": "Teléfono de oficina {number}",
+  "PortOne (Korea), which connects this website to the payment company below": "PortOne (Corea), que conecta este sitio web con la empresa de pagos indicada abajo",
+  "PayPal, which processes your PayPal or card payment": "PayPal, que procesa su pago con PayPal o con tarjeta",
+  "Card or PayPal payment through a secure PayPal payment link that we send after we confirm the van and crew for your date. Prices are quoted in Korean won (KRW). PayPal does not accept KRW, so you are charged in US dollars (USD); the USD amount is shown before you pay.": "Pago con tarjeta o PayPal mediante un enlace de pago seguro de PayPal que le enviamos después de confirmar la furgoneta y el equipo para su fecha. Los precios se indican en wones coreanos (KRW). PayPal no acepta KRW, por lo que el cobro se hace en dólares estadounidenses (USD); el importe en USD se muestra antes de pagar."
 }

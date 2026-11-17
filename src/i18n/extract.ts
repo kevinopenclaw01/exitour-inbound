@@ -90,7 +90,7 @@ export function contentKeys(): string[] {
       articles,
       nav.map((n) => n.label),
       legalDocs.map((d) => d.label),
-      { cancellation: legal.cancellation, payment: legal.payment, privacy: { officer: legal.privacy.officer, retention: legal.privacy.retention, hosting: legal.privacy.hosting, rentalDetails: legal.privacy.rentalDetails }, liability: legal.liability, court: legal.court },
+      { cancellation: legal.cancellation, payment: legal.payment, privacy: { officer: legal.privacy.officer, retention: legal.privacy.retention, hosting: legal.privacy.hosting, rentalDetails: legal.privacy.rentalDetails, paymentProviders: legal.privacy.paymentProviders }, liability: legal.liability, court: legal.court },
       site.description,
       site.tagline,
       site.officeHours,

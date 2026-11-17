@@ -34,7 +34,8 @@ export const legal = {
 
   payment: {
     /** 결제 방법. 예: "PayPal invoice in USD" */
-    methods: "Card payment through a secure payment link that we send after we confirm the van and crew for your date. Prices are charged in Korean won (KRW)." as string | null,
+    // 2026-11-17: 외국인 결제는 포트원을 거쳐 페이팔로 받는다(사장님 결정). 페이팔은 원화(KRW)를 받지 않아 달러로 청구된다.
+    methods: "Card or PayPal payment through a secure PayPal payment link that we send after we confirm the van and crew for your date. Prices are quoted in Korean won (KRW). PayPal does not accept KRW, so you are charged in US dollars (USD); the USD amount is shown before you pay." as string | null,
     /** 예약 확정에 필요한 선금. 예: "30% deposit, balance on the day" */
     deposit: "No deposit. You pay the full amount through the payment link to confirm the booking." as string | null,
   },
@@ -48,6 +49,11 @@ export const legal = {
     retention: "Trip requests that do not become a booking: 12 months after your last message. Booking and payment records: 5 years, and records of complaints or disputes: 3 years, as Korean e-commerce law requires. After that we delete them." as string | null,
     /** 사이트를 올린 곳(배포 뒤에 채운다). 예: "Vercel Inc. (website hosting)" */
     hosting: "Vercel Inc. (United States), which runs this website; requests are processed in its Seoul region" as string | null,
+    /** 결제를 처리하는 곳(개인정보처리방침 4. Who receives it). PG 심사가 이름을 요구한다(2026-11-17 포트원). 결제대행사를 바꾸면 여기만 고친다. */
+    paymentProviders: [
+      "PortOne (Korea), which connects this website to the payment company below",
+      "PayPal, which processes your PayPal or card payment",
+    ] as string[],
     /**
      * 렌트 계약에 쓰는 여권 정보를 어떻게 받고 보관하고 지우는지(영어 문장).
      * docs/05_legal-notes.md: 여권 영문 이름·번호 필요 → 암호화 보관, 사용 후 삭제. 실제 절차가 정해지면 넣는다.

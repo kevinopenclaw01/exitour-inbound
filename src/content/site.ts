@@ -30,6 +30,8 @@ export const site = {
   email: "exitour0ffice@gmail.com" as string | null,
   /** 국가번호 포함. WhatsApp·LINE·카카오가 모두 이 번호로 가입되어 있다(사장님, 2026-10-25). */
   phone: "+82 10-9988-8846" as string | null,
+  /** 사무실 유선번호(국가번호 포함). PG 심사는 바닥글에 유선번호가 있어야 한다(휴대폰 불가, 2026-11-17 포트원). EXITour 사이트와 같은 번호. 연락은 위 WhatsApp 번호로 받는다. */
+  officePhone: "+82 2-841-8422" as string | null,
   whatsapp: "+821099888846" as string | null,
   /** 카카오톡 개인 ID. 카카오톡 채널을 만들면 채널 주소로 바꾼다. */
   kakaoId: "exitouroffice" as string | null,

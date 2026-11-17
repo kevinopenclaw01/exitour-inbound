@@ -60,6 +60,12 @@ export async function OperatorDetails() {
       <dd>
         <Fill value={site.email} what="email address" />
       </dd>
+      {site.officePhone ? (
+        <>
+          <dt className="font-semibold">{t("Office phone")}</dt>
+          <dd>{site.officePhone}</dd>
+        </>
+      ) : null}
       {site.phone ? (
         <>
           <dt className="font-semibold">{t("Phone / WhatsApp")}</dt>

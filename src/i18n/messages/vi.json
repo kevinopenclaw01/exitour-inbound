@@ -1085,5 +1085,10 @@
   "Your trip: service, first date, number of days, group size and guide language": "Chuyến đi của bạn: dịch vụ, ngày đầu tiên, số ngày, số người và ngôn ngữ hướng dẫn",
   "{brand} is a brand of {operator}, a travel agency registered in Korea. These terms apply when you send us a trip request and when you book a private van day with us.": "{brand} là thương hiệu của {operator}, một công ty du lịch đã đăng ký tại Hàn Quốc. Điều khoản này áp dụng khi bạn gửi yêu cầu chuyến đi và khi bạn đặt ngày xe van riêng với chúng tôi.",
   "{operator}, which operates {brand}, decides how the information below is used.": "{operator}, đơn vị vận hành {brand}, quyết định cách sử dụng thông tin dưới đây.",
-  "…": "…"
+  "…": "…",
+  "Office phone": "Điện thoại văn phòng",
+  "Office phone {number}": "Điện thoại văn phòng {number}",
+  "PortOne (Korea), which connects this website to the payment company below": "PortOne (Hàn Quốc), đơn vị kết nối trang web này với công ty thanh toán bên dưới",
+  "PayPal, which processes your PayPal or card payment": "PayPal, đơn vị xử lý khoản thanh toán bằng PayPal hoặc thẻ của bạn",
+  "Card or PayPal payment through a secure PayPal payment link that we send after we confirm the van and crew for your date. Prices are quoted in Korean won (KRW). PayPal does not accept KRW, so you are charged in US dollars (USD); the USD amount is shown before you pay.": "Thanh toán bằng thẻ hoặc PayPal qua đường link thanh toán PayPal an toàn mà chúng tôi gửi sau khi xác nhận xe và đội ngũ cho ngày của bạn. Giá được báo bằng won Hàn Quốc (KRW). PayPal không nhận KRW nên bạn sẽ được tính tiền bằng đô la Mỹ (USD); số tiền bằng USD được hiển thị trước khi bạn thanh toán."
 }

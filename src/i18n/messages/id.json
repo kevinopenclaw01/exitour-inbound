@@ -1085,5 +1085,10 @@
   "Your trip: service, first date, number of days, group size and guide language": "Perjalanan Anda: layanan, tanggal pertama, jumlah hari, jumlah rombongan, dan bahasa pemandu",
   "{brand} is a brand of {operator}, a travel agency registered in Korea. These terms apply when you send us a trip request and when you book a private van day with us.": "{brand} adalah merek dari {operator}, agen perjalanan terdaftar di Korea. Ketentuan ini berlaku saat Anda mengirim permintaan perjalanan dan saat Anda memesan sewa van pribadi kepada kami.",
   "{operator}, which operates {brand}, decides how the information below is used.": "{operator}, yang mengelola {brand}, menentukan cara penggunaan data di bawah ini.",
-  "…": "…"
+  "…": "…",
+  "Office phone": "Telepon kantor",
+  "Office phone {number}": "Telepon kantor {number}",
+  "PortOne (Korea), which connects this website to the payment company below": "PortOne (Korea), yang menghubungkan situs web ini dengan perusahaan pembayaran di bawah",
+  "PayPal, which processes your PayPal or card payment": "PayPal, yang memproses pembayaran PayPal atau kartu Anda",
+  "Card or PayPal payment through a secure PayPal payment link that we send after we confirm the van and crew for your date. Prices are quoted in Korean won (KRW). PayPal does not accept KRW, so you are charged in US dollars (USD); the USD amount is shown before you pay.": "Pembayaran dengan kartu atau PayPal melalui tautan pembayaran PayPal yang aman, yang kami kirim setelah kami memastikan van dan kru untuk tanggal Anda. Harga dinyatakan dalam won Korea (KRW). PayPal tidak menerima KRW, jadi Anda ditagih dalam dolar AS (USD); jumlah dalam USD ditampilkan sebelum Anda membayar."
 }

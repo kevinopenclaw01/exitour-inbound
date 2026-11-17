@@ -58,6 +58,7 @@ function CompanyLines({ t }: { t: Translator }) {
   if (site.businessNumber) lines.push(t("Business registration No. {number}", { number: site.businessNumber }));
   if (site.mailOrderNumber) lines.push(t("Mail-order sales registration No. {number}", { number: site.mailOrderNumber }));
   if (site.address) lines.push(site.address);
+  if (site.officePhone) lines.push(t("Office phone {number}", { number: site.officePhone }));
   if (lines.length === 0) return null;
   return (
     <p className="text-muted">

@@ -1085,5 +1085,10 @@
   "Your trip: service, first date, number of days, group size and guide language": "Ang biyahe ninyo: serbisyo, unang petsa, bilang ng araw, laki ng grupo at wika ng guide",
   "{brand} is a brand of {operator}, a travel agency registered in Korea. These terms apply when you send us a trip request and when you book a private van day with us.": "Ang {brand} ay brand ng {operator}, isang travel agency na rehistrado sa Korea. Sumasaklaw ang mga terms na ito kapag nagpadala kayo ng trip request at kapag nag-book kayo ng private van day sa amin.",
   "{operator}, which operates {brand}, decides how the information below is used.": "Ang {operator}, na nagpapatakbo ng {brand}, ang nagpapasya kung paano gagamitin ang impormasyon sa ibaba.",
-  "…": "…"
+  "…": "…",
+  "Office phone": "Telepono ng opisina",
+  "Office phone {number}": "Telepono ng opisina {number}",
+  "PortOne (Korea), which connects this website to the payment company below": "PortOne (Korea), na nagkokonekta sa website na ito sa kumpanya ng pagbabayad sa ibaba",
+  "PayPal, which processes your PayPal or card payment": "PayPal, na nagpoproseso ng bayad mo sa PayPal o card",
+  "Card or PayPal payment through a secure PayPal payment link that we send after we confirm the van and crew for your date. Prices are quoted in Korean won (KRW). PayPal does not accept KRW, so you are charged in US dollars (USD); the USD amount is shown before you pay.": "Bayad gamit ang card o PayPal sa pamamagitan ng ligtas na PayPal payment link na ipapadala namin pagkatapos naming kumpirmahin ang van at crew para sa petsa mo. Ang mga presyo ay nakasaad sa Korean won (KRW). Hindi tumatanggap ang PayPal ng KRW, kaya sisingilin ka sa US dollars (USD); makikita mo ang halaga sa USD bago ka magbayad."
 }

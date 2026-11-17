@@ -1,5 +1,14 @@
 # 변경 기록
 
+## 2026-11-17 밤 — Claude (Claude Code, 사장님 PC, Opus 5.5) — PG(페이팔) 심사 준비 (사장님 "entour는 페이팔만 신청할가?" → 손님별로 나눔: EXITour=KG이니시스, Entour=페이팔 → "고쳐줘")
+
+- 사무실 유선번호 `site.officePhone` = +82 2-841-8422(EXITour와 같은 사무실). 바닥글 회사 정보 줄(「Office phone …」)과 약관 3종 운영자 정보(「Office phone」)에 나온다. 포트원 PG 심사는 바닥글에 유선번호가 있어야 한다(휴대폰 불가). 연락 번호(WhatsApp +82 10-9988-8846)는 그대로
+- 개인정보처리방침 4. Who receives it: 「The payment provider …」 한 줄을 결제대행사 이름으로 바꿈 — `legal.privacy.paymentProviders`(PortOne(한국), PayPal). 추출기(`src/i18n/extract.ts`)에도 넣음
+- 결제 방법 `legal.payment.methods`: 카드 또는 PayPal, PayPal 결제 링크, 가격은 원화로 안내하지만 **PayPal은 원화를 받지 않아 USD로 청구**되고 결제 전에 USD 금액이 보인다
+- 새 문장 5개 × 8개 언어 사전
+- 검사: lint·typecheck 통과, test 136 통과, build, check:pages 236쪽 문제 없음
+- **남은 것**: 포트원 콘솔에서 페이팔 신청(사장님) → 신청 때 서비스 주소 entour.kr를 알릴 것(같은 사업자의 두 번째 사이트) → 채널 키를 받으면 `/book`에 결제창 연동. 이지페이(알리페이·동남아 결제 앱)를 하면 `paymentProviders`에 KICC 추가
+
 ## 2026-11-17 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 약관 3종 값 채우기·공개, 9개 언어 번역 (사장님 "같은 기준으로 entour 미비된 거 보완해줘, entour는 단품 기준으로, 각 나라말로 번역 다 해주고")
 
 - 회사 정보(`site.ts`): 대표 Kang Sangwook, 사업자등록번호 479-66-00070, 관광사업 등록 2018-000019(서초구청, 등록증 상호는 옛 이름 케빈투어), 통신판매업 2015-Seoul Seocho-1804, 주소 서초구 반포대로23길 13 5층, 메일 exitour0ffice@gmail.com(사장님 지정). 출처는 스마트스토어센터 판매자 정보와 관광사업등록증

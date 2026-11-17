@@ -59,7 +59,7 @@ export default async function Page() {
             t("The rental company and the driver or guide for your booking, only what they need for the day"),
             t("Supabase, which stores trip requests for us in a database in the Seoul region"),
             t("Our staff receive a notice of each new request through KakaoTalk (Kakao Corp., Korea)"),
-            t("The payment provider that processes your card payment"),
+            ...legal.privacy.paymentProviders.map((p) => t(p)),
           ]}
         />
         <p>
