@@ -1,5 +1,15 @@
 # 변경 기록
 
+## 2026-11-21 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 페이팔 테스트 결제 화면 /pay (포트원 「PG 계약에 필요한 테스트모드 설정 안내」 메일 → 사장님 "응 만들어줘")
+
+- 포트원 콘솔에 테스트 채널 「Entour 페이팔 일반결제 테스트」(paypal_v2, 한국 공용 테스트 계정)를 만들었고, 그 채널로 결제 화면 `/pay`를 붙임. 심사에는 결제창이 실제로 뜨는 결제 페이지가 있어야 한다
+- `/pay`: 상품·지역·일수(주소 `?product=…&region=…&days=…&ref=…`로 미리 채움) → 금액은 `pricing.ts` 확정가로만 계산(손님이 금액을 칠 칸 없음), **USD로 청구**(`usdFromKrw`, 5달러 단위, 포트원에는 센트) → 이름(영문)·메일·동의 → 페이팔 버튼(포트원 `loadPaymentUI`, `PAYPAL_SPB`, 버튼 자리 `.portone-ui-container`) → 결제되면 결제 번호. 화면 맨 위 「Test mode … No real money」 띠(`src/lib/payment.ts`의 `testMode`)
+- 한국 페이팔 계정은 못 쓴다는 한 줄(판매자·구매자 둘 다 한국 계정이면 결제 불가, 포트원 안내)
+- 설정: `src/lib/payment.ts`(상점 아이디·채널 키 — 공개 값, 비밀값 없음). 화면: `src/components/PayPalForm.tsx`, `src/app/[lang]/pay/page.tsx`. 바닥글 Services에 「Pay with PayPal」, 사이트맵(우선순위 0.3), 새 문장 25개 × 8개 언어
+- 카톡 예약 알림(`semi ochestra\자동화\entour\Relay-EntourInquiries.mjs`)에 「손님에게 보낼 페이팔 결제 링크: https://entour.kr/pay?…」 한 줄
+- 검사: lint·typecheck 통과, test 136 통과, build, check:pages 245쪽 문제 없음. 로컬에서 페이팔 테스트 버튼(PayPal·카드)이 뜨는 것까지 확인(브라우저 창 팝업은 자동 클릭이 막혀 열지 않음)
+- **남은 것**: 결제 금액 서버 확인(포트원 API 시크릿 → Vercel 환경변수, 결제 조회 후 예약 상태 바꾸기 — 사장님 허락 뒤), 페이팔 실계약 뒤 채널 키 교체·`testMode: false`, 원어민 검수
+
 ## 2026-11-17 밤 — Claude (Claude Code, 사장님 PC, Opus 5.5) — PG(페이팔) 심사 준비 (사장님 "entour는 페이팔만 신청할가?" → 손님별로 나눔: EXITour=KG이니시스, Entour=페이팔 → "고쳐줘")
 
 - 사무실 유선번호 `site.officePhone` = +82 2-841-8422(EXITour와 같은 사무실). 바닥글 회사 정보 줄(「Office phone …」)과 약관 3종 운영자 정보(「Office phone」)에 나온다. 포트원 PG 심사는 바닥글에 유선번호가 있어야 한다(휴대폰 불가). 연락 번호(WhatsApp +82 10-9988-8846)는 그대로

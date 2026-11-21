@@ -24,6 +24,7 @@ export function publicRoutes(): PublicRoute[] {
     { path: "/day-plans", title: "10-hour day plans", updated, priority: 0.8 },
     { path: "/book", title: "Book", updated: "2026-11-16", priority: 0.7 },
     { path: "/plan", title: "Plan my trip", updated, priority: 0.7 },
+    { path: "/pay", title: "Pay with PayPal", updated: "2026-11-21", priority: 0.3 },
     { path: "/faq", title: "FAQ", updated, priority: 0.7 },
     { path: "/about", title: "About us", updated, priority: 0.5 },
     { path: "/contact", title: "Contact us", updated: "2026-10-25", priority: 0.7 },

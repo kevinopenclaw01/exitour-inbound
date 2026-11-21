@@ -74,6 +74,48 @@ export const bookingUi = {
   sendRequest: msg("Send a trip request"),
 } as const;
 
+/** 페이팔 결제 화면(/pay, PayPalForm)에만 나오는 문장. 상품·지역·합계는 구매 화면과 같은 문장을 쓴다(2026-11-21). */
+export const payUi = {
+  reference: msg("Booking number"),
+  referenceHint: msg("It is in the message we sent you. Leave it empty if you do not have one."),
+  firstName: msg("First name"),
+  lastName: msg("Last name"),
+  email: msg("Email for your receipt"),
+  agree: msg("I have read the terms of service and the cancellation policy, and I agree that my name and email go to PortOne and PayPal to take this payment."),
+  charged: msg("Charged by PayPal: US${usd}"),
+  chargedNote: msg("PayPal does not take Korean won, so we charge the US dollar amount above. The price in won is {krw}."),
+  koreanAccount: msg("PayPal accounts registered in Korea cannot be used for this payment."),
+  fillFirst: msg("Fill in your name and email and tick the box. Then the PayPal button appears here."),
+  loading: msg("Loading PayPal…"),
+  loadFailed: msg("The PayPal button could not load. Try again later or contact us."),
+  paidTitle: msg("Payment received"),
+  paidText: msg("Payment number {paymentId}. We confirm your booking on the contact you gave us."),
+  failed: msg("The payment was not completed: {reason}"),
+  failedPlain: msg("The payment was not completed. You can try again."),
+  testPaid: msg("This was a test payment. No money was taken."),
+  nameError: msg("Enter your first and last name in English letters."),
+  emailError: msg("Enter a valid email address."),
+} as const;
+
+/** 페이팔 결제 화면이 쓰는 영어 문장(번역해서 넘길 열쇠). */
+export function payStrings(): string[] {
+  return [
+    ...Object.values(payUi),
+    bookingUi.product,
+    bookingUi.region,
+    bookingUi.summary,
+    bookingUi.perDay,
+    bookingUi.total,
+    bookingUi.perGroup,
+    bookingUi.notOpen,
+    formUi.days,
+    formUi.optional,
+    bookingErrorText.days,
+    ...productOrder.flatMap((p) => [productLabels[p].name, productLabels[p].hint]),
+    ...regionOrder.flatMap((r) => [regionLabels[r].name, regionLabels[r].hint]),
+  ];
+}
+
 /** 구매 화면이 쓰는 영어 문장(번역해서 넘길 열쇠). 상품·지역 이름은 src/content/pricing.ts의 것을 쓴다. */
 export function bookingStrings(): string[] {
   return [

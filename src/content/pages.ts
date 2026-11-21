@@ -49,6 +49,13 @@ export const pages = {
       "Choose driver only or a licensed driver-guide, Seoul or Gyeonggi, and your dates. See the price per group straight away and book online.",
     og: { title: "Book a private van day", sub: "See the price per group and book online" },
   },
+  pay: {
+    path: "/pay",
+    title: "Pay for your private van day with PayPal",
+    description:
+      "Pay for a booked private van day with PayPal. The price comes from our price list, is charged in US dollars and is shown before you pay.",
+    og: { title: "Pay with PayPal", sub: "For a booked private van day, charged in US dollars" },
+  },
   plan: {
     path: "/plan",
     title: "Plan my trip: send a trip request",

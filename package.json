@@ -12,6 +12,7 @@
     "check:pages": "node scripts/check-structured-data.mjs"
   },
   "dependencies": {
+    "@portone/browser-sdk": "^0.1.14",
     "next": "16.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",

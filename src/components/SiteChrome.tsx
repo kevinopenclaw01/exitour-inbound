@@ -105,6 +105,7 @@ export async function SiteFooter() {
           {link("/driver-guide", "Driver-Guide")}
           {link("/prices", "Prices")}
           {link("/plan", "Plan my trip")}
+          {link("/pay", "Pay with PayPal")}
         </nav>
         <nav aria-label={t("Company")} className="grid content-start gap-1.5 text-sm">
           <p className="font-semibold">{t("Company")}</p>

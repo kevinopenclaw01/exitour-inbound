@@ -40,7 +40,7 @@ const field = "w-full rounded-md border border-line bg-surface px-3 py-2 text-ba
 const translateErrors = (errors: BookingErrors, tr: (s: string) => string): BookingErrors =>
   Object.fromEntries(Object.entries(errors).map(([k, v]) => [k, v ? tr(v) : v]));
 
-function Choice({ checked, onChange, name, value, title, hint }: { checked: boolean; onChange: () => void; name: string; value: string; title: string; hint: string }) {
+export function Choice({ checked, onChange, name, value, title, hint }: { checked: boolean; onChange: () => void; name: string; value: string; title: string; hint: string }) {
   return (
     <label
       className={`grid cursor-pointer gap-0.5 rounded-md border p-3 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-sign ${
