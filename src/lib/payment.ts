@@ -40,3 +40,28 @@ export function cleanReference(v: string | null | undefined): string {
   const s = (v ?? "").replace(/[^A-Za-z0-9]/g, "").slice(0, 16);
   return s.length >= 4 ? s : "";
 }
+
+/** 결제 조회 결과 판정(서버 /api/payment/verify가 쓴다). 금액·상점·통화가 하나라도 다르면 mismatch. */
+export type PaymentCheck = "paid" | "pending" | "not-paid" | "mismatch";
+
+export function checkPayment(
+  p: { status: string; storeId?: string; currency?: string; amount?: { total?: number } },
+  expectedCents: number,
+): PaymentCheck {
+  if (p.storeId && p.storeId !== paypalConfig.storeId) return "mismatch";
+  if (p.status === "PAY_PENDING") return "pending";
+  if (p.status !== "PAID") return "not-paid";
+  if (p.currency !== "USD" || p.amount?.total !== expectedCents) return "mismatch";
+  return "paid";
+}
+
+/** 포트원 customData(문자열 JSON)에서 상품·지역·일수를 꺼낸다. */
+export function orderFromCustomData(raw: string | undefined): { product: string; region: string; days: number; reference: string } | null {
+  if (!raw) return null;
+  try {
+    const d = JSON.parse(raw) as Record<string, unknown>;
+    return { product: String(d.product ?? ""), region: String(d.region ?? ""), days: Number(d.days), reference: cleanReference(String(d.reference ?? "")) };
+  } catch {
+    return null;
+  }
+}

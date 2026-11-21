@@ -1115,5 +1115,10 @@
   "The PayPal button could not load. Try again later or contact us.": "Không tải được nút PayPal. Hãy thử lại sau hoặc liên hệ với chúng tôi.",
   "The payment was not completed. You can try again.": "Thanh toán chưa hoàn tất. Bạn có thể thử lại.",
   "The payment was not completed: {reason}": "Thanh toán chưa hoàn tất: {reason}",
-  "This was a test payment. No money was taken.": "Đây là khoản thanh toán thử nghiệm. Không có tiền bị thu."
+  "This was a test payment. No money was taken.": "Đây là khoản thanh toán thử nghiệm. Không có tiền bị thu.",
+  "Checking your payment…": "Đang kiểm tra thanh toán của bạn…",
+  "We checked this payment with PayPal and the amount matches your booking.": "Chúng tôi đã kiểm tra khoản thanh toán này với PayPal và số tiền khớp với đặt chỗ của bạn.",
+  "PayPal is still processing this payment. We tell you when it is complete.": "PayPal vẫn đang xử lý khoản thanh toán này. Chúng tôi sẽ báo khi hoàn tất.",
+  "Please contact us about this payment": "Vui lòng liên hệ với chúng tôi về khoản thanh toán này",
+  "The amount paid does not match the price for this booking. Send us the payment number and we sort it out.": "Số tiền đã trả không khớp với giá của đặt chỗ này. Hãy gửi mã thanh toán cho chúng tôi để chúng tôi xử lý."
 }

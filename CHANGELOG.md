@@ -1,5 +1,14 @@
 # 변경 기록
 
+## 2026-11-21 오후 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 페이팔 결제 금액 서버 확인 (사장님 "응, 만들어줘")
+
+- 결제 전 `POST /api/payment/prepare`: 서버가 `pricing.ts` 확정가로 금액(USD 센트)을 계산하고 결제 번호를 만들어 포트원 「결제 정보 사전 등록」(`/payments/{id}/pre-register`). 사전 등록된 번호는 그 금액으로만 결제된다 → 손님이 브라우저에서 금액을 바꾸면 포트원이 거절
+- 결제 뒤 `POST /api/payment/verify`: 브라우저의 「결제됨」을 믿지 않고 포트원 결제 단건 조회 → 상태 PAID·상점·USD·금액(customData의 상품·지역·일수로 다시 계산)이 맞을 때만 확인. 화면: 「확인했다」/「페이팔 처리 중」/「금액이 맞지 않으니 연락」. 알림 변수(`docs/10` 7장)가 있으면 사장님께도 보냄
+- 결제 화면: 상품·지역·일수가 바뀌면 서버에서 새 번호를 받아 버튼을 다시 띄우고, 이름·메일만 바뀌면 `updateLoadPaymentUIRequest`
+- 비밀값: 환경변수 `EXITOUR_PORTONE_API_SECRET`(Vercel 운영, 필요하면 `.env.local`). **아직 안 넣음** — 없으면 사전 등록·확인을 건너뛰고 화면은 「확인 전」 문구(테스트 결제는 그대로 됨). 코드: `src/lib/portoneServer.ts`(server-only), 판정 `src/lib/payment.ts` `checkPayment`, 시험 `tests/payment.test.ts`
+- 새 문장 5개 × 8개 언어
+- 검사: lint·typecheck 통과, test 142 통과, build, check:pages 문제 없음. 로컬에서 준비 경로(금액 64000센트, 잘못된 상품은 422)·확인 경로(비밀값 없음 → checked:false)·버튼 다시 띄우기(2일→3일, US$640→965) 확인
+
 ## 2026-11-21 — Claude (Claude Code, 사장님 PC, Opus 5.5) — 페이팔 테스트 결제 화면 /pay (포트원 「PG 계약에 필요한 테스트모드 설정 안내」 메일 → 사장님 "응 만들어줘")
 
 - 포트원 콘솔에 테스트 채널 「Entour 페이팔 일반결제 테스트」(paypal_v2, 한국 공용 테스트 계정)를 만들었고, 그 채널로 결제 화면 `/pay`를 붙임. 심사에는 결제창이 실제로 뜨는 결제 페이지가 있어야 한다

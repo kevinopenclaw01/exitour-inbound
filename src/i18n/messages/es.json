@@ -1115,5 +1115,10 @@
   "The PayPal button could not load. Try again later or contact us.": "No se pudo cargar el botón de PayPal. Inténtalo más tarde o escríbenos.",
   "The payment was not completed. You can try again.": "El pago no se completó. Puedes intentarlo de nuevo.",
   "The payment was not completed: {reason}": "El pago no se completó: {reason}",
-  "This was a test payment. No money was taken.": "Fue un pago de prueba. No se cobró dinero."
+  "This was a test payment. No money was taken.": "Fue un pago de prueba. No se cobró dinero.",
+  "Checking your payment…": "Comprobando tu pago…",
+  "We checked this payment with PayPal and the amount matches your booking.": "Comprobamos este pago con PayPal y el importe coincide con tu reserva.",
+  "PayPal is still processing this payment. We tell you when it is complete.": "PayPal todavía está procesando este pago. Te avisaremos cuando termine.",
+  "Please contact us about this payment": "Escríbenos sobre este pago",
+  "The amount paid does not match the price for this booking. Send us the payment number and we sort it out.": "El importe pagado no coincide con el precio de esta reserva. Envíanos el número de pago y lo resolvemos."
 }

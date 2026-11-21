@@ -1115,5 +1115,10 @@
   "The PayPal button could not load. Try again later or contact us.": "PayPal ボタンを読み込めませんでした。しばらくしてからもう一度お試しいただくか、お問い合わせください。",
   "The payment was not completed. You can try again.": "お支払いは完了していません。もう一度お試しいただけます。",
   "The payment was not completed: {reason}": "お支払いは完了していません：{reason}",
-  "This was a test payment. No money was taken.": "これはテスト決済でした。実際の請求はありません。"
+  "This was a test payment. No money was taken.": "これはテスト決済でした。実際の請求はありません。",
+  "Checking your payment…": "お支払いを確認しています…",
+  "We checked this payment with PayPal and the amount matches your booking.": "PayPal でこのお支払いを確認しました。金額はご予約と一致しています。",
+  "PayPal is still processing this payment. We tell you when it is complete.": "PayPal がまだこのお支払いを処理中です。完了したらお知らせします。",
+  "Please contact us about this payment": "このお支払いについてご連絡ください",
+  "The amount paid does not match the price for this booking. Send us the payment number and we sort it out.": "お支払い額がこのご予約の料金と一致しません。お支払い番号をお送りいただければ対応します。"
 }

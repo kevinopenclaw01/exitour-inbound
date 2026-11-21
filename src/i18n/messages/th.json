@@ -1115,5 +1115,10 @@
   "The PayPal button could not load. Try again later or contact us.": "โหลดปุ่ม PayPal ไม่ได้ ลองอีกครั้งภายหลังหรือติดต่อเรา",
   "The payment was not completed. You can try again.": "การชำระเงินยังไม่เสร็จ คุณลองใหม่ได้",
   "The payment was not completed: {reason}": "การชำระเงินยังไม่เสร็จ: {reason}",
-  "This was a test payment. No money was taken.": "นี่เป็นการชำระเงินทดสอบ ไม่มีการเก็บเงิน"
+  "This was a test payment. No money was taken.": "นี่เป็นการชำระเงินทดสอบ ไม่มีการเก็บเงิน",
+  "Checking your payment…": "กำลังตรวจสอบการชำระเงิน…",
+  "We checked this payment with PayPal and the amount matches your booking.": "เราตรวจสอบการชำระเงินนี้กับ PayPal แล้ว ยอดตรงกับการจองของคุณ",
+  "PayPal is still processing this payment. We tell you when it is complete.": "PayPal ยังดำเนินการชำระเงินนี้อยู่ เราจะแจ้งเมื่อเสร็จ",
+  "Please contact us about this payment": "กรุณาติดต่อเราเรื่องการชำระเงินนี้",
+  "The amount paid does not match the price for this booking. Send us the payment number and we sort it out.": "ยอดที่ชำระไม่ตรงกับราคาของการจองนี้ ส่งหมายเลขการชำระเงินมาให้เรา แล้วเราจะจัดการให้"
 }

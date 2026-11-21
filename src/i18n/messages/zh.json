@@ -1115,5 +1115,10 @@
   "The PayPal button could not load. Try again later or contact us.": "PayPal 按钮无法加载。请稍后再试或联系我们。",
   "The payment was not completed. You can try again.": "付款未完成。您可以再试一次。",
   "The payment was not completed: {reason}": "付款未完成：{reason}",
-  "This was a test payment. No money was taken.": "这是一笔测试付款，没有扣款。"
+  "This was a test payment. No money was taken.": "这是一笔测试付款，没有扣款。",
+  "Checking your payment…": "正在核对您的付款…",
+  "We checked this payment with PayPal and the amount matches your booking.": "我们已通过 PayPal 核对此笔付款，金额与您的预订一致。",
+  "PayPal is still processing this payment. We tell you when it is complete.": "PayPal 仍在处理此笔付款，完成后我们会通知您。",
+  "Please contact us about this payment": "请就此笔付款联系我们",
+  "The amount paid does not match the price for this booking. Send us the payment number and we sort it out.": "实付金额与此预订的价格不符。请把付款编号发给我们，我们会处理。"
 }

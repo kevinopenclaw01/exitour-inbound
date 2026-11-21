@@ -1115,5 +1115,10 @@
   "The PayPal button could not load. Try again later or contact us.": "Hindi ma-load ang PayPal button. Subukan ulit mamaya o kontakin kami.",
   "The payment was not completed. You can try again.": "Hindi natapos ang bayad. Maaari kayong subukan ulit.",
   "The payment was not completed: {reason}": "Hindi natapos ang bayad: {reason}",
-  "This was a test payment. No money was taken.": "Test na bayad ito. Walang perang kinuha."
+  "This was a test payment. No money was taken.": "Test na bayad ito. Walang perang kinuha.",
+  "Checking your payment…": "Sinusuri ang inyong bayad…",
+  "We checked this payment with PayPal and the amount matches your booking.": "Sinuri namin ang bayad na ito sa PayPal at tugma ang halaga sa inyong booking.",
+  "PayPal is still processing this payment. We tell you when it is complete.": "Pinoproseso pa ng PayPal ang bayad na ito. Sasabihan namin kayo kapag tapos na.",
+  "Please contact us about this payment": "Kontakin kami tungkol sa bayad na ito",
+  "The amount paid does not match the price for this booking. Send us the payment number and we sort it out.": "Hindi tugma ang binayarang halaga sa presyo ng booking na ito. Ipadala sa amin ang numero ng bayad at aayusin namin ito."
 }

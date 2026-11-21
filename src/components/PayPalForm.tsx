@@ -8,26 +8,47 @@ import type { ProductId, RegionId } from "@/content/types";
 import { bookingUi as b, formUi as u, payUi as p } from "@/i18n/formStrings";
 import { messageTranslator, type Messages } from "@/i18n/interpolate";
 import { bookingErrorText, bookingMaxDays, bookingQuote, isProduct, isRegion } from "@/lib/booking";
-import { cleanReference, newPaymentId, paypalConfig, usdCents } from "@/lib/payment";
+import { cleanReference, paypalConfig, usdCents } from "@/lib/payment";
 import { formatKrw } from "@/lib/pricing";
 import { Choice } from "./BookingForm";
 
 // 페이팔 결제 화면(/pay). 2026-11-21 포트원 「PG 계약에 필요한 테스트모드 설정 안내」 메일에 따라 테스트 채널로 연다.
 // 흐름: 사장님이 예약(/book)을 확인하고 /pay?product=…&region=…&days=…&ref=… 링크를 보낸다 → 손님이 이름·메일을 넣고 동의하면
 // 페이팔 버튼이 뜬다(포트원 loadPaymentUI, PAYPAL_SPB) → 페이팔 창에서 결제 → 이 화면에 결제 번호가 나온다.
-// 금액은 src/content/pricing.ts의 확정가로만 계산한다(손님이 금액을 칠 칸이 없다). 결제 금액 서버 확인은 API 시크릿을 만든 뒤에 붙인다.
+// 금액은 src/content/pricing.ts의 확정가로만 계산한다(손님이 금액을 칠 칸이 없다).
+// 2026-11-21 서버 확인: 버튼을 띄우기 전에 /api/payment/prepare가 서버에서 금액을 계산해 포트원에 사전 등록하고(다른 금액은 거절),
+// 결제 뒤에는 /api/payment/verify가 포트원에서 결제를 다시 조회해 상태·금액을 확인한다(비밀값이 없으면 「확인 전」으로 나온다).
+
+type Check = "paid" | "pending" | "mismatch" | "unchecked";
 
 type Status =
   | { kind: "waiting" }
   | { kind: "loading" }
   | { kind: "shown" }
   | { kind: "load-failed" }
-  | { kind: "paid"; paymentId: string }
+  | { kind: "verifying"; paymentId: string }
+  | { kind: "paid"; paymentId: string; check: Check }
   | { kind: "failed"; reason: string };
 
 const field = "w-full rounded-md border border-line bg-surface px-3 py-2 text-base";
 const nameOk = (v: string) => /^[A-Za-z][A-Za-z .'-]{0,49}$/.test(v.trim());
 const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+
+async function verify(paymentId: string): Promise<Check> {
+  try {
+    const res = await fetch("/api/payment/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paymentId }),
+    });
+    const data = (await res.json().catch(() => ({}))) as { ok?: boolean; checked?: boolean; result?: string };
+    if (!res.ok || !data.ok || !data.checked) return "unchecked";
+    if (data.result === "paid" || data.result === "pending" || data.result === "mismatch") return data.result;
+    return "unchecked";
+  } catch {
+    return "unchecked";
+  }
+}
 
 export function PayPalForm({
   messages = {},
@@ -47,7 +68,7 @@ export function PayPalForm({
   const [agree, setAgree] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "waiting" });
   const paymentId = useRef("");
-  const loaded = useRef(false);
+  const loadedKey = useRef("");
 
   // 사장님이 보내는 링크가 ?product=…&region=…&days=…&ref=…로 예약 내용을 넘긴다.
   useEffect(() => {
@@ -66,6 +87,8 @@ export function PayPalForm({
   const daysOk = Number.isInteger(days) && days >= 1 && days <= bookingMaxDays;
   const quote = daysOk ? bookingQuote({ service, region, days }) : null;
   const ready = Boolean(quote) && nameOk(firstName) && nameOk(lastName) && emailOk(email) && agree;
+  // 금액이 정해지는 값. 바뀌면 서버에서 새 결제 번호를 받아(사전 등록) 버튼을 다시 띄운다.
+  const amountKey = quote ? `${quote.service}|${quote.region}|${quote.days}` : "";
 
   const request = useMemo(() => {
     if (!quote) return null;
@@ -84,43 +107,69 @@ export function PayPalForm({
     };
   }, [quote, firstName, lastName, email, reference]);
 
-  // 준비가 되면 페이팔 버튼을 띄운다(버튼 자리 .portone-ui-container가 그려진 뒤).
-  // 준비가 풀리면 버튼 자리가 사라지고, 다시 준비되면 새 결제 번호로 다시 띄운다.
+  // 준비가 되면 서버에서 결제 번호를 받아 페이팔 버튼을 띄운다(버튼 자리 .portone-ui-container가 그려진 뒤).
+  // 이름·메일만 바뀌면 띄운 버튼의 결제 내용만 바꾸고(포트원 updateLoadPaymentUIRequest), 금액이 바뀌면 새로 띄운다.
   useEffect(() => {
     if (!ready || !request) {
-      loaded.current = false;
+      loadedKey.current = "";
       return;
     }
-    if (loaded.current) {
-      // 이름·메일·일수가 바뀌면 띄운 버튼의 결제 내용만 바꾼다(포트원 updateLoadPaymentUIRequest).
-      PortOne.updateLoadPaymentUIRequest({ ...request, paymentId: paymentId.current }).catch(() => undefined);
+    if (loadedKey.current === amountKey) {
+      if (paymentId.current) PortOne.updateLoadPaymentUIRequest({ ...request, paymentId: paymentId.current }).catch(() => undefined);
       return;
     }
-    loaded.current = true;
-    paymentId.current = newPaymentId();
+    const key = amountKey;
+    loadedKey.current = key;
+    paymentId.current = "";
     setStatus({ kind: "loading" });
-    PortOne.loadPaymentUI(
-      { ...request, paymentId: paymentId.current },
-      {
-        onPaymentSuccess: (res) => {
-          if (res.code) setStatus({ kind: "failed", reason: res.message ?? "" });
-          else setStatus({ kind: "paid", paymentId: res.paymentId });
-        },
-        onPaymentFail: (error) => setStatus({ kind: "failed", reason: error.message ?? "" }),
-      },
-    )
-      .then(() => setStatus((s) => (s.kind === "loading" ? { kind: "shown" } : s)))
-      .catch(() => {
-        loaded.current = false;
-        setStatus({ kind: "load-failed" });
+    (async () => {
+      const res = await fetch("/api/payment/prepare", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product: request.customData.product, region: request.customData.region, days: request.customData.days }),
       });
-  }, [ready, request]);
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; paymentId?: string; totalAmount?: number };
+      if (!res.ok || !data.ok || !data.paymentId || data.totalAmount !== request.totalAmount) throw new Error("prepare failed");
+      if (loadedKey.current !== key) return; // 그사이 금액이 바뀌었다
+      paymentId.current = data.paymentId;
+      await PortOne.loadPaymentUI(
+        { ...request, paymentId: data.paymentId },
+        {
+          onPaymentSuccess: (r) => {
+            if (r.code) {
+              setStatus({ kind: "failed", reason: r.message ?? "" });
+              return;
+            }
+            setStatus({ kind: "verifying", paymentId: r.paymentId });
+            verify(r.paymentId).then((check) => setStatus({ kind: "paid", paymentId: r.paymentId, check }));
+          },
+          onPaymentFail: (error) => setStatus({ kind: "failed", reason: error.message ?? "" }),
+        },
+      );
+      setStatus((s) => (s.kind === "loading" ? { kind: "shown" } : s));
+    })().catch(() => {
+      if (loadedKey.current === key) loadedKey.current = "";
+      setStatus({ kind: "load-failed" });
+    });
+  }, [ready, request, amountKey]);
+
+  if (status.kind === "verifying") {
+    return (
+      <section aria-live="polite" className="grid gap-3 rounded-md border border-line bg-paper p-4 sm:p-6">
+        <p>{tr(p.checking)}</p>
+      </section>
+    );
+  }
 
   if (status.kind === "paid") {
+    const bad = status.check === "mismatch";
     return (
-      <section aria-live="polite" className="grid gap-3 rounded-md border border-sign/30 bg-sign-soft p-4 sm:p-6">
-        <h2 className="text-lg font-bold">{tr(p.paidTitle)}</h2>
+      <section aria-live="polite" className={`grid gap-3 rounded-md border p-4 sm:p-6 ${bad ? "border-brown/30 bg-paper" : "border-sign/30 bg-sign-soft"}`}>
+        <h2 className="text-lg font-bold">{tr(bad ? p.mismatchTitle : p.paidTitle)}</h2>
         <p>{tr(p.paidText, { paymentId: status.paymentId })}</p>
+        {status.check === "paid" ? <p className="text-sm">{tr(p.confirmed)}</p> : null}
+        {status.check === "pending" ? <p className="text-sm">{tr(p.pending)}</p> : null}
+        {bad ? <p className="text-sm font-semibold text-brown">{tr(p.mismatch)}</p> : null}
         {paypalConfig.testMode ? <p className="text-sm font-semibold text-brown">{tr(p.testPaid)}</p> : null}
       </section>
     );
@@ -250,7 +299,7 @@ export function PayPalForm({
 
       <section className="grid gap-3">
         {ready ? (
-          <div className="portone-ui-container min-h-12" />
+          <div key={amountKey} className="portone-ui-container min-h-12" />
         ) : (
           <p className="rounded-md border border-dashed border-line p-4 text-sm text-muted">{tr(p.fillFirst)}</p>
         )}

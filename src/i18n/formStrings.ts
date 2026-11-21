@@ -93,6 +93,11 @@ export const payUi = {
   failed: msg("The payment was not completed: {reason}"),
   failedPlain: msg("The payment was not completed. You can try again."),
   testPaid: msg("This was a test payment. No money was taken."),
+  checking: msg("Checking your payment…"),
+  confirmed: msg("We checked this payment with PayPal and the amount matches your booking."),
+  pending: msg("PayPal is still processing this payment. We tell you when it is complete."),
+  mismatchTitle: msg("Please contact us about this payment"),
+  mismatch: msg("The amount paid does not match the price for this booking. Send us the payment number and we sort it out."),
   nameError: msg("Enter your first and last name in English letters."),
   emailError: msg("Enter a valid email address."),
 } as const;

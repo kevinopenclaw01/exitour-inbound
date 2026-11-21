@@ -1115,5 +1115,10 @@
   "The PayPal button could not load. Try again later or contact us.": "Tombol PayPal tidak dapat dimuat. Coba lagi nanti atau hubungi kami.",
   "The payment was not completed. You can try again.": "Pembayaran belum selesai. Anda dapat mencoba lagi.",
   "The payment was not completed: {reason}": "Pembayaran belum selesai: {reason}",
-  "This was a test payment. No money was taken.": "Ini pembayaran uji. Tidak ada uang yang ditarik."
+  "This was a test payment. No money was taken.": "Ini pembayaran uji. Tidak ada uang yang ditarik.",
+  "Checking your payment…": "Memeriksa pembayaran Anda…",
+  "We checked this payment with PayPal and the amount matches your booking.": "Kami sudah memeriksa pembayaran ini dengan PayPal dan jumlahnya sesuai dengan pemesanan Anda.",
+  "PayPal is still processing this payment. We tell you when it is complete.": "PayPal masih memproses pembayaran ini. Kami akan memberi tahu Anda setelah selesai.",
+  "Please contact us about this payment": "Hubungi kami tentang pembayaran ini",
+  "The amount paid does not match the price for this booking. Send us the payment number and we sort it out.": "Jumlah yang dibayar tidak sesuai dengan harga pemesanan ini. Kirimkan nomor pembayaran kepada kami dan kami akan menyelesaikannya."
 }
